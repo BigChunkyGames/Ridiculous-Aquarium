@@ -12,12 +12,16 @@ public class Fish : MonoBehaviour
     [Range(0,1)]
     public float activity;
     public bool hungry = false;
+    public float hungerTimer;
 
     public Material sickMat;
+    public Material deadMat;
     public GameObject model;
 
     // runtime
+    private float uniqueness;
     private GameObject targetFood = null;
+    private bool dead = false;
     Renderer rend;
     private Material startMat;
     Rigidbody rb;
@@ -27,25 +31,30 @@ public class Fish : MonoBehaviour
     
 
     void Awake(){
+        uniqueness = Random.Range(-1f, 1f);
         rend = model.GetComponent<Renderer>();
         startMat = rend.material;
         rb = GetComponent<Rigidbody>();
         jump = GetComponent<Jump>();
         InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
-        InvokeRepeating("BecomeHungry", 0f, 5f); 
-        InvokeRepeating("FindClosestFood", 0f, 1f);   // search for food every second
+        InvokeRepeating("BecomeHungry", 7f + uniqueness*7f, hungerTimer + uniqueness* 2); 
+        InvokeRepeating("FindClosestFood", 0f, 1f );   // search for food every second
 
     }
 
     void FixedUpdate(){
         rb.AddForce(Physics.gravity * rb.mass * gravity); // gravity
 
+        if(dead){
+            return;
+        }
+
         // seek food
         if(hungry){
             if (targetFood != null){ // if there is food
                 transform.position = Vector3.MoveTowards(transform.position, targetFood.transform.position, speed*2 * Time.deltaTime);
                 return;
-            }
+            } 
         }
 
         if (transform.position.y < 2f){
@@ -63,8 +72,19 @@ public class Fish : MonoBehaviour
         }
     }
 
+    void Die(){
+        dead = true;
+        rend.material = deadMat;
+        transform.rotation *= Quaternion.Euler(0,0,180f);
+        CancelInvoke();
+    }
+
     void OnCollisionEnter(Collision col){
+        if (dead){
+            return;
+        }
         if(col.gameObject.tag == "Food" && hungry){
+            // eating
             Destroy(col.gameObject);
             hungry = false;
             targetFood = null;
@@ -91,13 +111,15 @@ public class Fish : MonoBehaviour
     }
 
     public void BecomeHungry(){
+        if (hungry){
+            Die();
+        }
         rend.material = sickMat;
         hungry = true;
     }
 
     public void BeFishy(){
         float rand = Random.Range(0f, 10.0f);
-
         if (transform.position.y > 14f){ // if too high just wait 
             return;
         }
@@ -106,21 +128,16 @@ public class Fish : MonoBehaviour
             GoForward();
             return;
         }
-
         if (rand < 5f){
             GoForward();
             return;
         }
-
-        
         if (rand < 10f){
             if (transform.position.y < 7f){ // if too high just wait 
                 jump.JumpNow();
             }
             return;
-
         }
-        
     }
 
     public void TurnAround(){

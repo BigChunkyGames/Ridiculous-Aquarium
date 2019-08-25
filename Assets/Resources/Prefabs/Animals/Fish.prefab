@@ -146,7 +146,9 @@ MonoBehaviour:
   gravity: 0.039
   activity: 0.209
   hungry: 0
+  hungerTimer: 7
   sickMat: {fileID: 2100000, guid: f74102d950214be4988481d10c605c47, type: 2}
+  deadMat: {fileID: 2100000, guid: 13226bbdde322ef4d8171477de88832a, type: 2}
   model: {fileID: 2894146962221326751}
 --- !u!65 &5285019966132037361
 BoxCollider:
