@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
         if (Physics.Raycast (myRay, out hit)) {
             if (Input.GetMouseButtonDown (0)) {// what to do if i press the left mouse button
                 Instantiate (food, hit.point, Quaternion.identity);// instatiate a prefab on the position where the ray hits the floor.
-                Debug.Log (hit.point);// debugs the vector3 of the position where I clicked
          }// end upMousebutton
         }
     }

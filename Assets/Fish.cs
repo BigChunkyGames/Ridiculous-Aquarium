@@ -13,23 +13,25 @@ public class Fish : MonoBehaviour
     public float activity;
     public bool hungry = false;
     public float hungerTimer;
+    public int timesEatenSinceLastGrowth = 0; // since last growth
+    public int foodsNeededToGrow = 5;
+    public int growthLevel = 1;
+    public float amountToGrow = .5f;
 
     public Material sickMat;
     public Material deadMat;
     public GameObject model;
 
     // runtime
-    private GameManager gm;
-    private float uniqueness;
-    private GameObject targetFood = null;
-    private bool dead = false;
+    GameManager gm;
     Renderer rend;
-    private Material startMat;
+    Material startMat;
     Rigidbody rb;
     Jump jump;
 
-    private bool facingRight = true;
-    
+    private bool facingRight = true;private float uniqueness;
+    private GameObject targetFood = null;
+    private bool dead = false;
 
     void Awake(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
@@ -117,11 +119,21 @@ public class Fish : MonoBehaviour
         }
         if(col.gameObject.tag == "Food" && hungry){
             // eating
+            timesEatenSinceLastGrowth++;
+            if (timesEatenSinceLastGrowth % foodsNeededToGrow == 0){
+                Grow();
+            }
             Destroy(col.gameObject);
             hungry = false;
             targetFood = null;
             rend.material = startMat;
         }
+    }
+
+    private void Grow(){
+        timesEatenSinceLastGrowth = 0;
+        growthLevel++;
+        transform.localScale += new Vector3(amountToGrow, amountToGrow, amountToGrow); // grow linearly
     }
 
     public void FindClosestFood(){
@@ -150,8 +162,6 @@ public class Fish : MonoBehaviour
         hungry = true;
     }
 
-    
-
     public void TurnAround(){
         transform.rotation *= Quaternion.Euler(0,180f,0);
         if(facingRight){
@@ -160,19 +170,16 @@ public class Fish : MonoBehaviour
             facingRight = true;
         }
     }
-
     public void TurnLeft(){
         if(facingRight){
             TurnAround();
         }
     }
-
     public void TurnRight(){
         if(!facingRight){
             TurnAround();
         }
     }
-
     public void GoForward(){
         rb.velocity += transform.forward * speed;
     }
