@@ -55,6 +55,12 @@ public class Fish : MonoBehaviour
         if(hungry){ 
             if (targetFood != null){ // if there is food
                 transform.position = Vector3.MoveTowards(transform.position, targetFood.transform.position, speed*2 * Time.deltaTime);
+                if (targetFood.transform.position.x > transform.position.x){
+                    // if food is to the right
+                    TurnRight();
+                } else {
+                    TurnLeft();
+                }
                 return;
             } 
         }
