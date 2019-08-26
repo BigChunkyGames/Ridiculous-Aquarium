@@ -17,7 +17,7 @@ public class Fish : MonoBehaviour
     public int foodsNeededToGrow = 5;
     public int growthLevel = 1;
     public float amountToGrow = .5f;
-    public float dropRate = 1f;
+    public float dropRate = 7f;
 
     public Material sickMat;
     public Material deadMat;
@@ -143,6 +143,9 @@ public class Fish : MonoBehaviour
             hungry = false;
             targetFood = null;
             rend.material = startMat;
+        }
+        if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
+            Destroy(this); // destory if hit bottom and dead
         }
     }
 

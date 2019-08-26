@@ -72,7 +72,6 @@ GameObject:
   - component: {fileID: 2989956799571212807}
   - component: {fileID: 441156833577917329}
   - component: {fileID: 441156833577917328}
-  - component: {fileID: 441156833577917331}
   - component: {fileID: 441156833577917330}
   - component: {fileID: 5285019966132037361}
   m_Layer: 8
@@ -147,20 +146,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpVelocity: 2.31
---- !u!114 &441156833577917331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2893627830063525433}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 318e5d1ce887bff4fb48d2333ba1dbb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fallMultiplier: 2.5
-  lowJumpMultiplier: 2
 --- !u!114 &441156833577917330
 MonoBehaviour:
   m_ObjectHideFlags: 0
