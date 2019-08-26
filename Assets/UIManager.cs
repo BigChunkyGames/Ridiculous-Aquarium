@@ -16,6 +16,6 @@ public class UIManager : MonoBehaviour
     }
 
     void Update(){
-        moneyText.text = gm.money.ToString();
+        moneyText.text = "$" + gm.money.ToString();
     }
 }
