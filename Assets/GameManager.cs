@@ -6,8 +6,21 @@ public class GameManager : MonoBehaviour
 {
     public GameObject food;
 
+    public float leftBoundary;
+    public float rightBoundary;
+    public float topBoundary;
+    public float bottomBoundary;
+
+
     RaycastHit hit;
     Ray myRay;
+
+    void Start(){
+        leftBoundary = -8f;
+        rightBoundary = 8f;
+        bottomBoundary = 2f;
+        topBoundary = 14f;
+    }
     void Update() {
         
         myRay = Camera.main.ScreenPointToRay (Input.mousePosition); // telling my ray variable that the ray will go from the center of 

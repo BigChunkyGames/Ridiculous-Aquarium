@@ -19,6 +19,7 @@ public class Fish : MonoBehaviour
     public GameObject model;
 
     // runtime
+    private GameManager gm;
     private float uniqueness;
     private GameObject targetFood = null;
     private bool dead = false;
@@ -31,43 +32,74 @@ public class Fish : MonoBehaviour
     
 
     void Awake(){
+        gm = (GameManager)FindObjectOfType(typeof(GameManager));
         uniqueness = Random.Range(-1f, 1f);
         rend = model.GetComponent<Renderer>();
         startMat = rend.material;
         rb = GetComponent<Rigidbody>();
         jump = GetComponent<Jump>();
         InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
-        InvokeRepeating("BecomeHungry", 7f + uniqueness*7f, hungerTimer + uniqueness* 2); 
-        InvokeRepeating("FindClosestFood", 0f, 1f );   // search for food every second
+        InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2); 
+        InvokeRepeating("FindClosestFood", 0f, 0.5f );   // search for food every second
 
     }
 
     void FixedUpdate(){
         rb.AddForce(Physics.gravity * rb.mass * gravity); // gravity
-
         if(dead){
             return;
         }
-
         // seek food
-        if(hungry){
+        if(hungry){ 
             if (targetFood != null){ // if there is food
                 transform.position = Vector3.MoveTowards(transform.position, targetFood.transform.position, speed*2 * Time.deltaTime);
                 return;
             } 
         }
+        
+    }
 
-        if (transform.position.y < 2f){
-            jump.JumpNow();
-        }   
-        if (transform.position.x < -8f){
+    public void BeFishy(){
+        if (hungry){
+            return;
+        }
+        if (transform.position.y < gm.bottomBoundary){
+            jump.JumpNow(); // if too low, go up
+            return;
+        } 
+        if (transform.position.x < gm.leftBoundary){
             TurnRight();
             GoForward();
             return;
         }
-        if (transform.position.x > 8f){
+        if (transform.position.x > gm.rightBoundary){
             TurnLeft();
             GoForward();
+            return;
+        }
+
+        float rand = Random.Range(0f, 10.0f);
+         
+        if (transform.position.y > gm.topBoundary){ // if too high just wait 
+            return;
+        }
+        if (rand < 1f ){
+            TurnAround();
+            GoForward();
+            return;
+        }
+        if (rand < 5f){
+            GoForward();
+            return;
+        }
+        if (rand < 6.5f){
+            jump.JumpNow();
+            GoForward();
+        }
+        if (rand < 10f){
+            if (transform.position.y < 7f){ 
+                jump.JumpNow();
+            }
             return;
         }
     }
@@ -118,27 +150,7 @@ public class Fish : MonoBehaviour
         hungry = true;
     }
 
-    public void BeFishy(){
-        float rand = Random.Range(0f, 10.0f);
-        if (transform.position.y > 14f){ // if too high just wait 
-            return;
-        }
-        if (rand < 1f ){
-            TurnAround();
-            GoForward();
-            return;
-        }
-        if (rand < 5f){
-            GoForward();
-            return;
-        }
-        if (rand < 10f){
-            if (transform.position.y < 7f){ // if too high just wait 
-                jump.JumpNow();
-            }
-            return;
-        }
-    }
+    
 
     public void TurnAround(){
         transform.rotation *= Quaternion.Euler(0,180f,0);
