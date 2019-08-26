@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1716823251959283887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8277810704880685368}
+  m_Layer: 0
+  m_Name: DropSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8277810704880685368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716823251959283887}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.096, y: -0.578, z: 0.018}
+  m_LocalScale: {x: 0.99999976, y: 1, z: 0.99999976}
+  m_Children: []
+  m_Father: {fileID: 2892106522840983731}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2893620244362853643
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,6 +95,7 @@ Transform:
   m_Children:
   - {fileID: 2899481334566688869}
   - {fileID: 2899626720599608919}
+  - {fileID: 8277810704880685368}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -151,9 +182,13 @@ MonoBehaviour:
   foodsNeededToGrow: 5
   growthLevel: 1
   amountToGrow: 0.5
+  dropRate: 1
   sickMat: {fileID: 2100000, guid: f74102d950214be4988481d10c605c47, type: 2}
   deadMat: {fileID: 2100000, guid: 13226bbdde322ef4d8171477de88832a, type: 2}
   model: {fileID: 2894146962221326751}
+  dropable: {fileID: 1180008657295059583, guid: 0789745c007388b4393c85cb859558c4,
+    type: 3}
+  dropSpot: {fileID: 1716823251959283887}
 --- !u!65 &5285019966132037361
 BoxCollider:
   m_ObjectHideFlags: 0

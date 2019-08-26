@@ -17,10 +17,13 @@ public class Fish : MonoBehaviour
     public int foodsNeededToGrow = 5;
     public int growthLevel = 1;
     public float amountToGrow = .5f;
+    public float dropRate = 1f;
 
     public Material sickMat;
     public Material deadMat;
     public GameObject model;
+    public GameObject dropable; // coin
+    public GameObject dropSpot;
 
     // runtime
     GameManager gm;
@@ -43,6 +46,7 @@ public class Fish : MonoBehaviour
         InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
         InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2); 
         InvokeRepeating("FindClosestFood", 0f, 0.5f );   // search for food every second
+        InvokeRepeating("DropDropable", 0f, dropRate );   // drop dropable
 
     }
 
@@ -65,6 +69,12 @@ public class Fish : MonoBehaviour
             } 
         }
         
+    }
+
+    public void DropDropable(){
+        if(growthLevel == 2){
+            Instantiate(dropable, dropSpot.transform.position, dropable.transform.rotation);
+        }
     }
 
     public void BeFishy(){

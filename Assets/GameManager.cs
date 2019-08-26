@@ -5,15 +5,16 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject food;
+    public float money = 0f;
 
-    public float leftBoundary;
-    public float rightBoundary;
-    public float topBoundary;
-    public float bottomBoundary;
+    [HideInInspector] public float leftBoundary;
+    [HideInInspector] public float rightBoundary;
+    [HideInInspector] public float topBoundary;
+    [HideInInspector] public float bottomBoundary;
 
 
     RaycastHit hit;
-    Ray myRay;
+    Ray ray;
 
     void Start(){
         leftBoundary = -8f;
@@ -22,12 +23,17 @@ public class GameManager : MonoBehaviour
         topBoundary = 14f;
     }
     void Update() {
-        
-        myRay = Camera.main.ScreenPointToRay (Input.mousePosition); // telling my ray variable that the ray will go from the center of 
-        if (Physics.Raycast (myRay, out hit)) {
-            if (Input.GetMouseButtonDown (0)) {// what to do if i press the left mouse button
+        if (Input.GetMouseButtonDown (0)) {// left mouse button
+            ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+            if (Physics.Raycast (ray, out hit)) {
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dropable")){
+                    Debug.Log("Got a coin");
+                    money += hit.collider.GetComponent<Dropable>().worth;
+                    Destroy(hit.collider.gameObject);
+                    return;
+                }
                 Instantiate (food, hit.point, Quaternion.identity);// instatiate a prefab on the position where the ray hits the floor.
-         }// end upMousebutton
+            }
         }
     }
 }
