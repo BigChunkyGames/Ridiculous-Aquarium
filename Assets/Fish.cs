@@ -18,6 +18,7 @@ public class Fish : MonoBehaviour
     public int growthLevel = 1;
     public float amountToGrow = .5f;
     public float dropRate = 7f;
+    public float price = 100f;
 
     public Material sickMat;
     public Material deadMat;

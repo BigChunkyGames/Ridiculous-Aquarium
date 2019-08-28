@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         leftBoundary = -8f;
         rightBoundary = 8f;
         bottomBoundary = 2f;
-        topBoundary = 14f;
+        topBoundary = 18f;
     }
     void Update() {
         if (Input.GetMouseButtonDown (0)) {// left mouse button
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
                     Destroy(hit.collider.gameObject);
                     return;
                 }
-                Instantiate (food, hit.point, Quaternion.identity);// instatiate a prefab on the position where the ray hits the floor.
+                Instantiate (food, hit.point, Quaternion.identity);
             }
         }
     }
