@@ -18,4 +18,6 @@ public class UIManager : MonoBehaviour
     void Update(){
         moneyText.text = "$" + gm.money.ToString();
     }
+
+    
 }

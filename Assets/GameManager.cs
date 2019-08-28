@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject food;
     public float money = 0f;
+    public GameObject fish1;
 
     [HideInInspector] public float leftBoundary;
     [HideInInspector] public float rightBoundary;
