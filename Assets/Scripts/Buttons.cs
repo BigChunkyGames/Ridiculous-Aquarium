@@ -34,4 +34,8 @@ public class Buttons : MonoBehaviour
         newFish.GetComponent<Rigidbody>().AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
 
     }
+
+    public void BuyFeeder(){
+        Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
+    }
 }
