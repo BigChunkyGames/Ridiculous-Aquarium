@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8770099530222333116}
   - component: {fileID: 8770099530222333119}
   - component: {fileID: 4588443366069599795}
+  - component: {fileID: 4444095592918048692}
   m_Layer: 9
   m_Name: Gold Coin
   m_TagString: Untagged
@@ -141,3 +142,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worth: 10
+--- !u!114 &4444095592918048692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180008657295059583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a237630533e0a4ea2dbe4a41ccc815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
