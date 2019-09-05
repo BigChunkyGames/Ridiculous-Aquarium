@@ -1,0 +1,4 @@
+1) Feeder gets upgraded after it is purchased
+2) Prevent clicking through ui
+3) more fish
+ 
