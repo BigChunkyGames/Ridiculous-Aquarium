@@ -11,20 +11,22 @@ public class Fish : MonoBehaviour
     public float gravity;
     [Range(0,1)]
     public float activity;
+    [Range(1,10)]
+    public float jumpVelocity;
     public bool hungry = false;
     public float hungerTimer;
     public int timesEatenSinceLastGrowth = 0; // since last growth
-    public int foodsNeededToGrow = 5;
+    public int foodsNeededToGrow = 4;
+    [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
     public int growthLevel = 1;
-    public float amountToGrow = .5f;
+    public float growRate = 1.1f;
     public float dropRate = 7f;
     public float dropLifetime = 10f;
     public float price = 100f;
-
-    public Material sickMat;
-    public Material deadMat;
+    public bool unique = true;
+    private float timeToFade = 10f;
+    
     public GameObject model;
-    public GameObject dropable; // coin
     public GameObject dropSpot;
 
     // runtime
@@ -32,19 +34,23 @@ public class Fish : MonoBehaviour
     Renderer rend;
     Material startMat;
     Rigidbody rb;
-    Jump jump;
 
     private bool facingRight = true;private float uniqueness;
     private GameObject targetFood = null;
-    private bool dead = false;
+    public bool dead = false;
+    private bool fadingAway = false;
+    private float t = 0f; // keeps track of time sometimes
 
     void Awake(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
-        uniqueness = Random.Range(-1f, 1f);
+        if(unique){
+            uniqueness = Random.Range(-1f, 1f);
+        } else {
+            uniqueness = 0f;
+        }
         rend = model.GetComponent<Renderer>();
         startMat = rend.material;
         rb = GetComponent<Rigidbody>();
-        jump = GetComponent<Jump>();
         InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
         InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2); 
         InvokeRepeating("FindClosestFood", 0f, 0.5f );   // search for food every second
@@ -55,6 +61,11 @@ public class Fish : MonoBehaviour
     void FixedUpdate(){
         rb.AddForce(Physics.gravity * rb.mass * gravity); // gravity
         if(dead){
+            if (fadingAway){
+                //t += Time.deltaTime / 5.0f;
+                Color gone = new Color(1f, 1f, 1f, 0f);
+                rend.material.color = Color.Lerp(rend.material.color, gone,  Time.deltaTime/timeToFade);
+            }
             return;
         }
         // seek food
@@ -75,10 +86,16 @@ public class Fish : MonoBehaviour
 
     public void DropDropable(){
         if(growthLevel == 2){
-            GameObject dropped = Instantiate(dropable, dropSpot.transform.position, dropable.transform.rotation);
-
-            Destroy(dropped, dropLifetime);
+            Drop(gm.coin);
         }
+        
+    }
+
+    private void Drop(GameObject drop){
+        Vector3 ds = dropSpot.transform.position;
+        Vector3 closerLocation = new Vector3(ds.x, ds.y , ds.z - 10);
+        GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
+        Destroy(dropped, dropLifetime);
     }
 
     public void BeFishy(){
@@ -86,7 +103,7 @@ public class Fish : MonoBehaviour
             return;
         }
         if (transform.position.y < gm.bottomBoundary){
-            jump.JumpNow(); // if too low, go up
+            JumpNow(); // if too low, go up
             return;
         } 
         if (transform.position.x < gm.leftBoundary){
@@ -115,12 +132,12 @@ public class Fish : MonoBehaviour
             return;
         }
         if (rand < 6.5f){
-            jump.JumpNow();
+            JumpNow();
             GoForward();
         }
         if (rand < 10f){
             if (transform.position.y < 7f){ 
-                jump.JumpNow();
+                JumpNow();
             }
             return;
         }
@@ -128,9 +145,20 @@ public class Fish : MonoBehaviour
 
     void Die(){
         dead = true;
-        rend.material = deadMat;
-        transform.rotation *= Quaternion.Euler(0,0,180f);
+        rend.material.SetColor("_Color", gm.deadColor);
+        transform.rotation *= Quaternion.Euler(0f,0f,180f);
         CancelInvoke();
+        FadeAway();
+    }
+
+    void FadeAway(){
+        fadingAway = true;
+        InvokeRepeating("GetDestroyed", timeToFade, timeToFade );   // drop dropable
+    }
+
+    void GetDestroyed(){
+        Destroy(this.gameObject);
+        CancelInvoke(); // not sure if this line gets hit but whatever
     }
 
     void OnCollisionEnter(Collision col){
@@ -140,13 +168,13 @@ public class Fish : MonoBehaviour
         if(col.gameObject.tag == "Food" && hungry){
             // eating
             timesEatenSinceLastGrowth++;
-            if (timesEatenSinceLastGrowth % foodsNeededToGrow == 0){
+            if (timesEatenSinceLastGrowth + growthLevel * additionalFoodsNeededToGrow % foodsNeededToGrow == 0){
                 Grow();
             }
             Destroy(col.gameObject);
             hungry = false;
             targetFood = null;
-            rend.material = startMat;
+            rend.material.SetColor("_Color", Color.white);
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
             Destroy(this); // destory if hit bottom and dead
@@ -156,7 +184,8 @@ public class Fish : MonoBehaviour
     private void Grow(){
         timesEatenSinceLastGrowth = 0;
         growthLevel++;
-        transform.localScale += new Vector3(amountToGrow, amountToGrow, amountToGrow); // grow linearly
+        float size = transform.localScale.x * growRate;
+        transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
     }
 
     public void FindClosestFood(){
@@ -181,12 +210,12 @@ public class Fish : MonoBehaviour
         if (hungry){
             Die();
         }
-        rend.material = sickMat;
+        rend.material.SetColor("_Color", gm.hungryColor);
         hungry = true;
     }
 
     public void TurnAround(){
-        transform.rotation *= Quaternion.Euler(0,180f,0);
+        transform.rotation *= Quaternion.Euler(0f,180f,0f);
         if(facingRight){
             facingRight = false;
         } else {
@@ -205,5 +234,8 @@ public class Fish : MonoBehaviour
     }
     public void GoForward(){
         rb.velocity += transform.forward * speed;
+    }
+    public void JumpNow(){
+        rb.velocity += transform.up * jumpVelocity;
     }
 }

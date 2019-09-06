@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     public float money = 0f;
     public GameObject fish1;
     public GameObject feeder;
+    public GameObject coin;
+
+    public Color hungryColor;
+    public Color deadColor;
 
     [HideInInspector] public float leftBoundary;
     [HideInInspector] public float rightBoundary;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// NO LONGER USED
+
 public class Jump : MonoBehaviour
 {
     [Range(1,10)]

@@ -6,7 +6,7 @@ public class DestroyOnCollision : MonoBehaviour
 {
     void OnCollisionEnter(Collision col){
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary")){
-            Destroy(this); // destory if dropable hits ground or boundary
+            Destroy(gameObject); // destory if dropable hits ground or boundary
         }
     }
 }
