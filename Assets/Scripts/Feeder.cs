@@ -8,6 +8,7 @@ public class Feeder : MonoBehaviour
     private GameManager gm;
     public float dropRate;
     public float foodLifetime = 10f;
+    public GameObject feederFood;
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
@@ -16,7 +17,7 @@ public class Feeder : MonoBehaviour
 
 
     public void DropFood(){
-        GameObject dropped = Instantiate(gm.food, gameObject.transform.position, gameObject.transform.rotation);
+        GameObject dropped = Instantiate(feederFood, gameObject.transform.position, gameObject.transform.rotation);
 
         Destroy(dropped, foodLifetime);
     }

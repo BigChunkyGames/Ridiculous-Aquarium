@@ -103,7 +103,8 @@ public class Fish : MonoBehaviour
 
     void Uniqueation(){
         float u = .1f* uniqueness;
-        transform.localScale = new Vector3(u+transform.localScale.x,u+transform.localScale.y,u+transform.localScale.z);
+        float scalar = transform.localScale.x * u + transform.localScale.x;
+        transform.localScale = new Vector3(scalar,scalar,scalar);
         jumpVelocity = jumpVelocity + u;
         speed = speed + u;
     }

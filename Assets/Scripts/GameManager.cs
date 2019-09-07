@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject fish1;
     public GameObject feeder;
     public GameObject coin;
+    public int foodCount = 1; // amount of food player can add to screen
 
     public Color hungryColor;
     public Color deadColor;
@@ -18,9 +20,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float topBoundary;
     [HideInInspector] public float bottomBoundary;
 
+    public bool turboFeedMode = false;
 
-    RaycastHit hit;
-    Ray ray;
+    private RaycastHit hit;
+    private Ray ray;
+    private bool fire;
 
     void Start(){
         leftBoundary = -8f;
@@ -29,7 +33,15 @@ public class GameManager : MonoBehaviour
         topBoundary = 18f;
     }
     void Update() {
-        if (Input.GetMouseButtonDown (0)) {// left mouse button
+        if (turboFeedMode){
+            fire = Input.GetButton("Fire1");
+        } else {
+            fire = Input.GetMouseButtonDown(0);
+        }
+        if (fire) {// left mouse button
+            if (EventSystem.current.IsPointerOverGameObject()){
+                return;
+            }
             ray = Camera.main.ScreenPointToRay (Input.mousePosition);
             if (Physics.Raycast (ray, out hit)) {
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dropable")){
@@ -38,7 +50,10 @@ public class GameManager : MonoBehaviour
                     Destroy(hit.collider.gameObject);
                     return;
                 }
-                Instantiate (food, hit.point, Quaternion.identity);
+                GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
+                if (foods.Length < foodCount){
+                    Instantiate (food, hit.point, Quaternion.identity);
+                }
             }
         }
     }
