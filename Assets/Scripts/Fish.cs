@@ -13,6 +13,8 @@ public class Fish : MonoBehaviour
     public float activity;
     [Range(1,10)]
     public float jumpVelocity;
+    [Range(.1f,10)]
+    public float dropRate = 7f;
     public bool hungry = false;
     public float hungerTimer;
     public int timesEatenSinceLastGrowth = 0; // since last growth
@@ -20,7 +22,6 @@ public class Fish : MonoBehaviour
     [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
     public int growthLevel = 1;
     public float growRate = 1.1f;
-    public float dropRate = 7f;
     public float dropLifetime = 10f;
     public float price = 100f;
     public bool unique = true;
@@ -35,31 +36,47 @@ public class Fish : MonoBehaviour
     Material startMat;
     Rigidbody rb;
 
-    private bool facingRight = true;private float uniqueness;
+    private bool facingRight = true;
+    private float uniqueness;
     private GameObject targetFood = null;
     public bool dead = false;
     private bool fadingAway = false;
+    private bool turningAround = false;
+    private Quaternion originalRotation; 
+    private Quaternion flippedRotation; 
+    private Quaternion rotationToTurnTo;
     private float t = 0f; // keeps track of time sometimes
+
 
     void Awake(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
         if(unique){
             uniqueness = Random.Range(-1f, 1f);
+            Uniqueation();
         } else {
             uniqueness = 0f;
         }
         rend = model.GetComponent<Renderer>();
         startMat = rend.material;
         rb = GetComponent<Rigidbody>();
+        originalRotation = transform.rotation;
+        flippedRotation = originalRotation * Quaternion.Euler(0f,180f,0f);
         InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
-        InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2); 
+        InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2f); 
         InvokeRepeating("FindClosestFood", 0f, 0.5f );   // search for food every second
         InvokeRepeating("DropDropable", 0f, dropRate );   // drop dropable
-
     }
 
     void FixedUpdate(){
         rb.AddForce(Physics.gravity * rb.mass * gravity); // gravity
+        if (turningAround){
+            float turningTime = .1f;
+            Quaternion oppositeSide = 
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotationToTurnTo,  Time.deltaTime/turningTime);
+            if (Time.deltaTime/turningTime >= 1){
+                turningAround = false;
+            }
+        }
         if(dead){
             if (fadingAway){
                 //t += Time.deltaTime / 5.0f;
@@ -82,6 +99,13 @@ public class Fish : MonoBehaviour
             } 
         }
         
+    }
+
+    void Uniqueation(){
+        float u = .1f* uniqueness;
+        transform.localScale = new Vector3(u+transform.localScale.x,u+transform.localScale.y,u+transform.localScale.z);
+        jumpVelocity = jumpVelocity + u;
+        speed = speed + u;
     }
 
     public void DropDropable(){
@@ -146,7 +170,7 @@ public class Fish : MonoBehaviour
     void Die(){
         dead = true;
         rend.material.SetColor("_Color", gm.deadColor);
-        transform.rotation *= Quaternion.Euler(0f,0f,180f);
+        transform.rotation *= Quaternion.Euler(180f,0f,0f);
         CancelInvoke();
         FadeAway();
     }
@@ -215,12 +239,14 @@ public class Fish : MonoBehaviour
     }
 
     public void TurnAround(){
-        transform.rotation *= Quaternion.Euler(0f,180f,0f);
         if(facingRight){
             facingRight = false;
+            rotationToTurnTo = flippedRotation;
         } else {
             facingRight = true;
+            rotationToTurnTo = originalRotation;
         }
+        turningAround = true;
     }
     public void TurnLeft(){
         if(facingRight){
@@ -233,9 +259,15 @@ public class Fish : MonoBehaviour
         }
     }
     public void GoForward(){
-        rb.velocity += transform.forward * speed;
+        if (!facingRight){
+            rb.velocity += Vector3.left * speed;
+        } else {
+            rb.velocity += Vector3.right * speed;
+        }
+        
+
     }
     public void JumpNow(){
-        rb.velocity += transform.up * jumpVelocity;
+        rb.velocity += Vector3.up * jumpVelocity;
     }
 }
