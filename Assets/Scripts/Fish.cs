@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Fish : MonoBehaviour
 {
@@ -63,7 +64,7 @@ public class Fish : MonoBehaviour
         flippedRotation = originalRotation * Quaternion.Euler(0f,180f,0f);
         InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
         InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2f); 
-        InvokeRepeating("FindClosestFood", 0f, 0.5f );   // search for food every second
+        InvokeRepeating("FindClosestFood", 0f, 0.1f );   // search for food every second
         InvokeRepeating("DropDropable", 0f, dropRate );   // drop dropable
     }
 
@@ -118,7 +119,7 @@ public class Fish : MonoBehaviour
 
     private void Drop(GameObject drop){
         Vector3 ds = dropSpot.transform.position;
-        Vector3 closerLocation = new Vector3(ds.x, ds.y , ds.z - 10);
+        Vector3 closerLocation = new Vector3(ds.x, ds.y , ds.z - 3f);
         GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
         Destroy(dropped, dropLifetime);
     }
@@ -173,12 +174,8 @@ public class Fish : MonoBehaviour
         rend.material.SetColor("_Color", gm.deadColor);
         transform.rotation *= Quaternion.Euler(180f,0f,0f);
         CancelInvoke();
-        FadeAway();
-    }
-
-    void FadeAway(){
         fadingAway = true;
-        InvokeRepeating("GetDestroyed", timeToFade, timeToFade );   // drop dropable
+        InvokeRepeating("GetDestroyed", timeToFade, timeToFade ); 
     }
 
     void GetDestroyed(){
@@ -190,10 +187,10 @@ public class Fish : MonoBehaviour
         if (dead){
             return;
         }
-        if(col.gameObject.tag == "Food" && hungry){
+        if((col.gameObject.tag == "Food" || col.gameObject.tag == "Feeder Food") && hungry){
             // eating
             timesEatenSinceLastGrowth++;
-            if (timesEatenSinceLastGrowth + growthLevel * additionalFoodsNeededToGrow % foodsNeededToGrow == 0){
+            if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
                 Grow();
             }
             Destroy(col.gameObject);
@@ -214,7 +211,13 @@ public class Fish : MonoBehaviour
     }
 
     public void FindClosestFood(){
+        if (!hungry){
+            return;
+        }
         GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
+        GameObject[] foods2 = GameObject.FindGameObjectsWithTag("Feeder Food");
+        foods = foods.Concat(foods2).ToArray();
+
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
