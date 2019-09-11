@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class Shop : MonoBehaviour
 {
     private GameManager gm;
-    public float spawnedFishDownwardForce = -7f;
-    public float foodCountPrice = 50f;
+    private float spawnedFishDownwardForce = -7f;
+    private float foodCountPrice = 50f; // starting price that changes
+    private float fishPrice = 100f;
+    private float feederPrice = 1000f;
     public GameObject priceText;
 
     void Start(){
