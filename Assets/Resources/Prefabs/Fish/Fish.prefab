@@ -617,13 +617,14 @@ MonoBehaviour:
   gravity: 0.039
   activity: 0.209
   jumpVelocity: 2.26
+  dropRate: 7
   hungry: 0
   hungerTimer: 14
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 5
+  additionalFoodsNeededToGrow: 2
   growthLevel: 1
   growRate: 1.1
-  dropRate: 7
   dropLifetime: 10
   price: 100
   unique: 1
