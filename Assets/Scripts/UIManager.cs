@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 public class UIManager : MonoBehaviour
 {
     
-    public Text moneyText;
+    public GameObject moneyContainer;
+
+    private TextMeshProUGUI  moneyText;
 
     private GameManager gm;
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
+        moneyText = moneyContainer.GetComponent<TMPro.TextMeshProUGUI>();
     }
 
     void Update(){
-        moneyText.text = "$" + gm.money.ToString();
+        moneyText.SetText("$" + gm.money.ToString());
     }
 
     

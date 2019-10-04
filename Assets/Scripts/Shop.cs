@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Shop : MonoBehaviour
 {
@@ -49,7 +50,7 @@ public class Shop : MonoBehaviour
             gm.money -= price;
             gm.foodCount++;
             foodCountPrice += foodCountPrice*1.5f;
-            priceText.GetComponent<Text>().text = "$" + foodCountPrice.ToString();
+            priceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
         } else {
             Debug.Log("Not enough money!");
         }
