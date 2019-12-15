@@ -1155,7 +1155,7 @@ GameObject:
   - component: {fileID: 722749018}
   - component: {fileID: 722749020}
   m_Layer: 5
-  m_Name: Left Side
+  m_Name: Shop (Left Side)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2957,7 +2957,7 @@ PrefabInstance:
     - target: {fileID: 9045116584304890744, guid: 10ebe0b6a8af1e143a008e66c133c2d4,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BuyFish1
+      value: BuyFoodCount
       objectReference: {fileID: 0}
     - target: {fileID: 5185504229314024537, guid: 10ebe0b6a8af1e143a008e66c133c2d4,
         type: 3}

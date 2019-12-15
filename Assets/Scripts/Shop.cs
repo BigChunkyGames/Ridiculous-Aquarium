@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -13,6 +11,9 @@ public class Shop : MonoBehaviour
     private float feederPrice = 1000f;
     public GameObject priceText;
 
+    private float foodCountPriceIncreaseRate = 1.25f;
+    private float feederPriceIncreaseRate = 1.25f;
+
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
     }
@@ -23,13 +24,9 @@ public class Shop : MonoBehaviour
 
     private void BuyFish(GameObject fish){
         float price = fish.GetComponent<Fish>().price;
-        if (price < gm.money){
-            gm.money -= price;
+        if (AttemptPurchase(price)){
             SpawnFish(fish);
-        } else {
-            Debug.Log("Not enough money!");
         }
-
     }
 
     private void SpawnFish(GameObject fish){
@@ -41,18 +38,32 @@ public class Shop : MonoBehaviour
     }
 
     public void BuyFeeder(){
-        Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
+        if(AttemptPurchase(feederPrice))
+        {
+            Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
+            feederPrice = (int)(feederPrice*feederPriceIncreaseRate);
+            priceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + feederPrice.ToString());
+        }
     }
 
     public void BuyFoodCount(){
-        float price = foodCountPrice;
-        if (price < gm.money){
-            gm.money -= price;
+        if (AttemptPurchase(foodCountPrice)){
             gm.foodCount++;
-            foodCountPrice += foodCountPrice*1.5f;
+            foodCountPrice = (int)(foodCountPrice*foodCountPriceIncreaseRate);
             priceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
-        } else {
+        }
+    }
+
+    private bool AttemptPurchase(float cost)
+    {
+        if (cost < gm.money){
+            gm.money -= cost;
+            return true;
+        }
+        else
+        {
             Debug.Log("Not enough money!");
+            return false;
         }
     }
 }
