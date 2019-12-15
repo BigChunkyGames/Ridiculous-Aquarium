@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,9 +21,7 @@ public class GameManager : MonoBehaviour
 
     public bool turboFeedMode = false;
 
-    private RaycastHit hit;
-    private Ray ray;
-    private bool fire;
+    
 
     void Start(){
         leftBoundary = -8f;
@@ -32,29 +29,5 @@ public class GameManager : MonoBehaviour
         bottomBoundary = 2f;
         topBoundary = 18f;
     }
-    void Update() {
-        if (turboFeedMode){
-            fire = Input.GetButton("Fire1");
-        } else {
-            fire = Input.GetMouseButtonDown(0);
-        }
-        if (fire) {// left mouse button
-            if (EventSystem.current.IsPointerOverGameObject()){
-                return;
-            }
-            ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-            if (Physics.Raycast (ray, out hit)) {
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dropable")){
-                    Debug.Log("Got a coin");
-                    money += hit.collider.GetComponent<Dropable>().worth;
-                    Destroy(hit.collider.gameObject);
-                    return;
-                }
-                GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
-                if (foods.Length < foodCount){
-                    Instantiate (food, hit.point, Quaternion.identity);
-                }
-            }
-        }
-    }
+    
 }

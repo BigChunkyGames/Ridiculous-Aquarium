@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// something that can be clicked and then you get money
+
 public class Dropable : MonoBehaviour
 {
     public float worth;

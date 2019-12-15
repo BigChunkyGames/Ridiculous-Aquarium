@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
         moneyText = moneyContainer.GetComponent<TMPro.TextMeshProUGUI>();
     }
 
-    void Update(){
+    void FixedUpdate(){
         moneyText.SetText("$" + gm.money.ToString());
     }
 

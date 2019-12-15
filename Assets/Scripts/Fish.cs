@@ -111,7 +111,7 @@ public class Fish : MonoBehaviour
     }
 
     public void DropDropable(){
-        if(growthLevel == 2){
+        if(growthLevel >= 2){
             Drop(gm.coin);
         }
         
