@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float topBoundary;
     [HideInInspector] public float bottomBoundary;
 
-    public bool turboFeedMode = false;
+    
 
     
 

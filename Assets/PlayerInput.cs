@@ -9,7 +9,9 @@ public class PlayerInput : MonoBehaviour
     GameManager gm;
     private RaycastHit hit;
     private Ray ray;
-    private bool fire;
+    private bool clicking;
+
+    public bool turboFeedMode = false; // unused
 
     void Start()
     {
@@ -17,25 +19,23 @@ public class PlayerInput : MonoBehaviour
         
     }
 
-    void FixedUpdate() {
-        if (gm.turboFeedMode){
-            fire = Input.GetButton("Fire1");
+    void Update() {
+        if (this.turboFeedMode){
+            clicking = Input.GetButton("Fire1");
         } else {
-            fire = Input.GetMouseButtonDown(0);
+            clicking = Input.GetMouseButtonDown(0);
         }
-        if (fire) {// left mouse button
+        if (clicking) {// left mouse button
             if (EventSystem.current.IsPointerOverGameObject()){
-                // prevent clicking through ui
                 Debug.Log("Prevented click through ui");
                 return;
             }
             ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction * 1000, Color.black);
+            // if the ray hits
             if (Physics.Raycast (ray, out hit)) {
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dropable")){
-                    // if clicking on a dropable
-                    Debug.Log("Got a coin");
-                    gm.money += hit.collider.GetComponent<Dropable>().worth;
-                    Destroy(hit.collider.gameObject);
+                if (hit.transform.tag == "Dropable" ){
+                    PickupDropable(hit.transform.gameObject);
                     return;
                 }
                 GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
@@ -44,5 +44,12 @@ public class PlayerInput : MonoBehaviour
                 }
             }
         }
+    }
+
+    void PickupDropable(GameObject drop)
+    {
+        Debug.Log("Picked up a " + drop);
+        gm.money += drop.GetComponent<Dropable>().worth;
+        Destroy(drop);
     }
 }

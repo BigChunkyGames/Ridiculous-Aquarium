@@ -11,25 +11,15 @@ public class Fish : MonoBehaviour
     [Range(0,1)]
     public float gravity;
     [Range(0,1)]
-    public float activity;
+    [Tooltip("seconds between fishy actions")]public float activityFrequency;
     [Range(1,10)]
     public float jumpVelocity;
     [Range(.1f,10)]
     public float dropRate = 7f;
-    public bool hungry = false;
-    public float hungerTimer;
-    public int timesEatenSinceLastGrowth = 0; // since last growth
-    public int foodsNeededToGrow = 4;
-    [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
-    public int growthLevel = 1;
-    public float growRate = 1.1f;
-    public float dropLifetime = 10f;
-    public float price = 100f;
-    public bool unique = true;
-    private float timeToFade = 10f;
     
     public GameObject model;
     public GameObject dropSpot;
+    private GameObject targetFood = null;
 
     // runtime
     GameManager gm;
@@ -37,17 +27,30 @@ public class Fish : MonoBehaviour
     Material startMat;
     Rigidbody rb;
 
-    private bool facingRight = true;
-    private float uniqueness;
-    private GameObject targetFood = null;
+    public int timesEatenSinceLastGrowth = 0; // since last growth
+    public int foodsNeededToGrow = 4;
+    [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
+    public int growthLevel = 1;
+
+    public bool unique = true;
     public bool dead = false;
+    public bool hungry = false;
+    private bool facingRight = true;
     private bool fadingAway = false;
     private bool turningAround = false;
+    private bool seekingFood = false; // prevents random swimming when true
+
+    public float hungerTimer;
+    public float growRate = 1.1f;
+    public float dropLifetime = 10f;
+    public float price = 100f;
+    private float timeToFade = 10f;
+    private float uniqueness; // random between -1 and 1
+    private float t = 0f; // keeps track of time sometimes
+
     private Quaternion originalRotation; 
     private Quaternion flippedRotation; 
     private Quaternion rotationToTurnTo;
-    private float t = 0f; // keeps track of time sometimes
-
 
     void Awake(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
@@ -62,9 +65,8 @@ public class Fish : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         originalRotation = transform.rotation;
         flippedRotation = originalRotation * Quaternion.Euler(0f,180f,0f);
-        InvokeRepeating("BeFishy", 0.0f, 1f - activity);  
+        InvokeRepeating("BeFishy", 0.0f, activityFrequency);  
         InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2f); 
-        InvokeRepeating("FindClosestFood", 0f, 0.1f );   // search for food every second
         InvokeRepeating("DropDropable", 0f, dropRate );   // drop dropable
     }
 
@@ -88,7 +90,11 @@ public class Fish : MonoBehaviour
         }
         // seek food
         if(hungry){ 
-            if (targetFood != null){ // if there is food
+            if(targetFood == null){
+                FindClosestFood();
+            }   
+            else { // if there is target food
+                seekingFood = true;
                 transform.position = Vector3.MoveTowards(transform.position, targetFood.transform.position, speed*2 * Time.deltaTime);
                 if (targetFood.transform.position.x > transform.position.x){
                     // if food is to the right
@@ -99,7 +105,7 @@ public class Fish : MonoBehaviour
                 return;
             } 
         }
-        
+        seekingFood = false;
     }
 
     void Uniqueation(){
@@ -108,13 +114,14 @@ public class Fish : MonoBehaviour
         transform.localScale = new Vector3(scalar,scalar,scalar);
         jumpVelocity = jumpVelocity + u;
         speed = speed + u;
+        activityFrequency = activityFrequency + (u);
+        if (activityFrequency<=0) activityFrequency = .1f;
     }
 
     public void DropDropable(){
         if(growthLevel >= 2){
             Drop(gm.coin);
         }
-        
     }
 
     private void Drop(GameObject drop){
@@ -124,8 +131,13 @@ public class Fish : MonoBehaviour
         Destroy(dropped, dropLifetime);
     }
 
+    // swim away from boundries
     public void BeFishy(){
-        if (hungry){
+        if (seekingFood){
+            // if hungry itll be swimming towards food
+            return;
+        }
+        if (transform.position.y > gm.topBoundary){ // if too high just wait 
             return;
         }
         if (transform.position.y < gm.bottomBoundary){
@@ -143,11 +155,10 @@ public class Fish : MonoBehaviour
             return;
         }
 
+    // swim around randomly
         float rand = Random.Range(0f, 10.0f);
          
-        if (transform.position.y > gm.topBoundary){ // if too high just wait 
-            return;
-        }
+        
         if (rand < 1f ){
             TurnAround();
             GoForward();
@@ -210,6 +221,7 @@ public class Fish : MonoBehaviour
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
     }
 
+    // assigns the closest food as the target food
     public void FindClosestFood(){
         if (!hungry){
             return;

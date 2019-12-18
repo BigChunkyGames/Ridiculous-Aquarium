@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4040773533146653711}
   - component: {fileID: 4040773533146653708}
   m_Layer: 8
-  m_Name: Tropical Fish 5
+  m_Name: Generic Fish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,22 +64,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1.88
   gravity: 0.039
-  activity: 0.209
+  activityFrequency: 0.519
   jumpVelocity: 2.07
   dropRate: 1
-  hungry: 0
-  hungerTimer: 10
+  model: {fileID: 4674194061640291377}
+  dropSpot: {fileID: 3017300106380476209}
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 5
   additionalFoodsNeededToGrow: 2
   growthLevel: 1
+  unique: 1
+  dead: 0
+  hungry: 0
+  hungerTimer: 10
   growRate: 1.1
   dropLifetime: 10
   price: 100
-  unique: 1
-  model: {fileID: 4674194061640291377}
-  dropSpot: {fileID: 3017300106380476209}
-  dead: 0
 --- !u!1 &3017300106380476209
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 4674194061640291382}
   - component: {fileID: 4674194061640291380}
   - component: {fileID: 4674194061640291383}
-  - component: {fileID: 4674194061640291381}
+  - component: {fileID: 7299280700773487658}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -150,7 +150,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4674194061640291377}
-  m_Mesh: {fileID: 8715311597370319575, guid: e7fe603f461d9534c9dac41d25ff71f6, type: 3}
+  m_Mesh: {fileID: -7094097281968267017, guid: d56a2c5708b74b44a832144a94c592db, type: 3}
 --- !u!23 &4674194061640291383
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -333415491942882640, guid: e7fe603f461d9534c9dac41d25ff71f6, type: 3}
+  - {fileID: 6456940790829494949, guid: d56a2c5708b74b44a832144a94c592db, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -189,8 +189,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4674194061640291381
-BoxCollider:
+--- !u!64 &7299280700773487658
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -199,6 +199,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 81.879234, y: 313.1825, z: 91.76587}
-  m_Center: {x: -9.011217, y: -39.642494, z: -48.97852}
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: -7094097281968267017, guid: d56a2c5708b74b44a832144a94c592db, type: 3}
