@@ -15,7 +15,13 @@ public class Fish : MonoBehaviour
     [Range(1,10)]
     public float jumpVelocity;
     [Range(.1f,10)]
-    public float dropRate = 7f;
+    [Tooltip("seconds between drops")]public float dropRate = 7f;
+    [Range(2,30)]
+    public float hungerTimer;
+
+
+    public Color hungryColor;
+    public Color deadColor;
     
     public GameObject model;
     public GameObject dropSpot;
@@ -26,6 +32,7 @@ public class Fish : MonoBehaviour
     Renderer rend;
     Material startMat;
     Rigidbody rb;
+    AudioSource audioSource;
 
     public int timesEatenSinceLastGrowth = 0; // since last growth
     public int foodsNeededToGrow = 4;
@@ -40,13 +47,11 @@ public class Fish : MonoBehaviour
     private bool turningAround = false;
     private bool seekingFood = false; // prevents random swimming when true
 
-    public float hungerTimer;
-    public float growRate = 1.1f;
+    public float growthScaleMultiplier = 1.1f;
     public float dropLifetime = 10f;
-    public float price = 100f;
+    public int price = 100;
     private float timeToFade = 10f;
     private float uniqueness; // random between -1 and 1
-    private float t = 0f; // keeps track of time sometimes
 
     private Quaternion originalRotation; 
     private Quaternion flippedRotation; 
@@ -54,6 +59,7 @@ public class Fish : MonoBehaviour
 
     void Awake(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
+        audioSource = GetComponent<AudioSource>();
         if(unique){
             uniqueness = Random.Range(-1f, 1f);
             Uniqueation();
@@ -67,7 +73,7 @@ public class Fish : MonoBehaviour
         flippedRotation = originalRotation * Quaternion.Euler(0f,180f,0f);
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);  
         InvokeRepeating("BecomeHungry", hungerTimer + uniqueness*2f, hungerTimer + uniqueness* 2f); 
-        InvokeRepeating("DropDropable", 0f, dropRate );   // drop dropable
+        InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
     }
 
     void FixedUpdate(){
@@ -120,7 +126,15 @@ public class Fish : MonoBehaviour
 
     public void DropDropable(){
         if(growthLevel >= 2){
-            Drop(gm.coin);
+            if(gm.drops[growthLevel-2] != null)
+            {
+                Drop(gm.drops[growthLevel-2]);
+            } else
+            {
+                // drop biggest
+                Drop(gm.drops[gm.drops.Count-1]);
+            }
+            
         }
     }
 
@@ -181,10 +195,10 @@ public class Fish : MonoBehaviour
     }
 
     void Die(){
-        dead = true;
-        rend.material.SetColor("_Color", gm.deadColor);
-        transform.rotation *= Quaternion.Euler(180f,0f,0f);
         CancelInvoke();
+        dead = true;
+        rend.material.SetColor("_Color", deadColor);
+        model.transform.eulerAngles += new Vector3(180f,0f,0f);
         fadingAway = true;
         InvokeRepeating("GetDestroyed", timeToFade, timeToFade ); 
     }
@@ -217,8 +231,10 @@ public class Fish : MonoBehaviour
     private void Grow(){
         timesEatenSinceLastGrowth = 0;
         growthLevel++;
-        float size = transform.localScale.x * growRate;
+        float size = transform.localScale.x * growthScaleMultiplier;
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
+        audioSource.pitch = 1.5f - .1f * growthLevel;
+        audioSource.PlayOneShot(audioSource.clip);
     }
 
     // assigns the closest food as the target food
@@ -250,7 +266,7 @@ public class Fish : MonoBehaviour
         if (hungry){
             Die();
         }
-        rend.material.SetColor("_Color", gm.hungryColor);
+        rend.material.SetColor("_Color", hungryColor);
         hungry = true;
     }
 

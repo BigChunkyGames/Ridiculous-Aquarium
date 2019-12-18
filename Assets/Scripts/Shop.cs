@@ -3,37 +3,74 @@ using UnityEngine.UI;
 using TMPro;
 
 // this goes on the container of buttons
+// it handles money and shop ui
 
 public class Shop : MonoBehaviour
 {
-    private GameManager gm;
-    private float spawnedFishDownwardForce = -7f;
-    private float foodCountPrice = 50f; // starting price that changes
-    private float fishPrice = 100f;
-    private float feederPrice = 1000f;
-
+    public float spawnedFishDownwardForce = -7f;
+    public int fishPrice = 100;
+    public int foodCountPrice = 50; // starting prices that change
+    public float foodCountPriceIncreaseRate = 1.25f;
+    public float feederPriceIncreaseRate = 1.25f;
 
     public GameObject fishButton;
     public GameObject foodButton;
     public GameObject feederButton;
 
-
+    public GameObject moneyContainer;
     public GameObject fishPriceText;
     public GameObject foodPriceText;
     public GameObject foodMainText;
     public GameObject feederPriceText;
 
-    private float foodCountPriceIncreaseRate = 1.25f;
-    private float feederPriceIncreaseRate = 1.25f;
-
+    private GameManager gm;
+    private TextMeshProUGUI  moneyText;
     private Object[] fishMeshes;
     private Object[] fishMats;
     private Transform[] buttons;
+
+    private int foodCount = 1;
+    public int FoodCount { // amount of food player can add to screen
+        get{return foodCount;}
+        set{
+            foodCount = value;
+            
+            string s = "Food (x"+foodCount.ToString()+")";
+            foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+
+            foodCountPrice = (int)(foodCountPrice*foodCountPriceIncreaseRate);
+            foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
+            feederButton.SetActive(true);
+            
+        }
+    }
+
+    public int startFeederPrice;
+    private int feederPrice;
+    public int FeederPrice{
+        get { return feederPrice; }
+        set {
+            feederPrice = value;
+            feederPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + feederPrice.ToString());
+        }
+    }
+
+    public int startMoney;
+    private int money;
+    public int Money{
+        get{ return money; }
+        set
+        {
+            money = value;
+            moneyText.SetText("$" + money.ToString());
+        }
+    }
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
         fishMeshes = Resources.LoadAll("Meshes/TropicalFish", typeof(Mesh));
         fishMats = Resources.LoadAll("Meshes/TropicalFish", typeof(Material));
+        moneyText = moneyContainer.GetComponent<TMPro.TextMeshProUGUI>();
 
         // make buttons invisible
         foreach (Transform child in transform)
@@ -41,6 +78,14 @@ public class Shop : MonoBehaviour
             child.gameObject.SetActive(false);
         }
         fishButton.SetActive(true);
+
+        fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
+        foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
+        string s = "Food (x"+foodCount.ToString()+")";
+        foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+
+        Money = startMoney;
+        FeederPrice = startFeederPrice;
     }
 
     public void BuyRandomFish()
@@ -55,10 +100,9 @@ public class Shop : MonoBehaviour
     }
 
     private void BuyFish(GameObject fish){
-        float price = fish.GetComponent<Fish>().price;
+        int price = fish.GetComponent<Fish>().price;
         if (AttemptPurchase(price)){
             SpawnFish(fish);
-
             foodButton.SetActive(true);
         }
     }
@@ -75,28 +119,21 @@ public class Shop : MonoBehaviour
         if(AttemptPurchase(feederPrice))
         {
             Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
-            feederPrice = (int)(feederPrice*feederPriceIncreaseRate);
-            feederPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + feederPrice.ToString());
-
+            FeederPrice = (int)(feederPrice*feederPriceIncreaseRate);
         }
     }
 
     public void BuyFoodCount(){
         if (AttemptPurchase(foodCountPrice)){
-            gm.foodCount++;
-            foodCountPrice = (int)(foodCountPrice*foodCountPriceIncreaseRate);
-            foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
-            string s = "Food (x"+gm.foodCount.ToString()+")";
-            foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
-
-            feederButton.SetActive(true);
+            FoodCount++;
+            
         }
     }
 
-    private bool AttemptPurchase(float cost)
+    public bool AttemptPurchase(int cost)
     {
-        if (cost < gm.money){
-            gm.money -= cost;
+        if (cost < Money){
+            Money -= cost;
             return true;
         }
         else
@@ -105,5 +142,7 @@ public class Shop : MonoBehaviour
             return false;
         }
     }
+
+    
 
 }

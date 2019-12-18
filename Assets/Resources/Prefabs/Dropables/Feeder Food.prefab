@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1063811129062192403}
   - component: {fileID: 5840924208118429834}
   - component: {fileID: 6066176089743950740}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Feeder Food
   m_TagString: Feeder Food
   m_Icon: {fileID: 0}

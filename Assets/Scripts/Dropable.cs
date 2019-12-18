@@ -6,5 +6,5 @@ using UnityEngine;
 
 public class Dropable : MonoBehaviour
 {
-    public float worth;
+    public int worth;
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1063811129062192403}
   - component: {fileID: 5840924208118429834}
   - component: {fileID: 6066176089743950740}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Food
   m_TagString: Food
   m_Icon: {fileID: 0}
@@ -123,4 +123,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a237630533e0a4ea2dbe4a41ccc815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worth: 0
