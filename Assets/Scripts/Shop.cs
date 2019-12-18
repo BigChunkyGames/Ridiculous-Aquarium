@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 
-// this is on each button
+// this goes on the container of buttons
 
 public class Shop : MonoBehaviour
 {
@@ -11,6 +11,12 @@ public class Shop : MonoBehaviour
     private float foodCountPrice = 50f; // starting price that changes
     private float fishPrice = 100f;
     private float feederPrice = 1000f;
+
+
+    public GameObject fishButton;
+    public GameObject foodButton;
+    public GameObject feederButton;
+
 
     public GameObject fishPriceText;
     public GameObject foodPriceText;
@@ -22,11 +28,19 @@ public class Shop : MonoBehaviour
 
     private Object[] fishMeshes;
     private Object[] fishMats;
+    private Transform[] buttons;
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
         fishMeshes = Resources.LoadAll("Meshes/TropicalFish", typeof(Mesh));
         fishMats = Resources.LoadAll("Meshes/TropicalFish", typeof(Material));
+
+        // make buttons invisible
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        fishButton.SetActive(true);
     }
 
     public void BuyRandomFish()
@@ -44,6 +58,8 @@ public class Shop : MonoBehaviour
         float price = fish.GetComponent<Fish>().price;
         if (AttemptPurchase(price)){
             SpawnFish(fish);
+
+            foodButton.SetActive(true);
         }
     }
 
@@ -61,6 +77,7 @@ public class Shop : MonoBehaviour
             Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
             feederPrice = (int)(feederPrice*feederPriceIncreaseRate);
             feederPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + feederPrice.ToString());
+
         }
     }
 
@@ -71,6 +88,8 @@ public class Shop : MonoBehaviour
             foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
             string s = "Food (x"+gm.foodCount.ToString()+")";
             foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+
+            feederButton.SetActive(true);
         }
     }
 
@@ -86,4 +105,5 @@ public class Shop : MonoBehaviour
             return false;
         }
     }
+
 }

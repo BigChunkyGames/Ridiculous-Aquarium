@@ -40,6 +40,7 @@ public class PlayerInput : MonoBehaviour
                 }
                 GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
                 if (foods.Length < gm.foodCount){
+                   // Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y, gm.fishLayerZ);
                     Instantiate (gm.food, hit.point, Quaternion.identity);
                 }
             }
