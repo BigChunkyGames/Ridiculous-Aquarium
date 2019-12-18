@@ -18,10 +18,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float rightBoundary;
     [HideInInspector] public float topBoundary;
     [HideInInspector] public float bottomBoundary;
-
-    
-
-    
+    public float fishLayerZ = 4f; // the layer that the fish and food are on
+    public float dropLayerZ = 2f; // the layer that the drops are on
 
     void Start(){
         leftBoundary = -8f;

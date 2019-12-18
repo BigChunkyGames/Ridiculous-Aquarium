@@ -14,6 +14,7 @@ public class Shop : MonoBehaviour
 
     public GameObject fishPriceText;
     public GameObject foodPriceText;
+    public GameObject foodMainText;
     public GameObject feederPriceText;
 
     private float foodCountPriceIncreaseRate = 1.25f;
@@ -50,7 +51,7 @@ public class Shop : MonoBehaviour
         float x = Random.Range(gm.leftBoundary, gm.rightBoundary);
         float y = gm.topBoundary + 2f;
         Quaternion spawnRotation =  Quaternion.Euler(new Vector3( 0,0, 0));
-        GameObject newFish = Instantiate(fish, new Vector3(x, y, 0), spawnRotation);
+        GameObject newFish = Instantiate(fish, new Vector3(x, y, gm.fishLayerZ), spawnRotation);
         newFish.GetComponent<Rigidbody>().AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
     }
 
@@ -68,6 +69,8 @@ public class Shop : MonoBehaviour
             gm.foodCount++;
             foodCountPrice = (int)(foodCountPrice*foodCountPriceIncreaseRate);
             foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
+            string s = "Food (x"+gm.foodCount.ToString()+")";
+            foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
         }
     }
 
