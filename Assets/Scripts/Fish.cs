@@ -37,11 +37,12 @@ public class Fish : MonoBehaviour
     public int timesEatenSinceLastGrowth = 0; // since last growth
     public int foodsNeededToGrow = 4;
     [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
-    public int growthLevel = 1;
+    public int growthLevel = 0;
 
     public bool unique = true;
-    public bool dead = false;
     public bool hungry = false;
+    public bool dead = false;
+    public bool immortal = false;
     private bool facingRight = true;
     private bool fadingAway = false;
     private bool turningAround = false;
@@ -125,22 +126,29 @@ public class Fish : MonoBehaviour
     }
 
     public void DropDropable(){
-        if(growthLevel >= 2){
-            if(gm.drops[growthLevel-2] != null)
+//growth   // 0 1 2 3 4 5 6 7 8 9...
+//drops    //   0 1 2 3 4 5
+// count = 6
+        if(growthLevel > 0){
+            // check that growth level-1 under size of list
+            if(growthLevel-1 < gm.drops.Count)
             {
-                Drop(gm.drops[growthLevel-2]);
-            } else
-            {
-                // drop biggest
-                Drop(gm.drops[gm.drops.Count-1]);
+                if(gm.drops[growthLevel-1] != null)
+                {
+                    Drop(gm.drops[growthLevel-1]);
+                    
+                }  
+                return;
             }
+            Drop(gm.drops[gm.drops.Count-1]);
+            
             
         }
     }
 
     private void Drop(GameObject drop){
         Vector3 ds = dropSpot.transform.position;
-        Vector3 closerLocation = new Vector3(ds.x, ds.y , gm.dropLayerZ);
+        Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
         GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
         Destroy(dropped, dropLifetime);
     }
@@ -195,6 +203,7 @@ public class Fish : MonoBehaviour
     }
 
     void Die(){
+        if(immortal) return;
         CancelInvoke();
         dead = true;
         rend.material.SetColor("_Color", deadColor);

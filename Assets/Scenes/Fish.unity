@@ -1680,8 +1680,6 @@ MonoBehaviour:
   - {fileID: 4354784350529367102, guid: 2caf770915f9fe24397d106ba236c035, type: 3}
   - {fileID: 4354784350529367102, guid: 71d9e5d685fa26747852c578a1dc279b, type: 3}
   - {fileID: 4354784350529367102, guid: 5bd3d193cede0d14983bb2548392d434, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
   audioManager: {fileID: 0}
   shop: {fileID: 0}
   leftBoundary: 0
@@ -2008,6 +2006,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Gold Coin Container
+      objectReference: {fileID: 0}
+    - target: {fileID: 4354784350529367102, guid: 5bd3d193cede0d14983bb2548392d434,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4354784350529367103, guid: 5bd3d193cede0d14983bb2548392d434,
         type: 3}
@@ -2822,6 +2825,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Speed Fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 1595612361890894247, guid: 8c146112b2fde5e40bb475eb61a485c5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1598259294105671469, guid: 8c146112b2fde5e40bb475eb61a485c5,
         type: 3}

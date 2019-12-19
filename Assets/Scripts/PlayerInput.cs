@@ -36,9 +36,14 @@ public class PlayerInput : MonoBehaviour
                     PickupDropable(hit.transform.gameObject);
                     return;
                 }
+
+                // try to place food
                 GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
                 if (foods.Length < gm.shop.FoodCount){
-                   if(gm.shop.AttemptPurchase(3)) Instantiate (gm.food, hit.point, Quaternion.identity);
+                    if(gm.shop.AttemptPurchase(3)) {
+                        Instantiate (gm.food, hit.point, Quaternion.identity);
+                        gm.audioManager.PlaySound("Spawn Food");
+                    }
                 }
             }
         }

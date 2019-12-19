@@ -74,12 +74,13 @@ MonoBehaviour:
   model: {fileID: 4674194061640291377}
   dropSpot: {fileID: 3017300106380476209}
   timesEatenSinceLastGrowth: 0
-  foodsNeededToGrow: 1
+  foodsNeededToGrow: 2
   additionalFoodsNeededToGrow: 0
-  growthLevel: 1
+  growthLevel: 0
   unique: 1
-  dead: 0
   hungry: 0
+  dead: 0
+  immortal: 1
   growthScaleMultiplier: 1.1
   dropLifetime: 10
   price: 100
@@ -315,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
+  outlineMode: 1
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   outlineWidth: 10
   precomputeOutline: 0
