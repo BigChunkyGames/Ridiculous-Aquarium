@@ -11,21 +11,33 @@ public class AudioManager : MonoBehaviour
         audioSourceFX = GetComponent<AudioSource>();
     }
 
-    public void PlaySound(string name, bool uniquePitch=true)
+    public void PlaySound(string name, bool uniquePitch=true, float basePitch=1f, float baseVolume=1f)
     {
         AudioClip ac;
+        audioSourceFX.volume = baseVolume;
+        audioSourceFX.pitch = basePitch;
+        if(uniquePitch) audioSourceFX.pitch += Random.Range(-0.2f, 0.2f);
+
         if(name == "Coin"){
-            ac = (AudioClip)Resources.Load("Audio/FX/Coin Get");
+            ac = (AudioClip)Resources.Load("Audio/FX/coin get");
+            audioSourceFX.volume = 1f;
         }
         else if(name == "Spawn Food")
         {
-            ac = (AudioClip)Resources.Load("Audio/FX/Pop");
+            ac = (AudioClip)Resources.Load("Audio/FX/pop");
+        }
+        else if(name == "Spawn Fish")
+        {
+            ac = (AudioClip)Resources.Load("Audio/FX/splash");
+        }
+        else if(name == "Fish Ate")
+        {
+            ac = (AudioClip)Resources.Load("Audio/FX/chew");
         }
         else{
             return;
         }
-        if(uniquePitch) audioSourceFX.pitch = Random.Range(0.8f, 1.2f);
-        else audioSourceFX.pitch = 1;
+        
         audioSourceFX.clip = ac;
         audioSourceFX.PlayOneShot(audioSourceFX.clip);
     }

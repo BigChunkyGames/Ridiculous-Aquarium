@@ -78,6 +78,19 @@ public class Fish : MonoBehaviour
     }
 
     void FixedUpdate(){
+        // contain within boundaries
+        if(this.transform.position.y > gm.topBoundary)
+        {
+            this.transform.position = new Vector3(this.transform.position.x,gm.topBoundary, this.transform.position.z);
+        }
+        if(this.transform.position.x < gm.leftBoundary)
+        {
+            this.transform.position = new Vector3(gm.leftBoundary, this.transform.position.y, this.transform.position.z);
+        }
+        if(this.transform.position.x > gm.rightBoundary)
+        {
+            this.transform.position = new Vector3(gm.rightBoundary, this.transform.position.y, this.transform.position.z);
+        }
         rb.AddForce(Physics.gravity * rb.mass * gravity); // gravity
         if (turningAround){
             float turningTime = .1f;
@@ -159,19 +172,21 @@ public class Fish : MonoBehaviour
             // if hungry itll be swimming towards food
             return;
         }
-        if (transform.position.y > gm.topBoundary){ // if too high just wait 
+        int padding = 1;
+        if (transform.position.y > gm.topBoundary - padding){ // if too high jump down
+            JumpNow(true);
             return;
         }
         if (transform.position.y < gm.bottomBoundary){
             JumpNow(); // if too low, go up
             return;
         } 
-        if (transform.position.x < gm.leftBoundary){
+        if (transform.position.x < gm.leftBoundary + padding){
             TurnRight();
             GoForward();
             return;
         }
-        if (transform.position.x > gm.rightBoundary){
+        if (transform.position.x > gm.rightBoundary - padding){
             TurnLeft();
             GoForward();
             return;
@@ -221,7 +236,7 @@ public class Fish : MonoBehaviour
         if (dead){
             return;
         }
-        if((col.gameObject.tag == "Food" || col.gameObject.tag == "Feeder Food") && hungry){
+        if((col.gameObject.tag == "Food") && hungry){
             // eating
             timesEatenSinceLastGrowth++;
             if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
@@ -231,6 +246,7 @@ public class Fish : MonoBehaviour
             hungry = false;
             targetFood = null;
             rend.material.SetColor("_Color", Color.white);
+            gm.audioManager.PlaySound("Fish Ate");
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
             Destroy(this); // destory if hit bottom and dead
@@ -252,8 +268,6 @@ public class Fish : MonoBehaviour
             return;
         }
         GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
-        GameObject[] foods2 = GameObject.FindGameObjectsWithTag("Feeder Food");
-        foods = foods.Concat(foods2).ToArray();
 
         GameObject closest = null;
         float distance = Mathf.Infinity;
@@ -308,7 +322,9 @@ public class Fish : MonoBehaviour
         
 
     }
-    public void JumpNow(){
-        rb.velocity += Vector3.up * jumpVelocity;
+    public void JumpNow(bool jumpDownwards = false){
+        int mult = 1;
+        if(jumpDownwards) mult = -1;
+        rb.velocity += Vector3.up * jumpVelocity * mult;
     }
 }

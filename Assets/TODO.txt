@@ -1,4 +1,8 @@
-1) Feeder gets upgraded after it is purchased
-2) Prevent clicking through ui
-3) more fish
+fix pellets getting stuck under level
+make pellets not get deleted whewn they touch the ground
+make fish upright
+make both sides of mouse ckucable
+fish that east other fish
+fish that collecs coins and drops better coins
+combat
  

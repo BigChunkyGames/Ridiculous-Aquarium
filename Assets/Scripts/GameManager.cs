@@ -17,13 +17,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float rightBoundary;
     [HideInInspector] public float topBoundary;
     [HideInInspector] public float bottomBoundary;
+    public GameObject floor;
     public float fishLayerZ = 4f; // the layer that the fish and food are on
-    public float dropLayerZ = 2f; // the layer that the drops are on
+    public float dropLayerZ = 2f; // the layer that the drops are on (so they're in front)
 
     void Start(){
-        leftBoundary = -8f;
-        rightBoundary = 8f;
-        bottomBoundary = 2f;
+        leftBoundary = -9.5f;
+        rightBoundary = 11f;
+        bottomBoundary = floor.transform.position.y;
         topBoundary = 18f;
 
         audioManager = GetComponentInChildren<AudioManager>();

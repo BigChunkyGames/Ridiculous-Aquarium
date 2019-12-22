@@ -55,6 +55,8 @@ public class Shop : MonoBehaviour
         }
     }
 
+    [HideInInspector] public int feederCount;
+
     public int startMoney;
     private int money;
     public int Money{
@@ -113,11 +115,13 @@ public class Shop : MonoBehaviour
         Quaternion spawnRotation =  Quaternion.Euler(new Vector3( 0,0, 0));
         GameObject newFish = Instantiate(fish, new Vector3(x, y, gm.fishLayerZ), spawnRotation);
         newFish.GetComponent<Rigidbody>().AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
+        gm.audioManager.PlaySound("Spawn Fish");
     }
 
     public void BuyFeeder(){
         if(AttemptPurchase(feederPrice))
         {
+            feederCount++;
             Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
             FeederPrice = (int)(feederPrice*feederPriceIncreaseRate);
         }
@@ -126,13 +130,12 @@ public class Shop : MonoBehaviour
     public void BuyFoodCount(){
         if (AttemptPurchase(foodCountPrice)){
             FoodCount++;
-            
         }
     }
 
     public bool AttemptPurchase(int cost)
     {
-        if (cost < Money){
+        if (cost <= Money){
             Money -= cost;
             return true;
         }
