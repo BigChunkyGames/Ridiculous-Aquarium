@@ -15,6 +15,7 @@ public class Shop : MonoBehaviour
     public float feederPriceIncreaseRate = 500;
 
     public GameObject fishButton;
+    public GameObject laserButton;
     public GameObject foodButton;
     public GameObject feederButton;
 
@@ -52,9 +53,6 @@ public class Shop : MonoBehaviour
         set{
             foodCount = value;
             
-            string s = "Food (x"+foodCount.ToString()+")";
-            foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
-
             foodCountPrice = (int)(foodCountPrice + foodCountPriceIncreaseRate);
             foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
             foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
@@ -63,7 +61,6 @@ public class Shop : MonoBehaviour
         }
     }
 
-    
     private int feederPrice;
     public int FeederPrice{
         get { return feederPrice; }
@@ -100,8 +97,6 @@ public class Shop : MonoBehaviour
 
         fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
         foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
-        string s = "Food (x"+foodCount.ToString()+")";
-        foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
 
         Money = startMoney;
         FeederPrice = startFeederPrice;
@@ -120,11 +115,17 @@ public class Shop : MonoBehaviour
         BuyFish(fish);
     }
 
+    public void BuyLaserFish()
+    {
+        BuyFish(gm.laserFish);
+    }
+
     private void BuyFish(GameObject fish){
         int price = fish.GetComponent<Fish>().price;
         if (AttemptPurchase(price)){
             SpawnFish(fish);
             foodButton.SetActive(true);
+            laserButton.SetActive(true);
         }
     }
 

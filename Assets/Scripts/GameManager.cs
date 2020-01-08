@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public GameObject food;
     
     public GameObject fish1;
+    public GameObject laserFish;
     public GameObject feeder;
     public List<GameObject> drops;
 
