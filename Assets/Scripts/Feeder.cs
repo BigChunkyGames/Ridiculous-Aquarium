@@ -6,7 +6,7 @@ public class Feeder : MonoBehaviour
 {
 
     private GameManager gm;
-    public float dropRate;
+    public float dropRate; // seconds
     public float foodLifetime = 10f;
     public GameObject feederFood;
 
@@ -22,7 +22,7 @@ public class Feeder : MonoBehaviour
         if (foods.Length >= gm.shop.FoodCount * gm.shop.feederCount){
             return;
         }
-        GameObject dropped = Instantiate(feederFood, gameObject.transform.position, gameObject.transform.rotation);
+        GameObject dropped = gm.shop.SpawnFood(gameObject.transform.position);
 
         Destroy(dropped, foodLifetime);
     }

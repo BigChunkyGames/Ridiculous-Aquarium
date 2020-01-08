@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f032601b52d6045b38eff0f04064e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropRate: 1
+  dropRate: 2
   foodLifetime: 20
   feederFood: {fileID: 1063811129062192401, guid: ae6bfae313b3d714bbb93c02fd9c984f,
     type: 3}

@@ -2,34 +2,51 @@
 using UnityEngine.UI;
 using TMPro;
 
-// this goes on the container of buttons
-// it handles money and shop ui
+// handles all the UI
 
 public class Shop : MonoBehaviour
 {
-    public float spawnedFishDownwardForce = -7f;
+    public float spawnedFishDownwardForce = -5f;
     public int fishPrice = 100;
-    public int foodCountPrice = 50; // starting prices that change
-    public float foodCountPriceIncreaseRate = 1.25f;
-    public float feederPriceIncreaseRate = 1.25f;
+    public int startingFoodCount = 1;
+    public int foodCountPrice = 10; // starting prices that change
+    public float foodCountPriceIncreaseRate = 10f; // linear
+    public int startFeederPrice = 1000;
+    public float feederPriceIncreaseRate = 500;
 
     public GameObject fishButton;
     public GameObject foodButton;
     public GameObject feederButton;
 
-    public GameObject moneyContainer;
+    public GameObject shop;
+    public GameObject moneyDisplay;
+    public GameObject foodsDisplay;
+
     public GameObject fishPriceText;
     public GameObject foodPriceText;
     public GameObject foodMainText;
     public GameObject feederPriceText;
 
     private GameManager gm;
-    private TextMeshProUGUI  moneyText;
     private Object[] fishMeshes;
     private Object[] fishMats;
     private Transform[] buttons;
+    private GameObject[] foodsOnScreen = new GameObject[0];
 
-    private int foodCount = 1;
+    // the number of foods it says are on the screen
+    private int foodsOnScreenDisplay;
+    public int FoodsOnScreenDisplay
+    {
+        get{return foodsOnScreenDisplay;}
+        set{
+            foodsOnScreenDisplay = value;
+            if(foodsOnScreenDisplay > foodCount) foodsOnScreenDisplay = foodCount;
+
+            foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
+        }
+    }
+
+    private int foodCount;
     public int FoodCount { // amount of food player can add to screen
         get{return foodCount;}
         set{
@@ -38,14 +55,15 @@ public class Shop : MonoBehaviour
             string s = "Food (x"+foodCount.ToString()+")";
             foodMainText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
 
-            foodCountPrice = (int)(foodCountPrice*foodCountPriceIncreaseRate);
+            foodCountPrice = (int)(foodCountPrice + foodCountPriceIncreaseRate);
             foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
+            foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
             feederButton.SetActive(true);
-            
+
         }
     }
 
-    public int startFeederPrice;
+    
     private int feederPrice;
     public int FeederPrice{
         get { return feederPrice; }
@@ -64,7 +82,7 @@ public class Shop : MonoBehaviour
         set
         {
             money = value;
-            moneyText.SetText("$" + money.ToString());
+            moneyDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + money.ToString());
         }
     }
 
@@ -72,10 +90,9 @@ public class Shop : MonoBehaviour
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
         fishMeshes = Resources.LoadAll("Meshes/TropicalFish", typeof(Mesh));
         fishMats = Resources.LoadAll("Meshes/TropicalFish", typeof(Material));
-        moneyText = moneyContainer.GetComponent<TMPro.TextMeshProUGUI>();
 
         // make buttons invisible
-        foreach (Transform child in transform)
+        foreach (Transform child in this.shop.GetComponent<Transform>())
         {
             child.gameObject.SetActive(false);
         }
@@ -88,6 +105,8 @@ public class Shop : MonoBehaviour
 
         Money = startMoney;
         FeederPrice = startFeederPrice;
+        FoodCount = 1;
+        FoodsOnScreenDisplay = 0;
     }
 
     public void BuyRandomFish()
@@ -123,7 +142,7 @@ public class Shop : MonoBehaviour
         {
             feederCount++;
             Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
-            FeederPrice = (int)(feederPrice*feederPriceIncreaseRate);
+            FeederPrice = (int)(feederPrice+feederPriceIncreaseRate);
         }
     }
 
@@ -144,6 +163,29 @@ public class Shop : MonoBehaviour
             Debug.Log("Not enough money!");
             return false;
         }
+    }
+
+    // triggered when the player clicks the background and spawns a food
+    public void TryToBuyFood(RaycastHit hit)
+    {
+        foodsOnScreen = GameObject.FindGameObjectsWithTag("Food");
+        FoodsOnScreenDisplay = foodsOnScreen.Length;
+        if (foodsOnScreen.Length < gm.shop.FoodCount){ // if amount of foods on screen less than the amount allowed
+            if(gm.shop.AttemptPurchase(3)) {
+                SpawnFood(hit.point);
+                gm.audioManager.PlaySound("Spawn Food");
+            }
+        }
+        else{// if amount of foods on screen more than or =to the amount allowed
+            gm.audioManager.PlaySound("Food Cap", false, 1f, .8f);
+            foodsDisplay.GetComponent<Animation>().Play();
+        }
+        foodCount = foodCount + 0; // trigger setter
+    }
+
+    public GameObject SpawnFood(Vector3 position)
+    {
+        return Instantiate (gm.food, position, Quaternion.identity);
     }
 
     

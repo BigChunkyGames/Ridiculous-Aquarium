@@ -34,6 +34,10 @@ public class AudioManager : MonoBehaviour
         {
             ac = (AudioClip)Resources.Load("Audio/FX/chew");
         }
+        else if(name == "Food Cap")
+        {
+            ac = (AudioClip)Resources.Load("Audio/FX/decline");
+        }
         else{
             return;
         }
