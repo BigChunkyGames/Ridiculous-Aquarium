@@ -12,7 +12,9 @@ public partial class Turret : MonoBehaviour{
     public float pitchSpeed = 30f;
     public float yawLimit = 90f;
     public float pitchLimit = 90f;
+
     private GameObject target;
+    private LineRenderer laser;
 
     private Quaternion yawSegmentStartRotation;
     private Quaternion pitchSegmentStartRotation;
@@ -21,6 +23,7 @@ public partial class Turret : MonoBehaviour{
 
     public virtual void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
+        this.laser = gm.weaponEffects.RegisterLaser(0);
         this.yawSegmentStartRotation = this.yawSegment.localRotation;
         this.pitchSegmentStartRotation = this.pitchSegment.localRotation;
         InvokeRepeating("UpdateTarget", 1.0f, .3f);
@@ -60,23 +63,26 @@ public partial class Turret : MonoBehaviour{
         //     else
         //         this.pitchSegment.rotation = targetRotation;
         // }
-        if(target != null) 
+
+        // if there is a target and fish isnt hungry
+        if(target != null && !fish.GetComponent<Fish>().hungry ) 
         {
-            gm.weaponEffects.AttackWithLaser(barrel.transform.position, target.transform.position, 0);
-            
+            laser.enabled = true;
+            gm.weaponEffects.AttackWithLaser(barrel.transform.position, target.transform.position, laser);
             
             this.pitchSegment.LookAt(this.target.transform.position);
             Debug.DrawLine(this.pitchSegment.position, this.target.transform.position, Color.red);
             Debug.DrawRay(this.pitchSegment.position, this.pitchSegment.forward * (this.target.transform.position - this.pitchSegment.position).magnitude, Color.green);
         }
+        else
+        {
+            laser.enabled = false;
+        }
     }
 
+    // assigns target as closest enemy
     void UpdateTarget()
     {
-        // doesn't work when hungry
-        if (fish.GetComponent<Fish>().hungry){
-            return;
-        }
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         if(enemies.Length == 0)
@@ -99,6 +105,10 @@ public partial class Turret : MonoBehaviour{
             }
         }
         target = closest;
+    }
+
+    private void OnDestroy() {
+        Destroy(laser.gameObject);
     }
 
 }

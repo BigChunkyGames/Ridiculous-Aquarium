@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
     public float dropLayerZ = 2f; // the layer that the drops are on (so they're in front)
 
     void Awake(){
-        leftBoundary = -9.5f;
-        rightBoundary = 11f;
+        leftBoundary = -14;
+        rightBoundary = 14;
         bottomBoundary = floor.transform.position.y;
         topBoundary = 18f;
 

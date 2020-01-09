@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class WeaponEffects : MonoBehaviour
 {
-    private LineRenderer[] lasers;
-    void Start()
+    private Object[] lasers; // list of prefabs
+    private List<LineRenderer> registeredLasers;
+    void Awake()
     {
-        lasers = GetComponentsInChildren<LineRenderer>();
+        registeredLasers = new List<LineRenderer>();
+        lasers = Resources.LoadAll("Prefabs/Weapons/Lasers", typeof(GameObject));
     }
 
-    public void AttackWithLaser(Vector3 startPosition, Vector3 targetPosition, int laserNumber)
+    // points a laser at a target
+    // hide laser if target is null
+    public void AttackWithLaser(Vector3 startPosition, Vector3 targetPosition, LineRenderer laser )
     {
-        LineRenderer lineRenderer = lasers[laserNumber];
-        lineRenderer.SetPosition (0, startPosition);
-        lineRenderer.SetPosition (1, targetPosition);
+        laser.SetPosition (0, startPosition);
+        laser.SetPosition (1, targetPosition);
 
+    }
+
+    public LineRenderer RegisterLaser(int laserNumber)
+    {
+        // create new gameobejct
+        GameObject laserHolder = Instantiate(lasers[laserNumber]) as GameObject;
+        // make it a child of this
+        laserHolder.transform.parent = transform;
+        return laserHolder.GetComponent<LineRenderer>();
     }
 
 }
