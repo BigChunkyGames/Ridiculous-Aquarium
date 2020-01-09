@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public Shop shop;
+    [HideInInspector] public WeaponEffects weaponEffects;
 
     [HideInInspector] public float leftBoundary;
     [HideInInspector] public float rightBoundary;
@@ -22,13 +23,14 @@ public class GameManager : MonoBehaviour
     public float fishLayerZ = 4f; // the layer that the fish and food are on
     public float dropLayerZ = 2f; // the layer that the drops are on (so they're in front)
 
-    void Start(){
+    void Awake(){
         leftBoundary = -9.5f;
         rightBoundary = 11f;
         bottomBoundary = floor.transform.position.y;
         topBoundary = 18f;
 
         audioManager = GetComponentInChildren<AudioManager>();
+        weaponEffects = GetComponentInChildren<WeaponEffects>();
         shop = (Shop)FindObjectOfType<Shop>();
     }
     

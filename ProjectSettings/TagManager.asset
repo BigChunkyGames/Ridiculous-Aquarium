@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Food
   - Dropable
+  - Enemy
   layers:
   - Default
   - TransparentFX
