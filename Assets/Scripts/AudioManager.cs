@@ -20,7 +20,6 @@ public class AudioManager : MonoBehaviour
 
         if(name == "Coin"){
             ac = (AudioClip)Resources.Load("Audio/FX/coin get");
-            audioSourceFX.volume = 1f;
         }
         else if(name == "Spawn Food")
         {

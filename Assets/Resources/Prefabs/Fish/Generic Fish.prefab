@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1598259294105671469}
   - component: {fileID: 4040773533146653711}
-  - component: {fileID: 4040773533146653708}
   - component: {fileID: 8679016021908098815}
+  - component: {fileID: 9067015836339552265}
   m_Layer: 8
   m_Name: Generic Fish
-  m_TagString: Untagged
+  m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +32,7 @@ Transform:
   m_Children:
   - {fileID: 5542887882478497446}
   - {fileID: 4674194061640291382}
+  - {fileID: 5711012786517168979}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -51,39 +52,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &4040773533146653708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595612361890894247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc90e756e8c38064f8e093ff78b974e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1.88
-  gravity: 0.039
-  activityFrequency: 0.519
-  jumpVelocity: 2.07
-  dropRate: 7.5
-  hungerTimer: 10
-  hungryColor: {r: 0.15426521, g: 0.67058825, b: 0, a: 0}
-  deadColor: {r: 0.21698111, g: 0.11456789, b: 0, a: 0.21960784}
-  model: {fileID: 4674194061640291377}
-  dropSpot: {fileID: 3017300106380476209}
-  timesEatenSinceLastGrowth: 0
-  foodsNeededToGrow: 1
-  additionalFoodsNeededToGrow: 2
-  growthLevel: 0
-  unique: 1
-  hungry: 0
-  dead: 0
-  immortal: 0
-  growthScaleMultiplier: 1.1
-  dropLifetime: 10
-  price: 100
 --- !u!82 &8679016021908098815
 AudioSource:
   m_ObjectHideFlags: 0
@@ -180,6 +148,40 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9067015836339552265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595612361890894247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29f7a5f87243ce468bb625a7871f295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activityFrequency: 0.454
+  speed: 1.77
+  gravity: 0.046
+  jumpVelocity: 2.25
+  startHealth: 100
+  currentHealth: 0
+  hungryColor: {r: 0.028253328, g: 0.5849056, b: 0, a: 0}
+  deadColor: {r: 0.254717, g: 0.119326875, b: 0, a: 0.21176471}
+  model: {fileID: 4674194061640291377}
+  timesEatenSinceLastGrowth: 0
+  foodsNeededToGrow: 10
+  additionalFoodsNeededToGrow: 3
+  growthLevel: 0
+  unique: 1
+  hungry: 0
+  dead: 0
+  immortal: 0
+  growthScaleMultiplier: 1.1
+  dropLifetime: 10
+  price: 150
+  dropRate: 8.89
+  hungerTimer: 8.8
 --- !u!1 &3017300106380476209
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,3 +325,128 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!1001 &7084954955501716554
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1598259294105671469}
+    m_Modifications:
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248017965676959514, guid: 692f6670a78c1a34288f3f6e75574e88,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthCanvas
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 692f6670a78c1a34288f3f6e75574e88, type: 3}
+--- !u!224 &5711012786517168979 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3248017965676959513, guid: 692f6670a78c1a34288f3f6e75574e88,
+    type: 3}
+  m_PrefabInstance: {fileID: 7084954955501716554}
+  m_PrefabAsset: {fileID: 0}

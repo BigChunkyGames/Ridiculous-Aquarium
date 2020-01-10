@@ -106,6 +106,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -543,8 +544,8 @@ GameObject:
   - component: {fileID: 8806061951370022451}
   - component: {fileID: 8806061951370022452}
   m_Layer: 8
-  m_Name: Fish
-  m_TagString: Untagged
+  m_Name: Shit fish
+  m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -615,22 +616,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1.88
   gravity: 0.039
-  activity: 0.209
+  activityFrequency: 0
   jumpVelocity: 2.26
   dropRate: 7
-  hungry: 0
   hungerTimer: 14
+  hungryColor: {r: 0, g: 0, b: 0, a: 0}
+  deadColor: {r: 0, g: 0, b: 0, a: 0}
+  model: {fileID: 8806061950711139203}
+  dropSpot: {fileID: 8806061952623233067}
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 5
   additionalFoodsNeededToGrow: 2
   growthLevel: 1
-  growRate: 1.1
+  unique: 1
+  hungry: 0
+  dead: 0
+  immortal: 0
+  growthScaleMultiplier: 1.1
   dropLifetime: 10
   price: 100
-  unique: 1
-  model: {fileID: 8806061950711139203}
-  dropSpot: {fileID: 8806061952623233067}
-  dead: 0
 --- !u!65 &8806061951370022452
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// handles lasers and health bars
+
 public class WeaponEffects : MonoBehaviour
 {
     private Object[] lasers; // list of prefabs
-    private List<LineRenderer> registeredLasers;
     void Awake()
     {
-        registeredLasers = new List<LineRenderer>();
         lasers = Resources.LoadAll("Prefabs/Weapons/Lasers", typeof(GameObject));
     }
 
