@@ -1202,7 +1202,7 @@ PrefabInstance:
     - target: {fileID: 1595612361890894247, guid: 61eb4af32e672eb49833bd97aecd109e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1598259294105671469, guid: 61eb4af32e672eb49833bd97aecd109e,
         type: 3}
@@ -1212,7 +1212,7 @@ PrefabInstance:
     - target: {fileID: 1598259294105671469, guid: 61eb4af32e672eb49833bd97aecd109e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.63
+      value: 9.29
       objectReference: {fileID: 0}
     - target: {fileID: 1598259294105671469, guid: 61eb4af32e672eb49833bd97aecd109e,
         type: 3}
@@ -1258,6 +1258,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067015836339552265, guid: 61eb4af32e672eb49833bd97aecd109e,
+        type: 3}
+      propertyPath: seekingFoodSpeedMultiplier
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61eb4af32e672eb49833bd97aecd109e, type: 3}
@@ -2066,12 +2071,12 @@ PrefabInstance:
     - target: {fileID: 6488976101913677060, guid: 30f687c59f0e12f42b61e5538ff90211,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.398161
+      value: 8.44
       objectReference: {fileID: 0}
     - target: {fileID: 6488976101913677060, guid: 30f687c59f0e12f42b61e5538ff90211,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.0257764
+      value: 7.87
       objectReference: {fileID: 0}
     - target: {fileID: 6488976101913677060, guid: 30f687c59f0e12f42b61e5538ff90211,
         type: 3}
@@ -2126,7 +2131,17 @@ PrefabInstance:
     - target: {fileID: 6488976101913677112, guid: 30f687c59f0e12f42b61e5538ff90211,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091323937984075176, guid: 30f687c59f0e12f42b61e5538ff90211,
+        type: 3}
+      propertyPath: hungry
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091323937984075176, guid: 30f687c59f0e12f42b61e5538ff90211,
+        type: 3}
+      propertyPath: seekingFoodSpeedMultiplier
+      value: 3.04
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30f687c59f0e12f42b61e5538ff90211, type: 3}
@@ -2542,6 +2557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a07f027e4b78a45af16a7117dbab21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugMode: 0
   food: {fileID: 1063811129062192401, guid: 4c22a77428992364bb0bf1cedfa4af37, type: 3}
   fish1: {fileID: 8806061951370022453, guid: 69e308579825c794595e541ad2617305, type: 3}
   laserFish: {fileID: 6488976101913677112, guid: 30f687c59f0e12f42b61e5538ff90211,

@@ -819,14 +819,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityFrequency: 0.4
   speed: 1
-  gravity: 0.1
   hungerTimer: 8.8
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 8
   additionalFoodsNeededToGrow: 2
   growthLevel: 0
-  startHealth: 100
+  maxHealth: 100
   currentHealth: 0
   hungry: 0
   dead: 0
@@ -838,6 +837,7 @@ MonoBehaviour:
   deadColor: {r: 0.24528301, g: 0.1884148, b: 0, a: 0.2901961}
   model: {fileID: 6488976100260807541}
   dropRate: 7
+  seekingFoodSpeedMultiplier: 10
   damageDealtPerFrame: 0.1
   barrel: {fileID: 6488976100240932523}
   yawSegment: {fileID: 6488976101365156740}

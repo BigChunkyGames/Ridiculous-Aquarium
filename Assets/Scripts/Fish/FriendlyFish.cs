@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// seeks food
+
 public class FriendlyFish : Fish
 {
     [Header("Friendly Fish Stats")]
@@ -9,6 +11,8 @@ public class FriendlyFish : Fish
     [Range(.1f,10)]
     [Tooltip("seconds between drops")]
     public float dropRate = 7f;
+    [Range(.1f,10)]
+    public float seekingFoodSpeedMultiplier;
     
 
     // Start is called before the first frame update
@@ -34,7 +38,8 @@ public class FriendlyFish : Fish
             }   
             else { // if there is target food
                 seekingFood = true;
-                transform.position = Vector3.MoveTowards(model.transform.position, targetFood.transform.position, speed*2 * Time.deltaTime);
+                // seek food
+                transform.position = Vector3.MoveTowards(model.transform.position, targetFood.transform.position, speed*seekingFoodSpeedMultiplier * Time.deltaTime);
                 if (targetFood.transform.position.x > transform.position.x){
                     // if food is to the right
                     TurnRight();

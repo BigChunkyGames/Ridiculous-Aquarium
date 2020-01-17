@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class EnemyFish : Fish
 {
+    
+    [Header("Enemy Fish Stats")]
     public float attackRate;
     [Range(0,100)]
     public float damage;
-    public bool alwaysHungry = true;
+    public bool alwaysHungry = true; // UNUSED
+    public int enemyLevel = 1;
+
 
     private GameObject targetFish = null;
     private bool attacking = false;
@@ -109,5 +113,7 @@ public class EnemyFish : Fish
     
     private void OnDestroy() {
         gm.combatManager.EnemyWasDestroyed();
+        //Drop dropable
+        Drop(gm.drops[enemyLevel]);
     }
 }
