@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// laser fish
+
 public class CombatFish : FriendlyFish
 {
-    [Header("Combat Fish")]
-    public float damage;
-    public float damagesPerSecond;
+    [Header("Combat Fish Stats")]
+    public float damageDealtPerFrame = 0.1f;
 
     public GameObject barrel;
     public Transform yawSegment;
@@ -21,29 +22,39 @@ public class CombatFish : FriendlyFish
     private Quaternion pitchSegmentStartRotation;
     private GameObject target;
 
+    // NOTE start/awake/update method of parent classes is not called for child classes
     void Start()
     {
         this.laser = gm.weaponEffects.RegisterLaser(0);
         this.yawSegmentStartRotation = this.yawSegment.localRotation;
         this.pitchSegmentStartRotation = this.pitchSegment.localRotation;
         InvokeRepeating("UpdateTarget", 1.0f, .3f);
+        InvokeRepeating("BeFishy", 0.0f, activityFrequency);
     }
 
-    private void Update() {
+    private void FixedUpdate() {
+        FriendlyFishFixedUpdate();
+
         // if there is a target and fish isnt hungry and isnt dead
         if(target != null && !hungry && !dead ) 
         {
-            laser.enabled = true;
-            gm.weaponEffects.AttackWithLaser(barrel.transform.position, target.transform.position, laser);
-            
-            this.pitchSegment.LookAt(this.target.transform.position);
-            Debug.DrawLine(this.pitchSegment.position, this.target.transform.position, Color.red);
-            Debug.DrawRay(this.pitchSegment.position, this.pitchSegment.forward * (this.target.transform.position - this.pitchSegment.position).magnitude, Color.green);
+            AttackTarget();
         }
         else
         {
             laser.enabled = false;
         }
+    }
+
+    void AttackTarget()
+    {
+        laser.enabled = true;
+        gm.weaponEffects.AttackWithLaser(barrel.transform.position, target.transform.position, laser);
+        target.GetComponent<Fish>().TakeDamage(damageDealtPerFrame);
+        
+        this.pitchSegment.LookAt(this.target.transform.position);
+        Debug.DrawLine(this.pitchSegment.position, this.target.transform.position, Color.red);
+        Debug.DrawRay(this.pitchSegment.position, this.pitchSegment.forward * (this.target.transform.position - this.pitchSegment.position).magnitude, Color.green);
     }
 
     // assigns target as closest enemy

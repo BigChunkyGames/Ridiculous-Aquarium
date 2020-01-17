@@ -7,6 +7,7 @@ public class EnemyFish : Fish
     public float attackRate;
     [Range(0,100)]
     public float damage;
+    public bool alwaysHungry = true;
 
     private GameObject targetFish = null;
     private bool attacking = false;
@@ -18,6 +19,7 @@ public class EnemyFish : Fish
     }
 
     void FixedUpdate(){
+        base.FishFixedUpdate();
         // if doesnt have a target or target is dead, find another fish
         if(targetFish == null || targetFish.GetComponent<Fish>().dead){
             FindClosestFish();
@@ -63,7 +65,6 @@ public class EnemyFish : Fish
         {
             if(fishBeingAttacked.dead)
             {
-                justAte = true;
                 return;
             }
             fishBeingAttacked.TakeDamage(damage);
@@ -102,8 +103,11 @@ public class EnemyFish : Fish
         }
         else{
             // do parent fishy stuff
-            if(transform) Debug.Log("test1");
             BeFishy();
         }
+    }
+    
+    private void OnDestroy() {
+        gm.combatManager.EnemyWasDestroyed();
     }
 }

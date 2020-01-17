@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropRate: 2
   foodLifetime: 20
-  feederFood: {fileID: 1063811129062192401, guid: ae6bfae313b3d714bbb93c02fd9c984f,
+  feederFood: {fileID: 1063811129062192401, guid: 4c22a77428992364bb0bf1cedfa4af37,
     type: 3}
 --- !u!1 &7005875839525706573
 GameObject:

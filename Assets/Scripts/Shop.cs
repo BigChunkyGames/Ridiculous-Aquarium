@@ -129,12 +129,33 @@ public class Shop : MonoBehaviour
         }
     }
 
-    private void SpawnFish(GameObject fish){
-        float x = Random.Range(gm.leftBoundary, gm.rightBoundary);
+    public GameObject DropSomethingInTheTank(GameObject toSpawn, bool itsAFish=true, float destroyAfterSeconds = -1f, bool randomX=true)
+    {
+        // determine transform
+        float x = 0f;
+        if(randomX) x = Random.Range(gm.leftBoundary, gm.rightBoundary);
         float y = gm.topBoundary + 2f;
+        float z = gm.fishLayerZ;
+        if(!itsAFish) z = z+2f; // if its not a fish, put it 2 units in back
         Quaternion spawnRotation =  Quaternion.Euler(new Vector3( 0,0, 0));
-        GameObject newFish = Instantiate(fish, new Vector3(x, y, gm.fishLayerZ), spawnRotation);
-        newFish.GetComponent<Rigidbody>().AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
+
+        GameObject spawned = Instantiate(toSpawn, new Vector3(x, y, z), spawnRotation);
+        Rigidbody r = spawned.GetComponent<Rigidbody>();
+        // give it downward force
+        if(r) r.AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
+
+        if(destroyAfterSeconds>0)
+        {
+            Destroy(spawned, destroyAfterSeconds);
+        }
+
+        return spawned;
+    }
+
+    public void SpawnFish(GameObject fish){
+        
+        GameObject newFish = DropSomethingInTheTank(fish, true);
+        
         gm.audioManager.PlaySound("Spawn Fish");
     }
 
@@ -142,7 +163,7 @@ public class Shop : MonoBehaviour
         if(AttemptPurchase(feederPrice))
         {
             feederCount++;
-            Instantiate(gm.feeder, new Vector3(4.62302f, 15.46556f, 12.088f), Quaternion.identity);
+            Instantiate(gm.feeder, new Vector3(2.78f, 20.92f, gm.fishLayerZ), Quaternion.identity);
             FeederPrice = (int)(feederPrice+feederPriceIncreaseRate);
         }
     }
@@ -173,6 +194,7 @@ public class Shop : MonoBehaviour
         FoodsOnScreenDisplay = foodsOnScreen.Length;
         if (foodsOnScreen.Length < gm.shop.FoodCount){ // if amount of foods on screen less than the amount allowed
             if(gm.shop.AttemptPurchase(3)) {
+                Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y, gm.fishLayerZ);
                 SpawnFood(hit.point);
                 gm.audioManager.PlaySound("Spawn Food");
             }

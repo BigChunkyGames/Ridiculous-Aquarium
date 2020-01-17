@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FriendlyFish : Fish
 {
-    [Header("Normal Fish Stats")]
+    [Header("Friendly Fish Stats")]
     
     [Range(.1f,10)]
     [Tooltip("seconds between drops")]
@@ -18,9 +18,15 @@ public class FriendlyFish : Fish
         InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
+        FriendlyFishFixedUpdate();
+    }
+
+    // for children to call
+    protected void FriendlyFishFixedUpdate()
+    {
+        base.FishFixedUpdate();
         // seek food
         if(hungry){ 
             if(targetFood == null){
@@ -42,9 +48,9 @@ public class FriendlyFish : Fish
     }
 
     public void DropDropable(){
-//growth   // 0 1 2 3 4 5 6 7 8 9...
-//drops    //   0 1 2 3 4 5
-// count = 6
+        //growth   // 0 1 2 3 4 5 6 7 8 9...
+        //drops    //   0 1 2 3 4 5
+        // count = 6
         if(growthLevel > 0){
             // check that growth level-1 under size of list
             if(growthLevel-1 < gm.drops.Count)
@@ -59,26 +65,33 @@ public class FriendlyFish : Fish
         }
     }
 
-    
     void OnCollisionEnter(Collision col){
         if (dead){
             return;
         }
         if((col.gameObject.tag == "Food") && hungry){
             // eating
-            timesEatenSinceLastGrowth++;
-            if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
-                Grow();
-            }
-            Destroy(col.gameObject);
-            hungry = false;
-            targetFood = null;
-            rend.material.SetColor("_Color", Color.white);
-            gm.audioManager.PlaySound("Fish Ate");
+            Eat(col.gameObject);
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
             Destroy(this); // destory if hit bottom and dead
         }
+    }
+
+    private void Eat(GameObject food)
+    {
+        currentHealth += food.GetComponent<Food>().healthGain;
+
+        timesEatenSinceLastGrowth++;
+        if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
+            Grow();
+        }
+        Destroy(food);
+        hungry = false;
+        targetFood = null;
+        rend.material.SetColor("_Color", Color.white);
+        gm.audioManager.PlaySound("Fish Ate");
+        Invoke("BecomeHungry", hungerTimer);
     }
 
     private void Grow(){

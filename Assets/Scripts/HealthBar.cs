@@ -27,9 +27,9 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    public void Initialize(float startHealth)
+    public void Initialize(float maxHealth)
     {
         Vector3 scale = container.gameObject.GetComponent<RectTransform>().localScale;
-        scale = new Vector3(startHealth/100f, scale.y, scale.z );
+        scale = new Vector3(maxHealth/100f, scale.y, scale.z );
     }
 }

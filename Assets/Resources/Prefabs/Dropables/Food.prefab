@@ -137,3 +137,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9bf9a2919a26e41af5b0cb34a30212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nourishment: 1
+  healthGain: 10

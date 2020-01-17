@@ -7,25 +7,33 @@ using System.Linq;
 
 public class Fish : MonoBehaviour
 {
-    [Header("All Fish Stats")]
+    [Header("Movement Stats")]
     [Range(0,1)]
     [Tooltip("seconds between fishy actions")]
     public float activityFrequency;
     [Range(0,3)]
     public float speed;
+
+    [Header("Food Stats")]
     [Range(2,30)]
     public float hungerTimer;
+    public float growthScaleMultiplier = 1.1f;
+    public int timesEatenSinceLastGrowth = 0; // since last growth
+    public int foodsNeededToGrow = 4;
+    [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
+    public int growthLevel = 0;
     
-    public float startHealth = 100f;
+    [Header("Life Stats")]
+    public float maxHealth = 100f;
     public float currentHealth;
-    public bool unique = true;
     public bool hungry = false;
     public bool dead = false;
     public bool immortal = false;
-    public float growthScaleMultiplier = 1.1f;
-    public float dropLifetime = 10f;
-    public int price = 100;
 
+    [Header("Fish Stats")]
+    public int price = 100;
+    public float dropLifetime = 10f;
+    public bool unique = true;
     public Color hungryColor;
     public Color deadColor;
     
@@ -42,27 +50,21 @@ public class Fish : MonoBehaviour
     protected HealthBar healthBar;
 
     protected bool seekingFood = false; // prevents random swimming when true
-    protected float gravity = 3;
     protected float jumpVelocity = 1;
-    [HideInInspector] protected bool justAte = false;
-
-    public int timesEatenSinceLastGrowth = 0; // since last growth
-    public int foodsNeededToGrow = 4;
-    [Tooltip("Additional foods needed to get to next grow level for each prior level")]public int additionalFoodsNeededToGrow = 2;
-    public int growthLevel = 0;
 
     private bool facingRight = true;
     private bool fadingAway = false;
     private bool turningAround = false;
     private float timeToFade = 10f;
     private float uniqueness; // random between -1 and 1
+    private float gravity = 0.06f;
 
     // make sure model is set to look to the right at start
     private Quaternion originalRotation; 
     private Quaternion flippedRotation; 
     private Quaternion rotationToTurnTo;
 
-// dont let child classes have awake function! use start instead. its just easeir that way
+    // dont let child classes have awake function! use start instead. its just easeir that way
     virtual public void Awake(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
         audioSource = GetComponent<AudioSource>();
@@ -77,16 +79,17 @@ public class Fish : MonoBehaviour
             uniqueness = 0f;
         }
 
-        healthBar.Initialize(startHealth);
-        currentHealth = startHealth;
+        healthBar.Initialize(maxHealth);
+        currentHealth = maxHealth;
         startMat = rend.material;
         originalRotation = model.transform.rotation;
         flippedRotation = originalRotation * Quaternion.Euler(0f,0f,180f);
           
-        InvokeRepeating("BecomeHungry", hungerTimer, hungerTimer);  
+        Invoke("BecomeHungry", hungerTimer);  
     }
 
-    void FixedUpdate(){
+    // call this in each child's fixed update
+    public void FishFixedUpdate(){
         // contain within boundaries
         if(this.transform.position.y > gm.topBoundary)
         {
@@ -105,9 +108,7 @@ public class Fish : MonoBehaviour
         rb.AddForce(Physics.gravity * rb.mass * gravity); 
 
         // rotation
-        if (turningAround){
-            Debug.Log("test");
-
+        if (turningAround && !dead){
             float turningTime = .1f;
             Quaternion oppositeSide = 
             model.transform.rotation = Quaternion.Lerp(model.transform.rotation, rotationToTurnTo,  Time.deltaTime/turningTime);
@@ -134,8 +135,6 @@ public class Fish : MonoBehaviour
             return;
         }
 
-        if(gm.topBoundary != 0) Debug.Log("test2");
-
         int padding = 1;
         if (transform.position.y > gm.topBoundary - padding){ // if too high jump down
             JumpNow(true);
@@ -156,7 +155,7 @@ public class Fish : MonoBehaviour
             return;
         }
 
-    // swim around randomly
+         // swim around randomly
         float rand = Random.Range(0f, 10.0f);
         if (rand < 1f ){
             TurnAround();
@@ -179,7 +178,6 @@ public class Fish : MonoBehaviour
         }
     }
 
-
     void Uniqueation(){
         float u = .1f* uniqueness;
         float scalar = transform.localScale.x * u + transform.localScale.x;
@@ -188,7 +186,8 @@ public class Fish : MonoBehaviour
         speed = speed + u;
         activityFrequency = activityFrequency + (u);
         if (activityFrequency<=0) activityFrequency = .1f;
-        startHealth+=u;
+        maxHealth+=u;
+        gravity+= u;
     }
 
     protected void Drop(GameObject drop){
@@ -207,7 +206,11 @@ public class Fish : MonoBehaviour
             currentHealth = 0f;
             Die();
         }
-        healthBar.UpdateDisplay(currentHealth/startHealth);
+        else if (currentHealth >= maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        healthBar.UpdateDisplay(currentHealth/maxHealth);
     }
 
     void Die(){
@@ -217,7 +220,7 @@ public class Fish : MonoBehaviour
         rend.material.SetColor("_Color", deadColor);
         model.transform.eulerAngles += new Vector3(180f,0f,0f);
         fadingAway = true;
-        InvokeRepeating("GetDestroyed", timeToFade, timeToFade ); 
+        Invoke("GetDestroyed", timeToFade ); 
     }
 
     void GetDestroyed(){
@@ -226,16 +229,18 @@ public class Fish : MonoBehaviour
     }
 
     public void BecomeHungry(){
-        if(justAte)
-        {
-            justAte = false;
-            return;
-        }
-        if (hungry){
-            Die();
-        }
         rend.material.SetColor("_Color", hungryColor);
         hungry = true;
+        InvokeRepeating("Starve", hungerTimer, 1f);
+    }
+
+    public void Starve()
+    {
+        if(!hungry) CancelInvoke("Starve");
+        else{
+            this.TakeDamage(10f);
+        }
+
     }
 
     public void TurnAround(){
