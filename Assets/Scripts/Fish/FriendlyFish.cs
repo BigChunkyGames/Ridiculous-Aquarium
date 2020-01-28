@@ -58,15 +58,15 @@ public class FriendlyFish : Fish
         // count = 6
         if(growthLevel > 0){
             // check that growth level-1 under size of list
-            if(growthLevel-1 < gm.drops.Count)
+            if(growthLevel-1 < gm.dataStore.drops.Count)
             {
-                if(gm.drops[growthLevel-1] != null)
+                if(gm.dataStore.drops[growthLevel-1] != null)
                 {
-                    Drop(gm.drops[growthLevel-1]);
+                    Drop(gm.dataStore.drops[growthLevel-1]);
                 }  
                 return;
             }
-            Drop(gm.drops[gm.drops.Count-1]);
+            Drop(gm.dataStore.drops[gm.dataStore.drops.Count-1]);
         }
     }
 

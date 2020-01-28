@@ -6,18 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public bool DebugMode;
 
-    [Header("Prefabs")]
-    public GameObject food;
-    public GameObject fish1;
-    public GameObject laserFish;
-    public GameObject evilFish;
-    public GameObject feeder;
-    public List<GameObject> drops;
-
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public Shop shop;
     [HideInInspector] public WeaponEffects weaponEffects;
     [HideInInspector] public CombatManager combatManager;
+    [HideInInspector] public DataStore dataStore;
 
     [HideInInspector] public float leftBoundary;
     [HideInInspector] public float rightBoundary;
@@ -39,6 +32,7 @@ public class GameManager : MonoBehaviour
         weaponEffects = GetComponentInChildren<WeaponEffects>();
         shop = (Shop)FindObjectOfType<Shop>();
         combatManager = (CombatManager)FindObjectOfType<CombatManager>();
+        dataStore = this.GetComponent<DataStore>();
     }
     
 }

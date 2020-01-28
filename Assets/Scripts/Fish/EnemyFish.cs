@@ -114,6 +114,6 @@ public class EnemyFish : Fish
     private void OnDestroy() {
         gm.combatManager.EnemyWasDestroyed();
         //Drop dropable
-        Drop(gm.drops[enemyLevel]);
+        Drop(gm.dataStore.drops[enemyLevel]);
     }
 }

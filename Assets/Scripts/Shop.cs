@@ -117,7 +117,8 @@ public class Shop : MonoBehaviour
 
     public void BuyLaserFish()
     {
-        BuyFish(gm.laserFish);
+        // TODO multiple laser fish?
+        BuyFish(gm.dataStore.laserFish[0]);
     }
 
     private void BuyFish(GameObject fish){
@@ -163,7 +164,7 @@ public class Shop : MonoBehaviour
         if(AttemptPurchase(feederPrice))
         {
             feederCount++;
-            Instantiate(gm.feeder, new Vector3(2.78f, 20.92f, gm.fishLayerZ), Quaternion.identity);
+            Instantiate(gm.dataStore.feeder, new Vector3(2.78f, 20.92f, gm.fishLayerZ), Quaternion.identity);
             FeederPrice = (int)(feederPrice+feederPriceIncreaseRate);
         }
     }
@@ -208,7 +209,7 @@ public class Shop : MonoBehaviour
 
     public GameObject SpawnFood(Vector3 position)
     {
-        return Instantiate (gm.food, position, Quaternion.identity);
+        return Instantiate (gm.dataStore.food, position, Quaternion.identity);
     }
 
     

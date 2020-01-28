@@ -29,8 +29,9 @@ public class CombatManager : MonoBehaviour
 
     private void StartCombat()
     {
+        // TODO find a way of juding how much combat to have
         inCombat = true;
-        GameObject evilFishToSpawn = gm.evilFish;
+        GameObject evilFishToSpawn = gm.dataStore.evilFish[0];
 
         enemiesInCurrentCombat++;
         gm.shop.SpawnFish(evilFishToSpawn);
