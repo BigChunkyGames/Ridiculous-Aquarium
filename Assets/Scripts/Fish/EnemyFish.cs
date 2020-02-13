@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyFish : Fish
 {
@@ -24,6 +22,11 @@ public class EnemyFish : Fish
 
     void FixedUpdate(){
         base.FishFixedUpdate();
+        if(dead) {
+            CancelInvoke("TryToAttack");
+            CancelInvoke("BeFishyEnemy");
+            return;
+        }
         // if doesnt have a target or target is dead, find another fish
         if(targetFish == null || targetFish.GetComponent<Fish>().dead){
             FindClosestFish();
@@ -72,7 +75,6 @@ public class EnemyFish : Fish
                 return;
             }
             fishBeingAttacked.TakeDamage(damage);
-            Debug.Log("doing damage");
         }
     }
 
@@ -113,7 +115,12 @@ public class EnemyFish : Fish
     
     private void OnDestroy() {
         gm.combatManager.EnemyWasDestroyed();
-        //Drop dropable
-        Drop(gm.dataStore.drops[enemyLevel]);
+        //Drop dropable here or it won't work
+        GameObject drop = gm.dataStore.drops[enemyLevel];
+        Vector3 ds = dropSpot.transform.position;
+        Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
+        GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
+        Destroy(dropped, dropLifetime);
+        
     }
 }

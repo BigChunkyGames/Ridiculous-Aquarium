@@ -13,6 +13,7 @@ public class FriendlyFish : Fish
     public float dropRate = 7f;
     [Range(.1f,10)]
     public float seekingFoodSpeedMultiplier;
+    public float passiveIncomePerMinute = 15; // TODO change this depending on stuff
     
 
     // Start is called before the first frame update
@@ -20,6 +21,14 @@ public class FriendlyFish : Fish
     {
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
         InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
+        gm.shop.friendlyFishCount++;
+        gm.shop.MoneyRate += this.passiveIncomePerMinute;
+    }
+
+    void OnDestory()
+    {
+        gm.shop.friendlyFishCount--;
+        gm.shop.MoneyRate -= this.passiveIncomePerMinute;
     }
 
     void FixedUpdate()

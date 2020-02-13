@@ -35,8 +35,8 @@ public class CombatFish : FriendlyFish
     private void FixedUpdate() {
         FriendlyFishFixedUpdate();
 
-        // if there is a target and fish isnt hungry and isnt dead
-        if(target != null && !hungry && !dead ) 
+        // if there is a target and fish isnt hungry and isnt dead and target is alive
+        if(target != null && !hungry && !dead && !target.GetComponent<Fish>().dead) 
         {
             AttackTarget();
         }

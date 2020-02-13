@@ -13,6 +13,7 @@ public class Fish : MonoBehaviour
     public float activityFrequency;
     [Range(0,3)]
     public float speed;
+    public Vector3 flipAxis = new Vector3(0,0,1); // z by default
 
     [Header("Food Stats")]
     [Range(2,30)]
@@ -83,7 +84,7 @@ public class Fish : MonoBehaviour
         currentHealth = maxHealth;
         startMat = rend.material;
         originalRotation = model.transform.rotation;
-        flippedRotation = originalRotation * Quaternion.Euler(0f,0f,180f);
+        flippedRotation = originalRotation * Quaternion.Euler(180f*flipAxis.x,180f*flipAxis.y,180f*flipAxis.z);
           
         Invoke("BecomeHungry", hungerTimer);  
     }

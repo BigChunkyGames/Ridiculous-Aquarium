@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // schedules combat events'
 
@@ -13,6 +11,8 @@ public class CombatManager : MonoBehaviour
     public float secondsBetweenCombat = 60f;
     public float warningTimeOffset = 10f;
 
+    public bool startCombatNow = false; // for debugging
+
     private GameObject warningLight;
     private bool inCombat = false;
     private int enemiesInCurrentCombat = 0;
@@ -24,6 +24,10 @@ public class CombatManager : MonoBehaviour
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
 
         PlanNextCombat();
+        if(startCombatNow)
+        {
+            StartCombat();
+        }
         
     }
 

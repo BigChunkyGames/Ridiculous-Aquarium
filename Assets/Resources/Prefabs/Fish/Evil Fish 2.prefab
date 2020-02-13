@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityFrequency: 0.2
   speed: 1.16
+  flipAxis: {x: 0, y: 1, z: 0}
   hungerTimer: 30
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
@@ -420,7 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 1
   outlineColor: {r: 0.754717, g: 0, b: 0, a: 1}
-  outlineWidth: 7.6
+  outlineWidth: 5.64
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []

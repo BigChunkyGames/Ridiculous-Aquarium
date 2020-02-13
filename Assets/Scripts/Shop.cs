@@ -13,6 +13,7 @@ public class Shop : MonoBehaviour
     public float foodCountPriceIncreaseRate = 10f; // linear
     public int startFeederPrice = 1000;
     public float feederPriceIncreaseRate = 500;
+    public int friendlyFishCount = 0; // number of friendly fish alive right now also unused
 
     public GameObject fishButton;
     public GameObject laserButton;
@@ -21,6 +22,7 @@ public class Shop : MonoBehaviour
 
     public GameObject shop;
     public GameObject moneyDisplay;
+    public GameObject moneyRateDisplay;
     public GameObject foodsDisplay;
 
     public GameObject fishPriceText;
@@ -72,19 +74,33 @@ public class Shop : MonoBehaviour
 
     [HideInInspector] public int feederCount;
 
-    public int startMoney;
-    private int money;
-    public int Money{
+    public float startMoney;
+    private float money;
+    public float Money{
         get{ return money; }
         set
         {
             money = value;
-            moneyDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + money.ToString());
+            moneyDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + Mathf.RoundToInt(money).ToString());
         }
     }
 
-    void Start(){
+    private float moneyRate; // money gained per minute
+    public float MoneyRate{
+        get{ return moneyRate; }
+        set
+        {
+            moneyRate = value;
+            moneyRateDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + Mathf.RoundToInt(moneyRate).ToString() + " / min");
+        }
+    }
+
+    void Awake()
+    {
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
+    }
+
+    void Start(){
         fishMeshes = Resources.LoadAll("Meshes/TropicalFish", typeof(Mesh));
         fishMats = Resources.LoadAll("Meshes/TropicalFish", typeof(Material));
 
@@ -99,9 +115,15 @@ public class Shop : MonoBehaviour
         foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
 
         Money = startMoney;
+        MoneyRate = 0;
         FeederPrice = startFeederPrice;
         FoodCount = 1;
         FoodsOnScreenDisplay = 0;
+    }
+
+    void Update()
+    {
+        Money += moneyRate * Time.deltaTime/ (60f );
     }
 
     public void BuyRandomFish()
