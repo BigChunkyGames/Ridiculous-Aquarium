@@ -33,13 +33,11 @@ public class Fish : MonoBehaviour
 
     [Header("Fish Stats")]
     public int price = 100;
-    public float dropLifetime = 10f;
     public bool unique = true;
     public Color hungryColor;
     public Color deadColor;
     
     public GameObject model;
-    protected GameObject dropSpot;
     protected GameObject targetFood = null;
 
     // runtime
@@ -49,6 +47,7 @@ public class Fish : MonoBehaviour
     protected Rigidbody rb;
     protected AudioSource audioSource;
     protected HealthBar healthBar;
+    protected Transform dropSpot;
 
     protected bool seekingFood = false; // prevents random swimming when true
     protected float jumpVelocity = 1;
@@ -59,6 +58,7 @@ public class Fish : MonoBehaviour
     private float timeToFade = 10f;
     private float uniqueness; // random between -1 and 1
     private float gravity = 0.06f;
+    [HideInInspector] public float dropLifetime = 40f;
 
     // make sure model is set to look to the right at start
     private Quaternion originalRotation; 
@@ -85,6 +85,7 @@ public class Fish : MonoBehaviour
         startMat = rend.material;
         originalRotation = model.transform.rotation;
         flippedRotation = originalRotation * Quaternion.Euler(180f*flipAxis.x,180f*flipAxis.y,180f*flipAxis.z);
+        dropSpot = transform.Find("DropSpot");
           
         Invoke("BecomeHungry", hungerTimer);  
     }
@@ -185,6 +186,7 @@ public class Fish : MonoBehaviour
         transform.localScale = new Vector3(scalar,scalar,scalar);
         jumpVelocity = jumpVelocity + u;
         speed = speed + u;
+        if(speed < 1) speed = 1;
         activityFrequency = activityFrequency + (u);
         if (activityFrequency<=0) activityFrequency = .1f;
         maxHealth+=u;

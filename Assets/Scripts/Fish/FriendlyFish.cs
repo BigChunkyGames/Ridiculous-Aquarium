@@ -12,7 +12,7 @@ public class FriendlyFish : Fish
     [Tooltip("seconds between drops")]
     public float dropRate = 7f;
     [Range(.1f,10)]
-    public float seekingFoodSpeedMultiplier;
+    public float seekingFoodSpeed;
     public float passiveIncomePerMinute = 15; // TODO change this depending on stuff
     
 
@@ -48,7 +48,7 @@ public class FriendlyFish : Fish
             else { // if there is target food
                 seekingFood = true;
                 // seek food
-                transform.position = Vector3.MoveTowards(model.transform.position, targetFood.transform.position, speed*seekingFoodSpeedMultiplier * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(model.transform.position, targetFood.transform.position, seekingFoodSpeed * Time.deltaTime);
                 if (targetFood.transform.position.x > transform.position.x){
                     // if food is to the right
                     TurnRight();
@@ -65,6 +65,8 @@ public class FriendlyFish : Fish
         //growth   // 0 1 2 3 4 5 6 7 8 9...
         //drops    //   0 1 2 3 4 5
         // count = 6
+                    Debug.Log("trying to drop #" + (growthLevel-1));
+
         if(growthLevel > 0){
             // check that growth level-1 under size of list
             if(growthLevel-1 < gm.dataStore.drops.Count)
@@ -72,6 +74,8 @@ public class FriendlyFish : Fish
                 if(gm.dataStore.drops[growthLevel-1] != null)
                 {
                     Drop(gm.dataStore.drops[growthLevel-1]);
+                    Debug.Log("Dropping #" + (growthLevel-1));
+
                 }  
                 return;
             }

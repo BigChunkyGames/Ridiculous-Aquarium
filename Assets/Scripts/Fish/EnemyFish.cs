@@ -9,6 +9,7 @@ public class EnemyFish : Fish
     public float damage;
     public bool alwaysHungry = true; // UNUSED
     public int enemyLevel = 1;
+    public int dropLevel;
 
 
     private GameObject targetFish = null;
@@ -16,7 +17,7 @@ public class EnemyFish : Fish
     private Fish fishBeingAttacked =  null;
 
     private void Start() {
-        InvokeRepeating("TryToAttack", 1f, attackRate );   // drop dropable
+        InvokeRepeating("TryToAttack", 1f, attackRate );  
         InvokeRepeating("BeFishyEnemy", 0.0f, activityFrequency);
     }
 
@@ -116,7 +117,7 @@ public class EnemyFish : Fish
     private void OnDestroy() {
         gm.combatManager.EnemyWasDestroyed();
         //Drop dropable here or it won't work
-        GameObject drop = gm.dataStore.drops[enemyLevel];
+        GameObject drop = gm.dataStore.drops[dropLevel];
         Vector3 ds = dropSpot.transform.position;
         Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
         GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);

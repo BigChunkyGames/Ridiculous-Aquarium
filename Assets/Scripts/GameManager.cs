@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public WeaponEffects weaponEffects;
     [HideInInspector] public CombatManager combatManager;
     [HideInInspector] public DataStore dataStore;
+    [HideInInspector] public PlayerInput playerInput;
 
     [HideInInspector] public float leftBoundary;
     [HideInInspector] public float rightBoundary;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
         shop = (Shop)FindObjectOfType<Shop>();
         combatManager = (CombatManager)FindObjectOfType<CombatManager>();
         dataStore = this.GetComponent<DataStore>();
+        playerInput = this.GetComponent<PlayerInput>();
     }
     
 }

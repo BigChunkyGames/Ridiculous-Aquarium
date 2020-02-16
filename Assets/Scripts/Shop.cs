@@ -14,6 +14,9 @@ public class Shop : MonoBehaviour
     public int startFeederPrice = 1000;
     public float feederPriceIncreaseRate = 500;
     public int friendlyFishCount = 0; // number of friendly fish alive right now also unused
+    
+    public GameObject foodToSpawn;
+    public int foodUpgradeLevel; // TODO make a button for this
 
     public GameObject fishButton;
     public GameObject laserButton;
@@ -24,10 +27,10 @@ public class Shop : MonoBehaviour
     public GameObject moneyDisplay;
     public GameObject moneyRateDisplay;
     public GameObject foodsDisplay;
+    public GameObject dropDropdown;
 
     public GameObject fishPriceText;
     public GameObject foodPriceText;
-    public GameObject foodMainText;
     public GameObject feederPriceText;
 
     private GameManager gm;
@@ -35,6 +38,25 @@ public class Shop : MonoBehaviour
     private Object[] fishMats;
     private Transform[] buttons;
     private GameObject[] foodsOnScreen = new GameObject[0];
+
+    public int FoodToSpawnDropdownIndex
+    {
+        set {
+            // if spawning pellet food
+            if(value == 0)
+            {
+                int foodToGet = foodUpgradeLevel / 5;
+                // prevent list index error
+                if(foodToGet >= gm.dataStore.foods.Count) foodToGet =gm.dataStore.foods.Count-1;
+                this.foodToSpawn = gm.dataStore.foods[foodToGet];
+            }
+            // if dropping turret
+            else if (value == 1)
+            {
+                this.foodToSpawn = gm.dataStore.laserFood;
+            }
+        }
+    }
 
     // the number of foods it says are on the screen
     private int foodsOnScreenDisplay;
@@ -114,6 +136,7 @@ public class Shop : MonoBehaviour
         fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
         foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
 
+        foodToSpawn = gm.dataStore.foods[0];
         Money = startMoney;
         MoneyRate = 0;
         FeederPrice = startFeederPrice;
@@ -231,7 +254,7 @@ public class Shop : MonoBehaviour
 
     public GameObject SpawnFood(Vector3 position)
     {
-        return Instantiate (gm.dataStore.food, position, Quaternion.identity);
+        return Instantiate (foodToSpawn, position, foodToSpawn.transform.rotation);
     }
 
     

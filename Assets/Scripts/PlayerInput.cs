@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
+        //clickToDropPrefab = gm.dataStore.
         
     }
 
