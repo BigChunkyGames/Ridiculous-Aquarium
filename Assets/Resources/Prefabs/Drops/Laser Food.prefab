@@ -139,3 +139,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nourishment: 1
   healthGain: 10
+  foodType: 1

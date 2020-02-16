@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+public enum FoodTypeEnum {food,laser}
 
 public class Food : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class Food : MonoBehaviour
     public float nourishment = 1f;
     public float healthGain = 10f;
     // types: default (food), laser
-    public string type = "default";
+    public FoodTypeEnum foodType = FoodTypeEnum.food;
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));

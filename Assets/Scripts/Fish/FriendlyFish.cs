@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-// seeks food
+public enum FishTypeEnum {generic,laser};
 
 public class FriendlyFish : Fish
 {
@@ -12,9 +10,69 @@ public class FriendlyFish : Fish
     [Tooltip("seconds between drops")]
     public float dropRate = 7f;
     [Range(.1f,10)]
-    public float seekingFoodSpeed;
     public float passiveIncomePerMinute = 15; // TODO change this depending on stuff
-    
+
+    [Header("Specialization")]
+    public FishTypeEnum fishType = FishTypeEnum.generic;
+    public FishTypeEnum FishType{
+        set{
+            // if changing to laser fish
+            this.fishType = value;
+            if(value == FishTypeEnum.laser)
+            {
+                // BECOME LASER FISH
+                CancelInvoke("UpdateTarget");
+                this.eyes = model.transform.Find("Eyes").transform;
+                this.laser = gm.weaponEffects.RegisterLaser(0);
+                model.GetComponent<Outline>().OutlineColor = Color.red;
+                InvokeRepeating("UpdateTarget", 1.0f, .3f);
+            }
+        }
+    }
+    public float damageDealtPerFrame = 0.1f;
+
+    ///////////////// laser fish stuff
+    private LineRenderer laser;
+    private GameObject targetEnemy; // enemy
+    private Transform eyes;
+
+    void AttackTarget()
+    {
+        Debug.Log("attacking");
+        laser.enabled = true;
+        gm.weaponEffects.AttackWithLaser(eyes.position, targetEnemy.transform.position, laser);
+        targetEnemy.GetComponent<Fish>().TakeDamage(damageDealtPerFrame);
+    }
+
+        // assigns target as closest enemy
+    void UpdateTarget()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        if(enemies.Length == 0)
+        {
+            targetEnemy = null;
+            return;
+        }
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in enemies)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        targetEnemy = closest;
+    }
+
+    private void OnDestroy() {
+        if(laser!=null)Destroy(laser.gameObject);
+    }
+    ////////////////////////////////////////
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +92,20 @@ public class FriendlyFish : Fish
     void FixedUpdate()
     {
         FriendlyFishFixedUpdate();
+
+        // if laser fish
+        if(this.fishType == FishTypeEnum.laser)
+            {
+                // if there is a target and fish isnt hungry and isnt dead and target is alive
+            if(targetEnemy != null && !hungry && !dead && !targetEnemy.GetComponent<Fish>().dead) 
+            {
+                AttackTarget();
+            }
+            else
+            {
+                laser.enabled = false;
+            }
+        }
     }
 
     // for children to call
@@ -48,7 +120,7 @@ public class FriendlyFish : Fish
             else { // if there is target food
                 seekingFood = true;
                 // seek food
-                transform.position = Vector3.MoveTowards(model.transform.position, targetFood.transform.position, seekingFoodSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(model.transform.position, targetFood.transform.position, targetSeekSpeed * Time.deltaTime);
                 if (targetFood.transform.position.x > transform.position.x){
                     // if food is to the right
                     TurnRight();
@@ -99,6 +171,7 @@ public class FriendlyFish : Fish
     private void Eat(GameObject food)
     {
         currentHealth += food.GetComponent<Food>().healthGain;
+        if(currentHealth > maxHealth) currentHealth = maxHealth;
 
         timesEatenSinceLastGrowth++;
         if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
@@ -110,6 +183,12 @@ public class FriendlyFish : Fish
         rend.material.SetColor("_Color", Color.white);
         gm.audioManager.PlaySound("Fish Ate");
         Invoke("BecomeHungry", hungerTimer);
+        
+        // change type
+        if(food.GetComponent<Food>().foodType == FoodTypeEnum.laser)
+        {
+            this.FishType = FishTypeEnum.laser;
+        }
     }
 
     private void Grow(){

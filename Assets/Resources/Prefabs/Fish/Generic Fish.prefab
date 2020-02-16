@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityFrequency: 0.454
   speed: 1.77
+  targetSeekSpeed: 5
   flipAxis: {x: 0, y: 0, z: 1}
   hungerTimer: 15.9
   growthScaleMultiplier: 1.1
@@ -181,8 +182,9 @@ MonoBehaviour:
   model: {fileID: 4674194061640291377}
   dropLifetime: 10
   dropRate: 8.89
-  seekingFoodSpeed: 6
   passiveIncomePerMinute: 15
+  fishType: 0
+  damageDealtPerFrame: 0.1
 --- !u!1 &3017300106380476209
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +245,8 @@ Transform:
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8913643942824517936}
   m_Father: {fileID: 1598259294105671469}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
@@ -321,11 +324,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 1
-  outlineColor: {r: 0, g: 0, b: 0, a: 1}
-  outlineWidth: 7.6
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!1 &8337033907626503444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8913643942824517936}
+  m_Layer: 8
+  m_Name: Eyes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8913643942824517936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8337033907626503444}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -156, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4674194061640291382}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3974591620354409814
 PrefabInstance:
   m_ObjectHideFlags: 0

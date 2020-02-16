@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using UnityEngine;
 
 // the things that all fish have
 
@@ -13,6 +10,8 @@ public class Fish : MonoBehaviour
     public float activityFrequency;
     [Range(0,3)]
     public float speed;
+    [Range(0,10)]
+    public float targetSeekSpeed = 5;
     public Vector3 flipAxis = new Vector3(0,0,1); // z by default
 
     [Header("Food Stats")]

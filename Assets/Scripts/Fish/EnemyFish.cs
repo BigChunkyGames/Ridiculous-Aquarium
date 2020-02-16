@@ -33,7 +33,7 @@ public class EnemyFish : Fish
             FindClosestFish();
         }
         else{ // go towards target
-            transform.position = Vector3.MoveTowards(transform.position, targetFish.transform.position, speed*2 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetFish.transform.position, targetSeekSpeed * Time.deltaTime);
             if (targetFish.transform.position.x > transform.position.x){
                 // if food is to the right
                 TurnRight();

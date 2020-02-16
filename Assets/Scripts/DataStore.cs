@@ -7,7 +7,6 @@ public class DataStore : MonoBehaviour
     public GameObject feeder;
     public GameObject laserFood;
     public List<GameObject> friendlyFish;
-    public List<GameObject> laserFish;
     public List<GameObject> evilFish;
     public List<GameObject> drops;
 }

@@ -163,7 +163,7 @@ public class Shop : MonoBehaviour
     public void BuyLaserFish()
     {
         // TODO multiple laser fish?
-        BuyFish(gm.dataStore.laserFish[0]);
+        //BuyFish(gm.dataStore.laserFish[0]);
     }
 
     private void BuyFish(GameObject fish){

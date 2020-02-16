@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityFrequency: 0.2
   speed: 1.16
+  targetSeekSpeed: 5
   flipAxis: {x: 0, y: 1, z: 0}
   hungerTimer: 30
   growthScaleMultiplier: 1.1
@@ -175,11 +176,11 @@ MonoBehaviour:
   dead: 0
   immortal: 0
   price: 100
-  dropLifetime: 10
   unique: 1
   hungryColor: {r: 0, g: 0.5754717, b: 0.013711259, a: 0}
   deadColor: {r: 0, g: 0, b: 0, a: 0.18431373}
   model: {fileID: 7268090259475071495}
+  dropLifetime: 10
   attackRate: 1.02
   damage: 19.4
   alwaysHungry: 1
@@ -421,8 +422,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 1
-  outlineColor: {r: 0.754717, g: 0, b: 0, a: 1}
-  outlineWidth: 5.64
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 2
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
