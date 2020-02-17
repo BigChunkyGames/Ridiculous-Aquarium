@@ -8,7 +8,7 @@
 
 public class CombatManager : MonoBehaviour
 {
-    public float secondsBetweenCombat = 60f;
+    public float secondsBetweenCombat = 20f;
     public float warningTimeOffset = 10f;
 
     public bool startCombatNow = false; // for debugging
@@ -36,16 +36,16 @@ public class CombatManager : MonoBehaviour
         // TODO find a way of juding how much combat to have
         inCombat = true;
         GameObject evilFishToSpawn = gm.dataStore.evilFish[0];
-
         enemiesInCurrentCombat++;
         gm.shop.DropSomethingInTheTank(evilFishToSpawn,false,true);
+        gm.audioManager.CombatTime();
     }
 
     private void ShowWarning()
     {
         // spawn the warning thing
         warningLight = gm.shop.DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Props/Warning Light"), false, false, -1f, false);
-
+        gm.audioManager.FadeAudioLoops(warningTimeOffset, false);
         
         // TODO Warning noise
     }
@@ -62,13 +62,11 @@ public class CombatManager : MonoBehaviour
         enemiesInCurrentCombat--;
         if(enemiesInCurrentCombat == 0)
         {
-            EndCombat();
+            Destroy(warningLight);
+            PlanNextCombat();
+            gm.audioManager.CombatOver();
         }
+        if(enemiesInCurrentCombat<0) enemiesInCurrentCombat=0;
     }
 
-    private void EndCombat()
-    {
-        Destroy(warningLight);
-        PlanNextCombat();
-    }
 }

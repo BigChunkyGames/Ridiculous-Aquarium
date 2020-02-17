@@ -174,10 +174,9 @@ MonoBehaviour:
   hungry: 0
   dead: 0
   immortal: 0
-  price: 100
   unique: 1
-  hungryColor: {r: 0, g: 0.5754717, b: 0.013711259, a: 0}
-  deadColor: {r: 0, g: 0, b: 0, a: 0.18431373}
+  hungryColor: {r: 0, g: 0.5754717, b: 0.013711259, a: 1}
+  deadColor: {r: 0, g: 0, b: 0, a: 1}
   modelContainer: {fileID: 7586362383922437085}
   model: {fileID: 7268090259475071495}
   dropSpot: {fileID: 0}

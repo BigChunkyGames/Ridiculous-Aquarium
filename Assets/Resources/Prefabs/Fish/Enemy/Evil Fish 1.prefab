@@ -193,8 +193,8 @@ MonoBehaviour:
   activityFrequency: 0.2
   speed: 1.16
   targetSeekSpeed: 5
-  flipAxis: {x: 0, y: 0, z: 1}
-  hungerTimer: 30
+  flipAxis: {x: 0, y: 1, z: 0}
+  hungerTimer: 5.7
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 4
@@ -202,12 +202,12 @@ MonoBehaviour:
   growthLevel: 0
   maxHealth: 50
   currentHealth: 0
+  hungry: 0
   dead: 0
   immortal: 0
-  price: 100
   unique: 1
-  hungryColor: {r: 0, g: 0.5754717, b: 0.013711259, a: 0}
-  deadColor: {r: 0, g: 0, b: 0, a: 0.18431373}
+  hungryColor: {r: 0, g: 0.5754717, b: 0.013711259, a: 1}
+  deadColor: {r: 0, g: 0, b: 0, a: 1}
   modelContainer: {fileID: 2659158600953305003}
   model: {fileID: 7268090259475071495}
   dropSpot: {fileID: 0}

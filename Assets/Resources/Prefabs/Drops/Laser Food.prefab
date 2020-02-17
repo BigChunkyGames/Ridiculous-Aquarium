@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5840924208118429834}
   - component: {fileID: 6066176089743950740}
   - component: {fileID: -3421684530660472351}
+  - component: {fileID: 6161123838914272173}
   m_Layer: 9
   m_Name: Laser Food
   m_TagString: Food
@@ -140,3 +141,21 @@ MonoBehaviour:
   nourishment: 1
   healthGain: 10
   foodType: 1
+--- !u!114 &6161123838914272173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063811129062192401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

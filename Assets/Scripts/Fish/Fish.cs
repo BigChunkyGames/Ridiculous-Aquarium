@@ -26,7 +26,7 @@ public class Fish : MonoBehaviour
     [Header("Life Stats")]
     public float maxHealth = 100f;
     public float currentHealth;
-    private bool hungry = false;
+    public bool hungry = false;
     public bool Hungry
     {
         get{return this.hungry;}
@@ -121,7 +121,7 @@ public class Fish : MonoBehaviour
 
         // do the getter
         ModelContainer = modelContainer;
-
+        dropSpot = transform.Find("DropSpot");
         healthBar.Initialize(maxHealth);
         currentHealth = maxHealth;
         originalRotation = modelContainer.transform.rotation;
@@ -264,6 +264,11 @@ public class Fish : MonoBehaviour
         modelContainer.transform.eulerAngles += new Vector3(180f,0f,0f);
         fadingAway = true;
         Invoke("GetDestroyed", timeToFade ); 
+        transform.Find("HealthCanvas").gameObject.SetActive(false);
+        if(GetComponent<EnemyFish>())
+        {
+            GetComponent<EnemyFish>().EnemyDie();
+        }
     }
 
     void GetDestroyed(){
@@ -274,14 +279,14 @@ public class Fish : MonoBehaviour
     // called by invokes
     public void BecomeHungry(){
         Hungry = true;
-        InvokeRepeating("Starve", hungerTimer, 1f);
+        InvokeRepeating("Starve", hungerTimer, .1f);
     }
 
     public void Starve()
     {
         if(!hungry) CancelInvoke("Starve");
         else{
-            this.TakeDamage(10f);
+            this.TakeDamage(0.5f);
         }
     }
 
