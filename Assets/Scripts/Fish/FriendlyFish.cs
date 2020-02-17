@@ -69,9 +69,6 @@ public class FriendlyFish : Fish
         targetEnemy = closest;
     }
 
-    private void OnDestroy() {
-        if(laser!=null)Destroy(laser.gameObject);
-    }
     ////////////////////////////////////////
 
     // Start is called before the first frame update
@@ -79,13 +76,14 @@ public class FriendlyFish : Fish
     {
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
         InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
-        gm.shop.friendlyFishCount++;
+        gm.shop.FriendlyFishCount++;
         gm.shop.MoneyRate += this.passiveIncomePerMinute;
     }
 
-    void OnDestory()
+    void OnDestroy()
     {
-        gm.shop.friendlyFishCount--;
+        if(laser!=null)Destroy(laser.gameObject);
+        gm.shop.FriendlyFishCount--;
         gm.shop.MoneyRate -= this.passiveIncomePerMinute;
     }
 

@@ -6,28 +6,28 @@ using TMPro;
 
 public class Shop : MonoBehaviour
 {
+    [Header("Shop")]
     public float spawnedFishDownwardForce = -5f;
     public int startingFoodCount = 1;
     public int foodCountPrice = 10; // starting prices that change
     public float foodCountPriceIncreaseRate = 10f; // linear
     public int startFeederPrice = 1000;
     public float feederPriceIncreaseRate = 500;
-    public int friendlyFishCount = 0; // number of friendly fish alive right now also unused
-    
-    public GameObject foodToSpawn;
     public int foodUpgradeLevel; // TODO make a button for this
 
+    [Header("Buttons")]
     public GameObject fishButton;
     public GameObject laserButton;
     public GameObject foodButton;
     public GameObject feederButton;
 
     public GameObject shop;
+    [Header("TMP Gameobjects")]
+
     public GameObject moneyDisplay;
     public GameObject moneyRateDisplay;
     public GameObject foodsDisplay;
     public GameObject dropDropdown;
-
     public GameObject fishPriceText;
     public GameObject foodPriceText;
     public GameObject feederPriceText;
@@ -36,13 +36,28 @@ public class Shop : MonoBehaviour
     private Object[] fishModels;
     private Transform[] buttons;
     private GameObject[] foodsOnScreen = new GameObject[0];
+    [HideInInspector]public GameObject foodToSpawn;
 
-    private int fishInTank;
-    public int FishInTank
+    private int fishPrice = 100;
+    private int FishPrice
     {
+        get{return this.fishPrice;}
+        set{
+            fishPrice = value;
+            fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
+        }
+    }
+
+    private int friendlyFishCount = 0;
+    public int FriendlyFishCount
+    {
+        set{
+            friendlyFishCount = value;
+            Debug.Log(friendlyFishCount);
+            FishPrice = (int)(100*(Mathf.Pow(2, friendlyFishCount)));
+            }
         get{
-            fishInTank = GameObject.FindGameObjectsWithTag("Fish").Length;
-            return fishInTank;
+            return friendlyFishCount;
         }
     }
 
@@ -65,16 +80,6 @@ public class Shop : MonoBehaviour
         }
     }
 
-    private int fishPrice = 100;
-    public int FishPrice
-    {
-        get{
-            // +1 because happens before new fish spawns
-            fishPrice = 100*(2^(FishInTank+1));
-            fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
-            return fishPrice;
-            }
-    }
 
     // the number of foods it says are on the screen
     private int foodsOnScreenDisplay;
@@ -150,7 +155,7 @@ public class Shop : MonoBehaviour
         }
         fishButton.SetActive(true);
 
-        fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
+        fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + FishPrice.ToString());
         foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
 
         foodToSpawn = gm.dataStore.foods[0];

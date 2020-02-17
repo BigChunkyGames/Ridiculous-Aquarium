@@ -51,7 +51,6 @@ public class Fish : MonoBehaviour
     public bool immortal = false;
 
     [Header("Fish Stats")]
-    public int price = 100;
     public bool unique = true;
     public Color hungryColor;
     public Color deadColor;
@@ -165,14 +164,12 @@ public class Fish : MonoBehaviour
             if (fadingAway){
                 t += Time.deltaTime/timeToFade;
                 rend.material.color = Color.Lerp(deadColor, gone, t);
-                Debug.Log("larping " + rend.material.color);
-
             }
             return;
         }
     }
     private float t = 0;
-    
+
     // swim away from boundries
     public void BeFishy(){
         if (seekingFood){
