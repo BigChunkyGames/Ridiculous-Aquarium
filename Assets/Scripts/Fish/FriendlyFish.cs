@@ -97,7 +97,7 @@ public class FriendlyFish : Fish
         if(this.fishType == FishTypeEnum.laser)
             {
                 // if there is a target and fish isnt hungry and isnt dead and target is alive
-            if(targetEnemy != null && !hungry && !dead && !targetEnemy.GetComponent<Fish>().dead) 
+            if(targetEnemy != null && !Hungry && !dead && !targetEnemy.GetComponent<Fish>().dead) 
             {
                 AttackTarget();
             }
@@ -113,7 +113,7 @@ public class FriendlyFish : Fish
     {
         base.FishFixedUpdate();
         // seek food
-        if(hungry){ 
+        if(Hungry){ 
             if(targetFood == null){
                 FindClosestFood();
             }   
@@ -159,7 +159,7 @@ public class FriendlyFish : Fish
         if (dead){
             return;
         }
-        if((col.gameObject.tag == "Food") && hungry){
+        if((col.gameObject.tag == "Food") && Hungry){
             // eating
             Eat(col.gameObject);
         }
@@ -178,11 +178,10 @@ public class FriendlyFish : Fish
             Grow();
         }
         Destroy(food);
-        hungry = false;
+        Hungry = false;
         targetFood = null;
-        rend.material.SetColor("_Color", Color.white);
+        
         gm.audioManager.PlaySound("Fish Ate");
-        Invoke("BecomeHungry", hungerTimer);
         
         // change type
         if(food.GetComponent<Food>().foodType == FoodTypeEnum.laser)
@@ -202,7 +201,7 @@ public class FriendlyFish : Fish
 
     // assigns the closest food as the target food
     public void FindClosestFood(){
-        if (!hungry){
+        if (!Hungry){
             return;
         }
         GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");

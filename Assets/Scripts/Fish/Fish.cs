@@ -26,7 +26,27 @@ public class Fish : MonoBehaviour
     [Header("Life Stats")]
     public float maxHealth = 100f;
     public float currentHealth;
-    public bool hungry = false;
+    private bool hungry = false;
+    public bool Hungry
+    {
+        get{return this.hungry;}
+        set{
+            hungry = value;
+            if(hungry == false)
+            {
+                rend.material.SetColor("_Color", Color.white);
+                CancelInvoke("BecomeHungry");
+                CancelInvoke("Starve");
+                Invoke("BecomeHungry", hungerTimer);  
+            }
+            // if becoming hungry
+            else
+            {
+                rend.material.SetColor("_Color", hungryColor);
+                InvokeRepeating("Starve", hungerTimer, 1f);
+            }
+        }
+    }
     public bool dead = false;
     public bool immortal = false;
 
@@ -35,6 +55,8 @@ public class Fish : MonoBehaviour
     public bool unique = true;
     public Color hungryColor;
     public Color deadColor;
+    private Color gone = new Color(0f, 0f, 0f, 0f);
+     
     
     // the thing to rotate
     public GameObject modelContainer;
@@ -141,14 +163,16 @@ public class Fish : MonoBehaviour
         // death
         if(dead){
             if (fadingAway){
-                //t += Time.deltaTime / 5.0f;
-                Color gone = new Color(1f, 1f, 1f, 0f);
-                rend.material.color = Color.Lerp(rend.material.color, gone,  Time.deltaTime/timeToFade);
+                t += Time.deltaTime/timeToFade;
+                rend.material.color = Color.Lerp(deadColor, gone, t);
+                Debug.Log("larping " + rend.material.color);
+
             }
             return;
         }
     }
-
+    private float t = 0;
+    
     // swim away from boundries
     public void BeFishy(){
         if (seekingFood){
@@ -239,7 +263,7 @@ public class Fish : MonoBehaviour
         if(immortal) return;
         CancelInvoke();
         dead = true;
-        rend.material.SetColor("_Color", deadColor);
+        model.GetComponent<Outline>().OutlineColor = deadColor;
         modelContainer.transform.eulerAngles += new Vector3(180f,0f,0f);
         fadingAway = true;
         Invoke("GetDestroyed", timeToFade ); 
@@ -250,9 +274,9 @@ public class Fish : MonoBehaviour
         CancelInvoke(); // not sure if this line gets hit but whatever
     }
 
+    // called by invokes
     public void BecomeHungry(){
-        rend.material.SetColor("_Color", hungryColor);
-        hungry = true;
+        Hungry = true;
         InvokeRepeating("Starve", hungerTimer, 1f);
     }
 
@@ -262,7 +286,6 @@ public class Fish : MonoBehaviour
         else{
             this.TakeDamage(10f);
         }
-
     }
 
     public void TurnAround(){

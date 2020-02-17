@@ -73,6 +73,7 @@ public class EnemyFish : Fish
         {
             if(fishBeingAttacked.dead)
             {
+                Hungry = false;
                 return;
             }
             fishBeingAttacked.TakeDamage(damage);

@@ -171,13 +171,12 @@ MonoBehaviour:
   growthLevel: 0
   maxHealth: 100
   currentHealth: 0
-  hungry: 0
   dead: 0
   immortal: 0
   price: 150
   unique: 1
   hungryColor: {r: 0.028253328, g: 0.5849056, b: 0, a: 0}
-  deadColor: {r: 0.254717, g: 0.119326875, b: 0, a: 0.21176471}
+  deadColor: {r: 0.254717, g: 0.119326875, b: 0, a: 1}
   modelContainer: {fileID: 7182435197715854021}
   model: {fileID: 7756222369943868900}
   dropSpot: {fileID: 0}
