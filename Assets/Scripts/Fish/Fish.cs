@@ -36,7 +36,28 @@ public class Fish : MonoBehaviour
     public Color hungryColor;
     public Color deadColor;
     
-    public GameObject model;
+    // the thing to rotate
+    public GameObject modelContainer;
+    public GameObject ModelContainer
+    {
+        set{
+            modelContainer = value;
+            Model = modelContainer.transform.Find("Model").gameObject;
+        }
+    }
+    // the thing that renders the fish and holds teh eyes and drop
+    [HideInInspector]public GameObject model;
+    public GameObject Model
+    {
+        set{
+            this.model = value;
+            rend = model.GetComponent<Renderer>();
+            startMat = rend.material;
+            dropSpot = transform.Find("DropSpot");
+        }
+    }
+    [HideInInspector] public Transform dropSpot;
+
     protected GameObject targetFood = null;
 
     // runtime
@@ -46,7 +67,6 @@ public class Fish : MonoBehaviour
     protected Rigidbody rb;
     protected AudioSource audioSource;
     protected HealthBar healthBar;
-    protected Transform dropSpot;
 
     protected bool seekingFood = false; // prevents random swimming when true
     protected float jumpVelocity = 1;
@@ -69,7 +89,6 @@ public class Fish : MonoBehaviour
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
-        rend = model.GetComponent<Renderer>();
         healthBar = GetComponentInChildren<HealthBar>();
         
         if(unique){
@@ -79,12 +98,13 @@ public class Fish : MonoBehaviour
             uniqueness = 0f;
         }
 
+        // do the getter
+        ModelContainer = modelContainer;
+
         healthBar.Initialize(maxHealth);
         currentHealth = maxHealth;
-        startMat = rend.material;
-        originalRotation = model.transform.rotation;
+        originalRotation = modelContainer.transform.rotation;
         flippedRotation = originalRotation * Quaternion.Euler(180f*flipAxis.x,180f*flipAxis.y,180f*flipAxis.z);
-        dropSpot = transform.Find("DropSpot");
           
         Invoke("BecomeHungry", hungerTimer);  
     }
@@ -112,7 +132,7 @@ public class Fish : MonoBehaviour
         if (turningAround && !dead){
             float turningTime = .1f;
             Quaternion oppositeSide = 
-            model.transform.rotation = Quaternion.Lerp(model.transform.rotation, rotationToTurnTo,  Time.deltaTime/turningTime);
+            modelContainer.transform.rotation = Quaternion.Lerp(modelContainer.transform.rotation, rotationToTurnTo,  Time.deltaTime/turningTime);
             if (Time.deltaTime/turningTime >= 1){
                 turningAround = false;
             }
@@ -220,7 +240,7 @@ public class Fish : MonoBehaviour
         CancelInvoke();
         dead = true;
         rend.material.SetColor("_Color", deadColor);
-        model.transform.eulerAngles += new Vector3(180f,0f,0f);
+        modelContainer.transform.eulerAngles += new Vector3(180f,0f,0f);
         fadingAway = true;
         Invoke("GetDestroyed", timeToFade ); 
     }

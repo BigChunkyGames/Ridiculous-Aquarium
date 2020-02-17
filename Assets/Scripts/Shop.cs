@@ -7,7 +7,6 @@ using TMPro;
 public class Shop : MonoBehaviour
 {
     public float spawnedFishDownwardForce = -5f;
-    public int fishPrice = 100;
     public int startingFoodCount = 1;
     public int foodCountPrice = 10; // starting prices that change
     public float foodCountPriceIncreaseRate = 10f; // linear
@@ -34,10 +33,18 @@ public class Shop : MonoBehaviour
     public GameObject feederPriceText;
 
     private GameManager gm;
-    private Object[] fishMeshes;
-    private Object[] fishMats;
+    private Object[] fishModels;
     private Transform[] buttons;
     private GameObject[] foodsOnScreen = new GameObject[0];
+
+    private int fishInTank;
+    public int FishInTank
+    {
+        get{
+            fishInTank = GameObject.FindGameObjectsWithTag("Fish").Length;
+            return fishInTank;
+        }
+    }
 
     public int FoodToSpawnDropdownIndex
     {
@@ -56,6 +63,17 @@ public class Shop : MonoBehaviour
                 this.foodToSpawn = gm.dataStore.laserFood;
             }
         }
+    }
+
+    private int fishPrice = 100;
+    public int FishPrice
+    {
+        get{
+            // +1 because happens before new fish spawns
+            fishPrice = 100*(2^(FishInTank+1));
+            fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + fishPrice.ToString());
+            return fishPrice;
+            }
     }
 
     // the number of foods it says are on the screen
@@ -123,8 +141,7 @@ public class Shop : MonoBehaviour
     }
 
     void Start(){
-        fishMeshes = Resources.LoadAll("Meshes/TropicalFish", typeof(Mesh));
-        fishMats = Resources.LoadAll("Meshes/TropicalFish", typeof(Material));
+        fishModels = Resources.LoadAll("Prefabs/Fish/Models", typeof(GameObject));
 
         // make buttons invisible
         foreach (Transform child in this.shop.GetComponent<Transform>())
@@ -151,41 +168,38 @@ public class Shop : MonoBehaviour
 
     public void BuyRandomFish()
     {
-        GameObject fish = (GameObject)Resources.Load("Prefabs/Fish/Generic Fish");
-        int rand = (int)Random.Range(0, fishMeshes.Length);
-        fish.GetComponentInChildren<MeshFilter>().mesh = (Mesh)fishMeshes[rand];
-        fish.GetComponentInChildren<MeshRenderer>().material = (Material)fishMats[rand];
-        fish.GetComponentInChildren<MeshCollider>().sharedMesh = null;
-        fish.GetComponentInChildren<MeshCollider>().sharedMesh = fish.GetComponentInChildren<MeshFilter>().sharedMesh;
-        BuyFish(fish);
-    }
-
-    public void BuyLaserFish()
-    {
-        // TODO multiple laser fish?
-        //BuyFish(gm.dataStore.laserFish[0]);
-    }
-
-    private void BuyFish(GameObject fish){
-        int price = fish.GetComponent<Fish>().price;
-        if (AttemptPurchase(price)){
-            SpawnFish(fish);
+        if (AttemptPurchase(FishPrice)){
+            DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Fish/Generic Fish", typeof(GameObject)), true,true);
             foodButton.SetActive(true);
             laserButton.SetActive(true);
         }
     }
 
-    public GameObject DropSomethingInTheTank(GameObject toSpawn, bool itsAFish=true, float destroyAfterSeconds = -1f, bool randomX=true)
+    public GameObject DropSomethingInTheTank(GameObject toSpawn, bool itsARandomFish=false, bool itsAFish=false, float destroyAfterSeconds = -1f, bool randomX=true)
     {
-        // determine transform
+        // determine transform of spawn location
         float x = 0f;
         if(randomX) x = Random.Range(gm.leftBoundary, gm.rightBoundary);
         float y = gm.topBoundary + 2f;
         float z = gm.fishLayerZ;
         if(!itsAFish) z = z+2f; // if its not a fish, put it 2 units in back
+        else gm.audioManager.PlaySound("Spawn Fish");
         Quaternion spawnRotation =  Quaternion.Euler(new Vector3( 0,0, 0));
-
         GameObject spawned = Instantiate(toSpawn, new Vector3(x, y, z), spawnRotation);
+        if(itsARandomFish)
+        {
+            // delete default model
+            GameObject currentModelContainer = spawned.transform.Find("Model Container 1").gameObject;
+            if(currentModelContainer) DestroyImmediate(currentModelContainer);
+            // set model
+            int rand = (int)Random.Range(0, fishModels.Length);
+            GameObject newModelContainer = (GameObject)fishModels[rand];
+            newModelContainer = Instantiate(newModelContainer, spawned.transform.position, newModelContainer.transform.rotation );
+            newModelContainer.transform.parent = spawned.transform;
+            newModelContainer.transform.localScale = new Vector3(1, 1,1);
+            spawned.GetComponent<Fish>().ModelContainer = newModelContainer;
+        }
+
         Rigidbody r = spawned.GetComponent<Rigidbody>();
         // give it downward force
         if(r) r.AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
@@ -194,15 +208,7 @@ public class Shop : MonoBehaviour
         {
             Destroy(spawned, destroyAfterSeconds);
         }
-
         return spawned;
-    }
-
-    public void SpawnFish(GameObject fish){
-        
-        GameObject newFish = DropSomethingInTheTank(fish, true);
-        
-        gm.audioManager.PlaySound("Spawn Fish");
     }
 
     public void BuyFeeder(){

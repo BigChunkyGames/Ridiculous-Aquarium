@@ -38,13 +38,13 @@ public class CombatManager : MonoBehaviour
         GameObject evilFishToSpawn = gm.dataStore.evilFish[0];
 
         enemiesInCurrentCombat++;
-        gm.shop.SpawnFish(evilFishToSpawn);
+        gm.shop.DropSomethingInTheTank(evilFishToSpawn,false,true);
     }
 
     private void ShowWarning()
     {
         // spawn the warning thing
-        warningLight = gm.shop.DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Props/Warning Light"), false, -1f, false);
+        warningLight = gm.shop.DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Props/Warning Light"), false, false, -1f, false);
 
         
         // TODO Warning noise
