@@ -60,7 +60,8 @@ public class Shop : MonoBehaviour
         set{
             friendlyFishCount = value;
             Debug.Log("Fish in tank: " + friendlyFishCount);
-            FishPrice = (int)(100*(Mathf.Pow(2, friendlyFishCount)));
+            //FishPrice = (int)(100*(Mathf.Pow(2, friendlyFishCount)));
+            FishPrice = (int)(100*friendlyFishCount);
             }
         get{
             return friendlyFishCount;

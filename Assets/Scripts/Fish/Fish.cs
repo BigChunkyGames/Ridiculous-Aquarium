@@ -74,7 +74,7 @@ public class Fish : MonoBehaviour
             this.model = value;
             rend = model.GetComponent<Renderer>();
             startMat = rend.material;
-            dropSpot = transform.Find("DropSpot");
+            dropSpot = model.transform.Find("DropSpot");
         }
     }
     [HideInInspector] public Transform dropSpot;
@@ -121,7 +121,8 @@ public class Fish : MonoBehaviour
 
         // do the getter
         ModelContainer = modelContainer;
-        dropSpot = transform.Find("DropSpot");
+        dropSpot = model.transform.Find("DropSpot");
+        Debug.Log(dropSpot);
         healthBar.Initialize(maxHealth);
         currentHealth = maxHealth;
         originalRotation = modelContainer.transform.rotation;

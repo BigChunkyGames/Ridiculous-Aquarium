@@ -38,7 +38,6 @@ public class FriendlyFish : Fish
 
     void AttackTarget()
     {
-        Debug.Log("attacking");
         laser.enabled = true;
         gm.weaponEffects.AttackWithLaser(eyes.position, targetEnemy.transform.position, laser);
         targetEnemy.GetComponent<Fish>().TakeDamage(damageDealtPerFrame);
@@ -208,6 +207,11 @@ public class FriendlyFish : Fish
         Vector3 position = transform.position;
         foreach (GameObject go in foods)
         {
+            if(fishType == FishTypeEnum.laser && go.GetComponent<Food>().foodType == FoodTypeEnum.laser)
+            {
+                // laser fish dont want more laser food
+                continue;
+            }
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
             if (curDistance < distance)
