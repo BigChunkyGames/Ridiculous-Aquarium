@@ -266,6 +266,7 @@ public class Fish : MonoBehaviour
         fadingAway = true;
         Invoke("GetDestroyed", timeToFade ); 
         transform.Find("HealthCanvas").gameObject.SetActive(false);
+        gm.audioManager.PlaySound("Fish Death");
         if(GetComponent<EnemyFish>())
         {
             GetComponent<EnemyFish>().EnemyDie();

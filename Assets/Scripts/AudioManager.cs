@@ -57,14 +57,25 @@ public class AudioManager : MonoBehaviour
             audioSourceFX.volume = .7f;
             uniquePitch = false;
         }
+        else if (name == "Fish Death")
+        {
+            ac = GetRandomClip("Audio/FX/fish death");
+        }
         else
         {
+            Debug.Log("hey that wasn't one of the audio options.");
             return;
         }
 
         if (uniquePitch) audioSourceFX.pitch += Random.Range(-0.2f, 0.2f);
         audioSourceFX.clip = ac;
         audioSourceFX.PlayOneShot(audioSourceFX.clip);
+    }
+
+    private AudioClip GetRandomClip(string path)
+    {
+        Object[] clips = Resources.LoadAll(path, typeof(AudioClip));
+        return (AudioClip)clips[Random.Range(0,clips.Length)];
     }
 
     public void CombatTime()
