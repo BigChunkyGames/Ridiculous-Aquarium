@@ -17,43 +17,52 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void PlaySound(string name, bool uniquePitch=true, float basePitch=1f, float baseVolume=1f)
+    public void PlaySound(string name, bool uniquePitch = true, float basePitch = 1f, float baseVolume = 1f)
     {
         AudioClip ac;
         audioSourceFX.volume = baseVolume;
         audioSourceFX.pitch = basePitch;
-        if(uniquePitch) audioSourceFX.pitch += Random.Range(-0.2f, 0.2f);
 
-        if(name == "Coin"){
+        if (name == "Coin")
+        {
             ac = (AudioClip)Resources.Load("Audio/FX/coin get");
         }
-        else if(name == "Spawn Food")
+        else if (name == "Spawn Food")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/pop");
         }
-        else if(name == "Spawn Fish")
+        else if (name == "Spawn Fish")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/splash");
         }
-        else if(name == "Fish Ate")
+        else if (name == "Fish Ate")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/chew");
         }
-        else if(name == "Error")
+        else if (name == "Error")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/decline");
         }
-        else if(name == "Combat Start")
+        else if (name == "Combat Start")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/worm");
         }
-        else if(name == "Combat Over")
+        else if (name == "Combat Over")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/siz");
         }
-        else{
+        else if (name == "Buy Upgrade")
+        {
+            ac = (AudioClip)Resources.Load("Audio/FX/wah");
+            audioSourceFX.volume = .7f;
+            uniquePitch = false;
+        }
+        else
+        {
             return;
         }
+
+        if (uniquePitch) audioSourceFX.pitch += Random.Range(-0.2f, 0.2f);
         audioSourceFX.clip = ac;
         audioSourceFX.PlayOneShot(audioSourceFX.clip);
     }
@@ -78,10 +87,10 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// set fadeIn to true to fade in, false to fade out
     /// </summary>
-    public void FadeAudioLoops(float fadeTime, bool fadeIn )
+    public void FadeAudioLoops(float fadeTime, bool fadeIn)
     {
         Debug.Log("Fading audio loop for " + fadeTime + " seconds.");
-        if(fadeIn)
+        if (fadeIn)
         {
             this.StartCoroutine(FadeIn(audioSourceLoops, fadeTime));
         }
@@ -92,9 +101,11 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public IEnumerator FadeOut (AudioSource audioSource, float fadeTime) {
+    public IEnumerator FadeOut(AudioSource audioSource, float fadeTime)
+    {
         float startVolume = audioSource.volume;
-        while (audioSource.volume > 0) {
+        while (audioSource.volume > 0)
+        {
             audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
             yield return null;
         }
@@ -102,17 +113,19 @@ public class AudioManager : MonoBehaviour
         audioSource.volume = startVolume;
     }
 
-    public IEnumerator FadeIn (AudioSource audioSource, float fadeTime) {
+    public IEnumerator FadeIn(AudioSource audioSource, float fadeTime)
+    {
         float startVolume = audioSource.volume;
         audioSource.volume = 0f;
         audioSource.Play();
-        while (audioSource.volume < startVolume) {
+        while (audioSource.volume < startVolume)
+        {
             audioSource.volume += Time.deltaTime / fadeTime;
             yield return null;
         }
         audioSource.volume = startVolume;
     }
-    
+
     // set mixer volume
     public void SetLoopsMixerVolume(float percent)
     {

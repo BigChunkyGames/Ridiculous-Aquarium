@@ -163,7 +163,7 @@ MonoBehaviour:
   speed: 1.16
   targetSeekSpeed: 5
   flipAxis: {x: 0, y: 1, z: 0}
-  hungerTimer: 30
+  hungerTimer: 12
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 4

@@ -5,6 +5,7 @@ using UnityEngine;
 public class DestroyOnCollision : MonoBehaviour
 {
     GameManager gm;
+    public float secondsUntilDestructionAfterContact = 1f;
 
     void Start()
     {
@@ -12,7 +13,7 @@ public class DestroyOnCollision : MonoBehaviour
     }
     void OnCollisionEnter(Collision col){
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary")){
-            Destroy(gameObject); // destory if dropable hits ground or boundary
+            Destroy(gameObject, secondsUntilDestructionAfterContact); // destory if dropable hits ground or boundary
         }
     }
 }

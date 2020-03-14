@@ -8,17 +8,18 @@ public class Shop : MonoBehaviour
 {
     [Header("Shop")]
     public float startMoney;
+    public int startFeederPrice = 1000;
+    public float feederPriceIncreaseRate = 500;
+    public float spawnedFishDownwardForce = -5f;
+
+    [Header("Food")]
+    public int spawnPelletFoodPrice = 3;
+    public int spawnLaserFoodPrice = 100;
+    public int currentSpawnFoodPrice = 3;
     public int startingFoodCount = 1;
     public int foodCountPrice = 10; // starting prices that change
     public float foodCountPriceIncreaseRate = 10f; // linear
-    public int foodHP = 10;
-    public int startFeederPrice = 1000;
-    public float feederPriceIncreaseRate = 500;
-
-    public int spawnFoodPrice = 3;
-    public int spawnLaserFoodPrice = 100;
-    public int currentSpawnFoodPrice = 3;
-    public float spawnedFishDownwardForce = -5f;
+    public int foodHPGain = 10;
 
 
     [Header("Buttons")]
@@ -46,7 +47,7 @@ public class Shop : MonoBehaviour
     private Transform[] buttons;
     private GameObject[] foodsOnScreen = new GameObject[0];
     [HideInInspector]public GameObject foodToSpawn; // what gets spawned when you click
-    private GameObject pelletToSpawn; // the visual level of the pellet
+    public GameObject pelletToSpawn; // the visual level of the pellet
 
     private int fishPrice = 100;
     private int FishPrice
@@ -82,8 +83,8 @@ public class Shop : MonoBehaviour
             if(value == 0)
             {
                 this.foodToSpawn = this.pelletToSpawn;
-                this.foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Cost $" + spawnFoodPrice);
-                currentSpawnFoodPrice = spawnFoodPrice;
+                this.foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Cost $" + spawnPelletFoodPrice);
+                currentSpawnFoodPrice = spawnPelletFoodPrice;
                 foodDecoration.SetActive(true);
                 laserFoodDecoration.SetActive(false);
             }
@@ -129,7 +130,7 @@ public class Shop : MonoBehaviour
         get{return this.foodLevel;}
         set{
             foodLevel = value;
-            foodHP = 10 + 2*foodLevel;
+            foodHPGain = 10 + 2*foodLevel;
             foodLevelPrice += 100;
 
             // every 5 levels, drop a higher grade food
@@ -149,7 +150,7 @@ public class Shop : MonoBehaviour
     {
         if(levelSide){
             foodLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " + foodLevel.ToString());
-            foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodHP.ToString() + "HP");
+            foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodHPGain.ToString() + "HP");
         } else {
             foodLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Upgrade ");
             foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodLevelPrice.ToString());
@@ -258,7 +259,6 @@ public class Shop : MonoBehaviour
         Rigidbody r = spawned.GetComponent<Rigidbody>();
         // give it downward force
         if(r) r.AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
-
         if(destroyAfterSeconds>0)
         {
             Destroy(spawned, destroyAfterSeconds);
@@ -266,8 +266,16 @@ public class Shop : MonoBehaviour
         return spawned;
     }
 
+    public void BuyFoodCount(){
+        if (AttemptPurchase(foodCountPrice)){
+            gm.audioManager.PlaySound("Buy Upgrade");
+            FoodCount++;
+        }
+    }
+
     public void BuyFoodLevel(){
         if(AttemptPurchase(foodLevelPrice)){
+            gm.audioManager.PlaySound("Buy Upgrade");
             FoodLevel++;
         }
     }
@@ -275,15 +283,10 @@ public class Shop : MonoBehaviour
     public void BuyFeeder(){
         if(AttemptPurchase(feederPrice))
         {
+            gm.audioManager.PlaySound("Buy Upgrade");
             feederCount++;
             Instantiate(gm.dataStore.feeder, new Vector3(0.78f, 20.92f, gm.fishLayerZ), Quaternion.identity);
             FeederPrice = (int)(feederPrice+feederPriceIncreaseRate);
-        }
-    }
-
-    public void BuyFoodCount(){
-        if (AttemptPurchase(foodCountPrice)){
-            FoodCount++;
         }
     }
 
@@ -310,7 +313,7 @@ public class Shop : MonoBehaviour
         if (foodsOnScreen.Length < gm.shop.FoodCount){ // if amount of foods on screen less than the amount allowed
             if(gm.shop.AttemptPurchase(currentSpawnFoodPrice)) {
                 Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y, gm.fishLayerZ);
-                SpawnFood(hit.point);
+                PlayerSpawnFood(hit.point);
                 gm.audioManager.PlaySound("Spawn Food");
             }
         }
@@ -321,8 +324,9 @@ public class Shop : MonoBehaviour
         foodCount = foodCount + 0; // trigger setter
     }
 
-    public GameObject SpawnFood(Vector3 position)
+    public GameObject PlayerSpawnFood(Vector3 position)
     {
+        foodToSpawn.GetComponent<Food>().nourishment = foodHPGain;
         return Instantiate (foodToSpawn, position, foodToSpawn.transform.rotation);
     }
 

@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
+  m_Color: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
+  m_Color: {r: 0.043075833, g: 0.8301887, b: 0.0725923, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1003,7 +1003,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.9056604, g: 0.4820218, b: 0.2691349, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.74188143, b: 0.5424528, a: 1}
     m_PressedColor: {r: 0.91540945, g: 1, b: 0, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4054,7 +4054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af06fcf72cb8eb64bb895e05f8edd6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsBetweenCombat: 60
+  secondsBetweenCombat: 180
   warningTimeOffset: 10
   combatLevel: 1
   startCombatNow: 0
@@ -5398,16 +5398,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMoney: 100000
+  startFeederPrice: 1000
+  feederPriceIncreaseRate: 500
+  spawnedFishDownwardForce: -5
+  spawnPelletFoodPrice: 3
+  spawnLaserFoodPrice: 100
+  currentSpawnFoodPrice: 3
   startingFoodCount: 1
   foodCountPrice: 10
   foodCountPriceIncreaseRate: 10
-  foodHP: 10
-  startFeederPrice: 1000
-  feederPriceIncreaseRate: 500
-  spawnFoodPrice: 3
-  spawnLaserFoodPrice: 100
-  currentSpawnFoodPrice: 3
-  spawnedFishDownwardForce: -5
+  foodHPGain: 10
   fishButton: {fileID: 580019807}
   foodLevelButton: {fileID: 196322873}
   foodButton: {fileID: 8106328228278816144}
@@ -5425,6 +5425,7 @@ MonoBehaviour:
   foodDecoration: {fileID: 843019880}
   laserFoodDecoration: {fileID: 6147986373693896483}
   foodToSpawn: {fileID: 0}
+  pelletToSpawn: {fileID: 0}
   foodLevelPrice: 150
   feederCount: 0
 --- !u!114 &1782859686
@@ -6475,7 +6476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.20664878, g: 0.6698113, b: 0.17377181, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

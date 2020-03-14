@@ -10,7 +10,7 @@ public class FriendlyFish : Fish
     [Tooltip("seconds between drops")]
     public float dropRate = 7f;
     [Range(.1f,10)]
-    public float passiveIncomePerMinute = 15; // TODO change this depending on stuff
+    private float passiveIncomePerMinute = 15; 
 
     [Header("Specialization")]
     public FishTypeEnum fishType = FishTypeEnum.generic;
@@ -189,6 +189,9 @@ public class FriendlyFish : Fish
     private void Grow(){
         timesEatenSinceLastGrowth = 0;
         growthLevel++;
+        float passiveIncomeToChangeBy = this.passiveIncomePerMinute + this.growthLevel * 15;
+        this.passiveIncomePerMinute += passiveIncomeToChangeBy;
+        gm.shop.MoneyRate += passiveIncomeToChangeBy;
         float size = transform.localScale.x * growthScaleMultiplier;
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
         audioSource.pitch = 1.5f - .1f * growthLevel;
