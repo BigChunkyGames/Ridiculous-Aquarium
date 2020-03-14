@@ -34,29 +34,38 @@ public class CombatManager : MonoBehaviour
 
     private void StartCombat()
     {
-        // TODO find a way of juding how much combat to have
         // build list of baddies
-
         List<GameObject> evilFishToSpawn = new List<GameObject>();
+        // make a big fish for each 5 levels
+        if(combatLevel % 5 == 0)
+        {
+            for (int i = 0; i < (combatLevel)/5; i++)
+            {
+                evilFishToSpawn.Add(gm.dataStore.evilFish[2]);
+            }
+        }
+        // make a med fish for each 3 level
+        if(combatLevel % 3 == 0)
+        {
+            for (int i = 0; i < (combatLevel)/3; i++)
+            {
+                evilFishToSpawn.Add(gm.dataStore.evilFish[1]);
+            }
+        }
 
         // make a little fish for each level
         for (int i = 0; i < combatLevel; i++)
         {
             evilFishToSpawn.Add(gm.dataStore.evilFish[0]);
         }
-
-        // make a big fish for each 2 level
-        for (int i = 0; i < (combatLevel-1)/2; i++)
-        {
-            evilFishToSpawn.Add(gm.dataStore.evilFish[1]);
-        }
-         
+        
         inCombat = true;
 
-        foreach (GameObject evilFish in evilFishToSpawn)
+        // spawn up to combat level enemies
+        for (int i = 0; i < combatLevel; i++)
         {
             enemiesInCurrentCombat++;
-            gm.shop.DropSomethingInTheTank(evilFish,false,true);
+            gm.shop.DropSomethingInTheTank(evilFishToSpawn[i],false,true);
         }
         gm.audioManager.CombatTime();
         combatLevel++;
@@ -75,6 +84,7 @@ public class CombatManager : MonoBehaviour
     {
         Invoke("ShowWarning", secondsBetweenCombat - warningTimeOffset);
         Invoke("StartCombat", secondsBetweenCombat);
+        gm.shop.combatLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " + this.combatLevel);
     }
 
     // called by OnDestory() of enemyfish

@@ -164,7 +164,7 @@ MonoBehaviour:
   speed: 1.77
   targetSeekSpeed: 5
   flipAxis: {x: 0, y: 1, z: 0}
-  hungerTimer: 15.9
+  hungerTimer: 30
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 10
@@ -172,9 +172,9 @@ MonoBehaviour:
   growthLevel: 0
   maxHealth: 100
   currentHealth: 0
-  hungry: 1
+  hungry: 0
   dead: 0
-  immortal: 0
+  immortal: 1
   unique: 1
   hungryColor: {r: 0.028253328, g: 0.5849056, b: 0, a: 1}
   deadColor: {r: 0.254717, g: 0.119326875, b: 0, a: 1}
@@ -183,8 +183,7 @@ MonoBehaviour:
   dropSpot: {fileID: 0}
   dropLifetime: 10
   dropRate: 8.89
-  passiveIncomePerMinute: 15
-  fishType: 0
+  fishType: 1
   damageDealtPerFrame: 10
 --- !u!1001 &5195758213626158286
 PrefabInstance:
@@ -403,11 +402,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7574408920204824245}
     m_Modifications:
-    - target: {fileID: 7628279339563259293, guid: 1d43610fdeff5454ba5649212fd80017,
-        type: 3}
-      propertyPath: m_Name
-      value: Model Container 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7628279339563259290, guid: 1d43610fdeff5454ba5649212fd80017,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -462,6 +456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628279339563259293, guid: 1d43610fdeff5454ba5649212fd80017,
+        type: 3}
+      propertyPath: m_Name
+      value: Model Container 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d43610fdeff5454ba5649212fd80017, type: 3}

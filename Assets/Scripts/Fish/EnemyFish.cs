@@ -4,7 +4,7 @@ public class EnemyFish : Fish
 {
     
     [Header("Enemy Fish Stats")]
-    public float attackRate;
+    public float attackRate; // seconds between attacks
     [Range(0,100)]
     public float damage;
     public bool alwaysHungry = true; // UNUSED

@@ -41,6 +41,7 @@ public class Shop : MonoBehaviour
     public GameObject feederPriceText;
     public GameObject foodDecoration;
     public GameObject laserFoodDecoration;
+    public GameObject combatLevelText;
 
     private GameManager gm;
     private Object[] fishModels;
@@ -118,7 +119,6 @@ public class Shop : MonoBehaviour
         get{return foodCount;}
         set{
             foodCount = value;
-            
             foodCountPrice = (int)(foodCountPrice + foodCountPriceIncreaseRate);
             foodCountPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
             foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
@@ -312,8 +312,9 @@ public class Shop : MonoBehaviour
         FoodsOnScreenDisplay = foodsOnScreen.Length;
         if (foodsOnScreen.Length < gm.shop.FoodCount){ // if amount of foods on screen less than the amount allowed
             if(gm.shop.AttemptPurchase(currentSpawnFoodPrice)) {
-                Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y, gm.fishLayerZ);
-                PlayerSpawnFood(hit.point);
+                // add 2.1 for distance offset because fuck
+                Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y + 2.1f, gm.fishLayerZ);
+                PlayerSpawnFood(spawnLocation);
                 gm.audioManager.PlaySound("Spawn Food");
             }
         }
@@ -321,7 +322,7 @@ public class Shop : MonoBehaviour
             gm.audioManager.PlaySound("Error", false, 1f, .8f);
             foodsDisplay.GetComponent<Animation>().Play();
         }
-        foodCount = foodCount + 0; // trigger setter
+        FoodCount = FoodCount + 0; // trigger setter
     }
 
     public GameObject PlayerSpawnFood(Vector3 position)

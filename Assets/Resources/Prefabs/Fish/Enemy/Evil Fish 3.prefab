@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7268090258474223493}
   - component: {fileID: 7268090258474223498}
   m_Layer: 8
-  m_Name: Evil Fish 2
+  m_Name: Evil Fish 3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,16 +160,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activityFrequency: 0.2
-  speed: 1.16
-  targetSeekSpeed: 5
+  speed: 0.89
+  targetSeekSpeed: 2.58
   flipAxis: {x: 0, y: 1, z: 0}
-  hungerTimer: 12
+  hungerTimer: 16.1
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 4
   additionalFoodsNeededToGrow: 2
   growthLevel: 0
-  maxHealth: 100
+  maxHealth: 250
   currentHealth: 0
   hungry: 0
   dead: 0
@@ -181,11 +181,11 @@ MonoBehaviour:
   model: {fileID: 7268090259475071495}
   dropSpot: {fileID: 0}
   dropLifetime: 10
-  attackRate: 1
-  damage: 20
+  attackRate: 2
+  damage: 50
   alwaysHungry: 1
   enemyLevel: 1
-  dropLevel: 4
+  dropLevel: 5
 --- !u!1 &7268090258894904516
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,8 +403,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268090259475071495}
   m_LocalRotation: {x: -0, y: 0.69080675, z: -0, w: -0.7230395}
-  m_LocalPosition: {x: 0.5870001, y: -0.4749999, z: 0.026000023}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.2613, y: -1.37, z: -0.0047626}
+  m_LocalScale: {x: 1.7323061, y: 1.7323061, z: 1.7323061}
   m_Children:
   - {fileID: 7268090260331959203}
   m_Father: {fileID: 1993512313723497168}
@@ -446,7 +446,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7defec87cd35836448cbf03f42f74118, type: 2}
+  - {fileID: 2100000, guid: 8478e412032148e48a698bed6ad81ca8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

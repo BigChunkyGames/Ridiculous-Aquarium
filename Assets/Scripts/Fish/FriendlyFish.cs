@@ -13,7 +13,7 @@ public class FriendlyFish : Fish
     private float passiveIncomePerMinute = 15; 
 
     [Header("Specialization")]
-    public FishTypeEnum fishType = FishTypeEnum.generic;
+    public FishTypeEnum fishType;
     public FishTypeEnum FishType{
         set{
             // if changing to laser fish
@@ -25,7 +25,7 @@ public class FriendlyFish : Fish
                 this.eyes = model.transform.Find("Eyes").transform;
                 this.laser = gm.weaponEffects.RegisterLaser(0);
                 model.GetComponent<Outline>().OutlineColor = Color.red;
-                InvokeRepeating("UpdateTarget", 1.0f, .3f);
+                InvokeRepeating("UpdateTarget", .2f, .3f);
             }
         }
     }
@@ -77,6 +77,7 @@ public class FriendlyFish : Fish
         InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
         gm.shop.FriendlyFishCount++;
         gm.shop.MoneyRate += this.passiveIncomePerMinute;
+        this.FishType = this.fishType; // trigger setter
     }
 
     void OnDestroy()

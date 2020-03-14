@@ -8,6 +8,7 @@ public class PlayerInput : MonoBehaviour
     private RaycastHit hit;
     private Ray ray;
     private bool clicking;
+    public float attackDamage = 5;
 
     public bool turboFeedMode = false; // unused
 
@@ -42,11 +43,17 @@ public class PlayerInput : MonoBehaviour
                     PickupDropable(hit.transform.gameObject);
                     return;
                 }
-
-                // if clicked on something else, try to place food
-                gm.shop.TryToBuyFood(hit);
-                
-                
+                // shoot enemy
+                else if(hit.transform.tag == "Enemy")
+                {
+                    hit.transform.gameObject.GetComponent<EnemyFish>().TakeDamage(gm.playerInput.attackDamage);
+                    gm.audioManager.PlaySound("Shoot Fish");
+                }
+                else
+                {
+                    // if clicked on something else, try to place food
+                    gm.shop.TryToBuyFood(hit);
+                }
             }
         }
     }

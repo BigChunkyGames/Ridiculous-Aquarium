@@ -27,6 +27,11 @@ public class AudioManager : MonoBehaviour
         {
             ac = (AudioClip)Resources.Load("Audio/FX/coin get");
         }
+        else if (name == "Shoot Fish")
+        {
+            ac = (AudioClip)Resources.Load("Audio/FX/toy-cannon-shot");
+            audioSourceFX.pitch = 2f;
+        }
         else if (name == "Spawn Food")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/pop");
