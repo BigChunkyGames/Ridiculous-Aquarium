@@ -171,9 +171,9 @@ MonoBehaviour:
   growthLevel: 0
   maxHealth: 100
   currentHealth: 0
+  hungry: 0
   dead: 0
   immortal: 0
-  price: 150
   unique: 1
   hungryColor: {r: 0.028253328, g: 0.5849056, b: 0, a: 1}
   deadColor: {r: 0.254717, g: 0.119326875, b: 0, a: 1}
@@ -192,11 +192,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1598259294105671469}
     m_Modifications:
-    - target: {fileID: 7628279339563259293, guid: 1d43610fdeff5454ba5649212fd80017,
-        type: 3}
-      propertyPath: m_Name
-      value: Model Container 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7628279339563259290, guid: 1d43610fdeff5454ba5649212fd80017,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -251,6 +246,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628279339563259293, guid: 1d43610fdeff5454ba5649212fd80017,
+        type: 3}
+      propertyPath: m_Name
+      value: Model Container 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d43610fdeff5454ba5649212fd80017, type: 3}

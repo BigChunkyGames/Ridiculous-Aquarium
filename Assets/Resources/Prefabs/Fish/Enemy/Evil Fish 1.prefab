@@ -200,7 +200,7 @@ MonoBehaviour:
   foodsNeededToGrow: 4
   additionalFoodsNeededToGrow: 2
   growthLevel: 0
-  maxHealth: 50
+  maxHealth: 25
   currentHealth: 0
   hungry: 0
   dead: 0

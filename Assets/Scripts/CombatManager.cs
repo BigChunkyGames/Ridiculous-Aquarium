@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 // schedules combat events'
 
@@ -10,7 +11,7 @@ public class CombatManager : MonoBehaviour
 {
     public float secondsBetweenCombat = 20f;
     public float warningTimeOffset = 10f;
-
+    public int combatLevel = 1;
     public bool startCombatNow = false; // for debugging
 
     private GameObject warningLight;
@@ -34,11 +35,31 @@ public class CombatManager : MonoBehaviour
     private void StartCombat()
     {
         // TODO find a way of juding how much combat to have
+        // build list of baddies
+
+        List<GameObject> evilFishToSpawn = new List<GameObject>();
+
+        // make a little fish for each level
+        for (int i = 0; i < combatLevel; i++)
+        {
+            evilFishToSpawn.Add(gm.dataStore.evilFish[0]);
+        }
+
+        // make a big fish for each 2 level
+        for (int i = 0; i < (combatLevel-1)/2; i++)
+        {
+            evilFishToSpawn.Add(gm.dataStore.evilFish[1]);
+        }
+         
         inCombat = true;
-        GameObject evilFishToSpawn = gm.dataStore.evilFish[0];
-        enemiesInCurrentCombat++;
-        gm.shop.DropSomethingInTheTank(evilFishToSpawn,false,true);
+
+        foreach (GameObject evilFish in evilFishToSpawn)
+        {
+            enemiesInCurrentCombat++;
+            gm.shop.DropSomethingInTheTank(evilFish,false,true);
+        }
         gm.audioManager.CombatTime();
+        combatLevel++;
     }
 
     private void ShowWarning()

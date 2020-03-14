@@ -11,9 +11,10 @@ public class Shop : MonoBehaviour
     public int startingFoodCount = 1;
     public int foodCountPrice = 10; // starting prices that change
     public float foodCountPriceIncreaseRate = 10f; // linear
+    public int foodHP = 10;
     public int startFeederPrice = 1000;
     public float feederPriceIncreaseRate = 500;
-    public int foodUpgradeLevel; // TODO make a button for this
+
     public int spawnFoodPrice = 3;
     public int spawnLaserFoodPrice = 100;
     public int currentSpawnFoodPrice = 3;
@@ -22,7 +23,7 @@ public class Shop : MonoBehaviour
 
     [Header("Buttons")]
     public GameObject fishButton;
-    public GameObject laserButton;
+    public GameObject foodLevelButton;
     public GameObject foodButton;
     public GameObject feederButton;
 
@@ -34,6 +35,8 @@ public class Shop : MonoBehaviour
     public GameObject fishPriceText;
     public GameObject foodCountPriceText; // where it says how much to get more food
     public GameObject foodPriceText; // where it says how much buying a food costs
+    public GameObject foodLevelText; 
+    public GameObject foodHPText; 
     public GameObject feederPriceText;
     public GameObject foodDecoration;
     public GameObject laserFoodDecoration;
@@ -42,7 +45,8 @@ public class Shop : MonoBehaviour
     private Object[] fishModels;
     private Transform[] buttons;
     private GameObject[] foodsOnScreen = new GameObject[0];
-    [HideInInspector]public GameObject foodToSpawn;
+    [HideInInspector]public GameObject foodToSpawn; // what gets spawned when you click
+    private GameObject pelletToSpawn; // the visual level of the pellet
 
     private int fishPrice = 100;
     private int FishPrice
@@ -69,22 +73,21 @@ public class Shop : MonoBehaviour
     }
 
     // teh value of the food dropdown
+    private int foodToSpawnDropdownIndex = 0;
     public int FoodToSpawnDropdownIndex
     {
         set {
+            foodToSpawnDropdownIndex = value;
             // if spawning pellet food
             if(value == 0)
             {
-                int foodToGet = foodUpgradeLevel / 5;
-                // prevent list index error
-                if(foodToGet >= gm.dataStore.foods.Count) foodToGet =gm.dataStore.foods.Count-1;
-                this.foodToSpawn = gm.dataStore.foods[foodToGet];
+                this.foodToSpawn = this.pelletToSpawn;
                 this.foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Cost $" + spawnFoodPrice);
                 currentSpawnFoodPrice = spawnFoodPrice;
                 foodDecoration.SetActive(true);
                 laserFoodDecoration.SetActive(false);
             }
-            // if dropping turret
+            // if dropping laser food
             else if (value == 1)
             {
                 this.foodToSpawn = gm.dataStore.laserFood;
@@ -95,7 +98,6 @@ public class Shop : MonoBehaviour
             }
         }
     }
-
 
     // the number of foods it says are on the screen
     private int foodsOnScreenDisplay;
@@ -119,9 +121,40 @@ public class Shop : MonoBehaviour
             foodCountPrice = (int)(foodCountPrice + foodCountPriceIncreaseRate);
             foodCountPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
             foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
-            feederButton.SetActive(true);
-
         }
+    }
+
+    private int foodLevel = 1; // how good the food is
+    public int FoodLevel{
+        get{return this.foodLevel;}
+        set{
+            foodLevel = value;
+            foodHP = 10 + 2*foodLevel;
+            foodLevelPrice += 100;
+
+            // every 5 levels, drop a higher grade food
+            int foodToGet = foodLevel / 5;
+            // prevent list index error
+            if(foodToGet >= gm.dataStore.foods.Count) foodToGet = gm.dataStore.foods.Count-1;
+            this.pelletToSpawn = gm.dataStore.foods[foodToGet];
+            // update food to spawn badly
+            FoodToSpawnDropdownIndex = foodToSpawnDropdownIndex;
+            ShowFoodPrice(false);
+        }
+    }
+    public int foodLevelPrice = 150;
+
+    // if true, show level, if false, show price
+    public void ShowFoodPrice(bool levelSide)
+    {
+        if(levelSide){
+            foodLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " + foodLevel.ToString());
+            foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodHP.ToString() + "HP");
+        } else {
+            foodLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Upgrade ");
+            foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodLevelPrice.ToString());
+        }
+
     }
 
     private int feederPrice;
@@ -174,6 +207,7 @@ public class Shop : MonoBehaviour
         foodCountPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
 
         foodToSpawn = gm.dataStore.foods[0];
+        pelletToSpawn = gm.dataStore.foods[0];
         Money = startMoney;
         MoneyRate = 0;
         FeederPrice = startFeederPrice;
@@ -191,7 +225,8 @@ public class Shop : MonoBehaviour
         if (AttemptPurchase(FishPrice)){
             DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Fish/Generic Fish", typeof(GameObject)), true,true);
             foodButton.SetActive(true);
-            laserButton.SetActive(true);
+            feederButton.SetActive(true);
+
         }
     }
 
@@ -231,6 +266,12 @@ public class Shop : MonoBehaviour
         return spawned;
     }
 
+    public void BuyFoodLevel(){
+        if(AttemptPurchase(foodLevelPrice)){
+            FoodLevel++;
+        }
+    }
+
     public void BuyFeeder(){
         if(AttemptPurchase(feederPrice))
         {
@@ -255,6 +296,8 @@ public class Shop : MonoBehaviour
         else
         {
             Debug.Log("Not enough money!");
+            gm.audioManager.PlaySound("Error", false, 1f, .8f);
+            moneyDisplay.GetComponent<Animation>().Play();
             return false;
         }
     }
@@ -272,7 +315,7 @@ public class Shop : MonoBehaviour
             }
         }
         else{// if amount of foods on screen more than or =to the amount allowed
-            gm.audioManager.PlaySound("Food Cap", false, 1f, .8f);
+            gm.audioManager.PlaySound("Error", false, 1f, .8f);
             foodsDisplay.GetComponent<Animation>().Play();
         }
         foodCount = foodCount + 0; // trigger setter

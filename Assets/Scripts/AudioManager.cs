@@ -39,7 +39,7 @@ public class AudioManager : MonoBehaviour
         {
             ac = (AudioClip)Resources.Load("Audio/FX/chew");
         }
-        else if(name == "Food Cap")
+        else if(name == "Error")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/decline");
         }
@@ -60,6 +60,7 @@ public class AudioManager : MonoBehaviour
 
     public void CombatTime()
     {
+        StopAllCoroutines();
         audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/fish combat");
         audioSourceLoops.volume = 1;
         audioSourceLoops.Play();
@@ -71,7 +72,7 @@ public class AudioManager : MonoBehaviour
     {
         audioSourceLoops.clip = startLoop;
         FadeAudioLoops(5, true);
-        PlaySound("Combat Over", false);
+        PlaySound("Combat Over", false, 1f, .5f);
     }
 
     /// <summary>
