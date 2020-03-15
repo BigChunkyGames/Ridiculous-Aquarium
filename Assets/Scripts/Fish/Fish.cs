@@ -329,4 +329,12 @@ public class Fish : MonoBehaviour
         if(jumpDownwards) mult = -1;
         rb.velocity += Vector3.up * jumpVelocity * mult;
     }
+
+    public void GetPoked()
+    {
+        float x = Random.Range(-1f, 1f);
+        float y = Random.Range(-1f, 1f);
+        rb.velocity += new Vector3(x,y,0) * speed * 3;
+        gm.audioManager.PlaySound("Poke");
+    }
 }

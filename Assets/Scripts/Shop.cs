@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;  
 
 // handles all the UI
 
@@ -8,8 +9,6 @@ public class Shop : MonoBehaviour
 {
     [Header("Shop")]
     public float startMoney;
-    public int startFeederPrice = 1000;
-    public float feederPriceIncreaseRate = 500;
     public float spawnedFishDownwardForce = -5f;
 
     [Header("Food")]
@@ -19,13 +18,18 @@ public class Shop : MonoBehaviour
     public int startingFoodCount = 1;
     public int foodMaxPrice = 10; // starting prices that change
     public int foodHPGain = 10;
+    public int foodLevelPrice;
 
-
-    [Header("Buttons")]
     public GameObject fishButton;
     public GameObject foodLevelButton;
     public GameObject foodButton;
-    public GameObject feederButton;
+
+    [Header("Unlocker Buttons")]
+    public GameObject unlockFeederButton;
+    public GameObject unlockLaserFoodButton;
+    public int unlockFeederPrice = 1000;
+    public int unlockLaserFoodPrice = 200;
+    private bool laserFoodUnlocked = false;
 
     [Header("TMP and Gameobjects")]
     public GameObject shop;
@@ -37,7 +41,17 @@ public class Shop : MonoBehaviour
     public GameObject foodPriceText; // where it says how much buying a food costs
     public GameObject foodLevelText; 
     public GameObject foodHPText; 
+    public GameObject foodDropdown;
+    [Header("Feeder")]
+    public int feederSpeedUpgradePrice = 50;
+    public GameObject feeder;
     public GameObject feederPriceText;
+    public GameObject feederArea;
+    public GameObject feederUpgradeSpeedText;
+    public GameObject feederRateText;
+    public GameObject feederLevelText;
+    [Header("Misc")]
+    public GameObject unlockLaserFoodPriceText;
     public GameObject foodDecoration;
     public GameObject laserFoodDecoration;
     public GameObject combatLevelText;
@@ -88,7 +102,7 @@ public class Shop : MonoBehaviour
                 laserFoodDecoration.SetActive(false);
             }
             // if dropping laser food
-            else if (value == 1)
+            else if (value == 1 && laserFoodUnlocked)
             {
                 this.foodToSpawn = gm.dataStore.laserFood;
                 this.foodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Cost $" + spawnLaserFoodPrice);
@@ -140,7 +154,6 @@ public class Shop : MonoBehaviour
             ShowFoodPrice(false);
         }
     }
-    public int foodLevelPrice = 50;
 
     // if true, show level, if false, show price
     public void ShowFoodPrice(bool levelSide)
@@ -154,17 +167,6 @@ public class Shop : MonoBehaviour
         }
 
     }
-
-    private int feederPrice;
-    public int FeederPrice{
-        get { return feederPrice; }
-        set {
-            feederPrice = value;
-            feederPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + feederPrice.ToString());
-        }
-    }
-
-    [HideInInspector] public int feederCount;
 
     private float money;
     public float Money{
@@ -200,17 +202,22 @@ public class Shop : MonoBehaviour
             child.gameObject.SetActive(false);
         }
         fishButton.SetActive(true);
+        unlockLaserFoodButton.SetActive(false);
+        unlockFeederButton.SetActive(false);
+        feederArea.SetActive(false);
 
         fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + FishPrice.ToString());
         foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
+        feederPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + unlockFeederPrice.ToString());
+        unlockLaserFoodPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + unlockLaserFoodPrice.ToString());
 
         foodToSpawn = gm.dataStore.foods[0];
         pelletToSpawn = gm.dataStore.foods[0];
         Money = startMoney;
         PassiveIncome = 0;
-        FeederPrice = startFeederPrice;
         FoodMax = 1;
         FoodsOnScreenDisplay = 0;
+        foodLevelPrice = 50; // like ok this is needed i guess
     }
 
     void Update()
@@ -223,8 +230,8 @@ public class Shop : MonoBehaviour
         if (AttemptPurchase(FishPrice)){
             DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Fish/Generic Fish", typeof(GameObject)), true,true);
             foodButton.SetActive(true);
-            feederButton.SetActive(true);
-
+            if(unlockFeederButton) unlockFeederButton.SetActive(true);
+            if(unlockLaserFoodButton) unlockLaserFoodButton.SetActive(true);
         }
     }
 
@@ -277,17 +284,46 @@ public class Shop : MonoBehaviour
             FoodLevel++;
         }
     }
-
-    public void BuyFeeder(){
-        if(AttemptPurchase(feederPrice))
-        {
+// Feeder
+    public void UpgradeFeederSpeed()
+    {
+        if(AttemptPurchase(feederSpeedUpgradePrice)){
             gm.audioManager.PlaySound("Buy Upgrade");
-            feederCount++;
-            Instantiate(gm.dataStore.feeder, new Vector3(0.78f, 20.92f, gm.fishLayerZ), Quaternion.identity);
-            FeederPrice = (int)(feederPrice+feederPriceIncreaseRate);
+            Feeder f = feeder.GetComponent<Feeder>();
+            f.level++;
+            this.feederSpeedUpgradePrice = gm.scalingManager.ScaleFeederSpeedUpgradePrice(f.level);
+            UpdateFeederDisplay();
         }
     }
-
+    public void UpdateFeederDisplay()
+    {
+        Feeder f = feeder.GetComponent<Feeder>();
+        f.DropRate = gm.scalingManager.ScaleFeederDropRate(f.level);
+        feederLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " +f.level.ToString());
+        feederUpgradeSpeedText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Upgrade " +feederSpeedUpgradePrice.ToString() + "$");
+        SetText(feederRateText, ((60f/f.dropRate)).ToString("F2") + " food/min");
+    }
+    public void UnlockFeeder(){
+        if(AttemptPurchase(unlockFeederPrice))
+        {
+            gm.audioManager.PlaySound("Buy Upgrade");
+            this.feederArea.gameObject.SetActive(true);
+            Destroy(this.unlockFeederButton);
+            UpdateFeederDisplay();
+        }
+    }
+//
+    public void UnlockLaserFood(){
+        if(AttemptPurchase(unlockLaserFoodPrice))
+        {
+            gm.audioManager.PlaySound("Buy Upgrade");
+            this.laserFoodUnlocked = true;
+            Destroy(this.unlockLaserFoodButton);
+            List<string> newLaserItem = new List<string>();
+            newLaserItem.Add("Laser");
+            foodDropdown.GetComponent<TMP_Dropdown>().AddOptions(newLaserItem);
+        }
+    }
     public bool AttemptPurchase(int cost)
     {
         if (cost <= Money){
@@ -327,6 +363,11 @@ public class Shop : MonoBehaviour
     {
         foodToSpawn.GetComponent<Food>().healthGain = foodHPGain;
         return Instantiate (foodToSpawn, position, foodToSpawn.transform.rotation);
+    }
+
+    public void SetText(GameObject tmpObject, string s)
+    {
+        tmpObject.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
     }
 
     

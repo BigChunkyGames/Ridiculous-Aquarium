@@ -20,22 +20,29 @@ public class ScalingManager : MonoBehaviour
         return 100*friendlyFishCount;
         //(int)(100*(Mathf.Pow(2, friendlyFishCount)));
     }
-
 // FOOD
     public int ScaleFoodMaxPrice(int currentFoodMax)
     {
         return currentFoodMax * 10;
     }
-
     public int ScaleFoodHPGain(int currentFoodLevel)
     {
         return 10 + 2*currentFoodLevel;
     }
-
     // price for next food level
     public int ScaleFoodLevelPrice(int currentFoodLevel)
     {
         return 50*currentFoodLevel;
+    }
+// FEEDER
+    // seconds between drops
+    public float ScaleFeederDropRate(int feederLevel)
+    {
+        return 60f/((float)feederLevel);
+    }
+    public int ScaleFeederSpeedUpgradePrice(int feederLevel)
+    {
+        return feederLevel * 50;
     }
 
     

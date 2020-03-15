@@ -49,6 +49,11 @@ public class PlayerInput : MonoBehaviour
                     hit.transform.gameObject.GetComponent<EnemyFish>().TakeDamage(gm.playerInput.attackDamage);
                     gm.audioManager.PlaySound("Shoot Fish");
                 }
+                // poke fish
+                else if(hit.transform.tag == "Fish")
+                {
+                    hit.transform.gameObject.GetComponent<Fish>().GetPoked();
+                }
                 else
                 {
                     // if clicked on something else, try to place food

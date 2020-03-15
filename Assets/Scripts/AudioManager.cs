@@ -71,6 +71,12 @@ public class AudioManager : MonoBehaviour
         {
             ac = GetRandomClip("Audio/FX/fish death");
         }
+        else if (name == "Poke")
+        {
+            ac = (AudioClip)Resources.Load("Audio/FX/bubble 1");
+            audioSourceFX.volume = .4f;
+            audioSourceFX.pitch = 3;
+        }
         else
         {
             Debug.Log("hey that wasn't one of the audio options.");
