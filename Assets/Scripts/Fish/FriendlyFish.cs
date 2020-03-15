@@ -10,7 +10,7 @@ public class FriendlyFish : Fish
     [Tooltip("seconds between drops")]
     public float dropRate = 7f;
     [Range(.1f,10)]
-    private float passiveIncomePerMinute = 15; 
+    private int passiveIncomePerMinute = 15; 
 
     [Header("Specialization")]
     public FishTypeEnum fishType;
@@ -76,7 +76,7 @@ public class FriendlyFish : Fish
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
         InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
         gm.shop.FriendlyFishCount++;
-        gm.shop.MoneyRate += this.passiveIncomePerMinute;
+        gm.shop.PassiveIncome += this.passiveIncomePerMinute;
         this.FishType = this.fishType; // trigger setter
     }
 
@@ -84,7 +84,7 @@ public class FriendlyFish : Fish
     {
         if(laser!=null)Destroy(laser.gameObject);
         gm.shop.FriendlyFishCount--;
-        gm.shop.MoneyRate -= this.passiveIncomePerMinute;
+        gm.shop.PassiveIncome -= this.passiveIncomePerMinute;
     }
 
     void FixedUpdate()
@@ -169,7 +169,6 @@ public class FriendlyFish : Fish
     {
         currentHealth += food.GetComponent<Food>().healthGain;
         if(currentHealth > maxHealth) currentHealth = maxHealth;
-
         timesEatenSinceLastGrowth++;
         if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
             Grow();
@@ -177,7 +176,6 @@ public class FriendlyFish : Fish
         Destroy(food);
         Hungry = false;
         targetFood = null;
-        
         gm.audioManager.PlaySound("Fish Ate");
         
         // change type
@@ -190,9 +188,12 @@ public class FriendlyFish : Fish
     private void Grow(){
         timesEatenSinceLastGrowth = 0;
         growthLevel++;
-        float passiveIncomeToChangeBy = this.passiveIncomePerMinute + this.growthLevel * 15;
-        this.passiveIncomePerMinute += passiveIncomeToChangeBy;
-        gm.shop.MoneyRate += passiveIncomeToChangeBy;
+
+        // change passive income
+        gm.shop.PassiveIncome -= this.passiveIncomePerMinute;
+        this.passiveIncomePerMinute = gm.scalingManager.ScaleFishPassiveIncome(growthLevel);
+        gm.shop.PassiveIncome += this.passiveIncomePerMinute;
+
         float size = transform.localScale.x * growthScaleMultiplier;
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
         audioSource.pitch = 1.5f - .1f * growthLevel;

@@ -17,11 +17,12 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void PlaySound(string name, bool uniquePitch = true, float basePitch = 1f, float baseVolume = 1f)
+    public void PlaySound(string name)
     {
         AudioClip ac;
-        audioSourceFX.volume = baseVolume;
-        audioSourceFX.pitch = basePitch;
+        audioSourceFX.volume = 1;
+        audioSourceFX.pitch = 1;
+        bool uniquePitch = true;
 
         if (name == "Coin")
         {
@@ -47,6 +48,8 @@ public class AudioManager : MonoBehaviour
         else if (name == "Error")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/decline");
+            audioSourceFX.volume = .7f;
+            uniquePitch = false;
         }
         else if (name == "Combat Start")
         {
@@ -55,11 +58,13 @@ public class AudioManager : MonoBehaviour
         else if (name == "Combat Over")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/siz");
+            audioSourceFX.volume = .5f;
+            uniquePitch = false;
         }
         else if (name == "Buy Upgrade")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/wah");
-            audioSourceFX.volume = .7f;
+            audioSourceFX.volume = .1f;
             uniquePitch = false;
         }
         else if (name == "Fish Death")
@@ -97,7 +102,7 @@ public class AudioManager : MonoBehaviour
     {
         audioSourceLoops.clip = startLoop;
         FadeAudioLoops(5, true);
-        PlaySound("Combat Over", false, 1f, .5f);
+        PlaySound("Combat Over");
     }
 
     /// <summary>

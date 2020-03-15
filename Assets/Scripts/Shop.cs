@@ -17,8 +17,7 @@ public class Shop : MonoBehaviour
     public int spawnLaserFoodPrice = 100;
     public int currentSpawnFoodPrice = 3;
     public int startingFoodCount = 1;
-    public int foodCountPrice = 10; // starting prices that change
-    public float foodCountPriceIncreaseRate = 10f; // linear
+    public int foodMaxPrice = 10; // starting prices that change
     public int foodHPGain = 10;
 
 
@@ -31,10 +30,10 @@ public class Shop : MonoBehaviour
     [Header("TMP and Gameobjects")]
     public GameObject shop;
     public GameObject moneyDisplay;
-    public GameObject moneyRateDisplay;
+    public GameObject passiveIncomeDisplay;
     public GameObject foodsDisplay;
     public GameObject fishPriceText;
-    public GameObject foodCountPriceText; // where it says how much to get more food
+    public GameObject foodMaxPriceText; // where it says how much to get more food
     public GameObject foodPriceText; // where it says how much buying a food costs
     public GameObject foodLevelText; 
     public GameObject foodHPText; 
@@ -48,7 +47,7 @@ public class Shop : MonoBehaviour
     private Transform[] buttons;
     private GameObject[] foodsOnScreen = new GameObject[0];
     [HideInInspector]public GameObject foodToSpawn; // what gets spawned when you click
-    public GameObject pelletToSpawn; // the visual level of the pellet
+    [HideInInspector]public GameObject pelletToSpawn; // the visual level of the pellet
 
     private int fishPrice = 100;
     private int FishPrice
@@ -66,8 +65,7 @@ public class Shop : MonoBehaviour
         set{
             friendlyFishCount = value;
             Debug.Log("Fish in tank: " + friendlyFishCount);
-            //FishPrice = (int)(100*(Mathf.Pow(2, friendlyFishCount)));
-            FishPrice = (int)(100*friendlyFishCount);
+            FishPrice = gm.scalingManager.ScaleFishPrice(friendlyFishCount);
             }
         get{
             return friendlyFishCount;
@@ -108,20 +106,19 @@ public class Shop : MonoBehaviour
         get{return foodsOnScreenDisplay;}
         set{
             foodsOnScreenDisplay = value;
-            if(foodsOnScreenDisplay > foodCount) foodsOnScreenDisplay = foodCount;
+            if(foodsOnScreenDisplay > foodMax) foodsOnScreenDisplay = foodMax;
 
-            foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
+            foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodMax);
         }
     }
 
-    private int foodCount;
-    public int FoodCount { // amount of food player can add to screen
-        get{return foodCount;}
+    private int foodMax;
+    public int FoodMax { // amount of food player can add to screen
+        get{return foodMax;}
         set{
-            foodCount = value;
-            foodCountPrice = (int)(foodCountPrice + foodCountPriceIncreaseRate);
-            foodCountPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
-            foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodCount);
+            foodMax = value;
+            foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
+            foodsDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodsOnScreenDisplay + "/" + FoodMax);
         }
     }
 
@@ -130,8 +127,8 @@ public class Shop : MonoBehaviour
         get{return this.foodLevel;}
         set{
             foodLevel = value;
-            foodHPGain = 10 + 2*foodLevel;
-            foodLevelPrice += 100;
+            foodHPGain = gm.scalingManager.ScaleFoodHPGain(foodLevel);
+            foodLevelPrice = gm.scalingManager.ScaleFoodLevelPrice(foodLevel);
 
             // every 5 levels, drop a higher grade food
             int foodToGet = foodLevel / 5;
@@ -143,7 +140,7 @@ public class Shop : MonoBehaviour
             ShowFoodPrice(false);
         }
     }
-    public int foodLevelPrice = 150;
+    public int foodLevelPrice = 50;
 
     // if true, show level, if false, show price
     public void ShowFoodPrice(bool levelSide)
@@ -179,13 +176,13 @@ public class Shop : MonoBehaviour
         }
     }
 
-    private float moneyRate; // money gained per minute
-    public float MoneyRate{
-        get{ return moneyRate; }
+    private float passiveIncome; // money gained per minute
+    public float PassiveIncome{
+        get{ return passiveIncome; }
         set
         {
-            moneyRate = value;
-            moneyRateDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + Mathf.RoundToInt(moneyRate).ToString() + " / min");
+            passiveIncome = value;
+            passiveIncomeDisplay.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + Mathf.RoundToInt(passiveIncome).ToString() + " / min");
         }
     }
 
@@ -205,20 +202,20 @@ public class Shop : MonoBehaviour
         fishButton.SetActive(true);
 
         fishPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + FishPrice.ToString());
-        foodCountPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodCountPrice.ToString());
+        foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
 
         foodToSpawn = gm.dataStore.foods[0];
         pelletToSpawn = gm.dataStore.foods[0];
         Money = startMoney;
-        MoneyRate = 0;
+        PassiveIncome = 0;
         FeederPrice = startFeederPrice;
-        FoodCount = 1;
+        FoodMax = 1;
         FoodsOnScreenDisplay = 0;
     }
 
     void Update()
     {
-        Money += moneyRate * Time.deltaTime/ (60f );
+        Money += passiveIncome * Time.deltaTime/ (60f );
     }
 
     public void BuyRandomFish()
@@ -266,10 +263,11 @@ public class Shop : MonoBehaviour
         return spawned;
     }
 
-    public void BuyFoodCount(){
-        if (AttemptPurchase(foodCountPrice)){
+    public void BuyFoodMaxIncrease(){
+        if (AttemptPurchase(foodMaxPrice)){
             gm.audioManager.PlaySound("Buy Upgrade");
-            FoodCount++;
+            FoodMax++;
+            foodMaxPrice = gm.scalingManager.ScaleFoodMaxPrice(FoodMax);
         }
     }
 
@@ -299,7 +297,7 @@ public class Shop : MonoBehaviour
         else
         {
             Debug.Log("Not enough money!");
-            gm.audioManager.PlaySound("Error", false, 1f, .8f);
+            gm.audioManager.PlaySound("Error");
             moneyDisplay.GetComponent<Animation>().Play();
             return false;
         }
@@ -310,7 +308,7 @@ public class Shop : MonoBehaviour
     {
         foodsOnScreen = GameObject.FindGameObjectsWithTag("Food");
         FoodsOnScreenDisplay = foodsOnScreen.Length;
-        if (foodsOnScreen.Length < gm.shop.FoodCount){ // if amount of foods on screen less than the amount allowed
+        if (foodsOnScreen.Length < gm.shop.FoodMax){ // if amount of foods on screen less than the amount allowed
             if(gm.shop.AttemptPurchase(currentSpawnFoodPrice)) {
                 // add 2.1 for distance offset because fuck
                 Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y + 2.1f, gm.fishLayerZ);
@@ -319,15 +317,15 @@ public class Shop : MonoBehaviour
             }
         }
         else{// if amount of foods on screen more than or =to the amount allowed
-            gm.audioManager.PlaySound("Error", false, 1f, .8f);
+            gm.audioManager.PlaySound("Error");
             foodsDisplay.GetComponent<Animation>().Play();
         }
-        FoodCount = FoodCount + 0; // trigger setter
+        FoodMax = FoodMax + 0; // trigger setter
     }
 
     public GameObject PlayerSpawnFood(Vector3 position)
     {
-        foodToSpawn.GetComponent<Food>().nourishment = foodHPGain;
+        foodToSpawn.GetComponent<Food>().healthGain = foodHPGain;
         return Instantiate (foodToSpawn, position, foodToSpawn.transform.rotation);
     }
 

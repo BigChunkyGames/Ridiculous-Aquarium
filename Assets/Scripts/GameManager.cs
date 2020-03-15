@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public CombatManager combatManager;
     [HideInInspector] public DataStore dataStore;
     [HideInInspector] public PlayerInput playerInput;
+    [HideInInspector] public ScalingManager scalingManager;
 
     [HideInInspector] public float leftBoundary;
     [HideInInspector] public float rightBoundary;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         combatManager = (CombatManager)FindObjectOfType<CombatManager>();
         dataStore = this.GetComponent<DataStore>();
         playerInput = this.GetComponent<PlayerInput>();
+        scalingManager = this.GetComponent<ScalingManager>();
     }
     
 }

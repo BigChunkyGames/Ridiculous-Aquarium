@@ -19,7 +19,7 @@ public class Feeder : MonoBehaviour
     public void DropFood(){
         // only drop as much food as food count * feeder count
         GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
-        if (foods.Length >= (gm.shop.FoodCount - 1) * gm.shop.feederCount){
+        if (foods.Length >= (gm.shop.FoodMax - 1) * gm.shop.feederCount){
             return;
         }
         GameObject dropped = Instantiate (gm.shop.pelletToSpawn, gameObject.transform.position, gm.shop.pelletToSpawn.transform.rotation);

@@ -62,7 +62,7 @@ public class PlayerInput : MonoBehaviour
     {
         Debug.Log("Picked up a " + drop);
         gm.shop.Money += drop.GetComponent<Dropable>().worth;
-        gm.audioManager.PlaySound("Coin", true, 1, 1f);
+        gm.audioManager.PlaySound("Coin");
         Destroy(drop);
     }
 }

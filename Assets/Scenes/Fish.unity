@@ -678,8 +678,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.2993, y: -50.314995}
-  m_SizeDelta: {x: 90.04, y: 21.99}
+  m_AnchoredPosition: {x: 143.51, y: -50.314995}
+  m_SizeDelta: {x: 92.42, y: 21.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &196322875
 MonoBehaviour:
@@ -902,7 +902,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 260
+  m_textAlignment: 257
   m_characterSpacing: 0.67
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.55399096, y: -5.5980697, z: 20.574408, w: -18.43751}
+  m_margin: {x: 8.74, y: -5.5980697, z: 20.574408, w: -18.43751}
   m_textInfo:
     textComponent: {fileID: 220691541}
     characterCount: 6
@@ -1027,7 +1027,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1782859685}
-        m_MethodName: BuyFoodCount
+        m_MethodName: BuyFoodMaxIncrease
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1049,7 +1049,7 @@ GameObject:
   - component: {fileID: 381232959}
   - component: {fileID: 381232958}
   m_Layer: 5
-  m_Name: MoneyGainRate
+  m_Name: PassiveIncomeDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1393,6 +1393,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: op combat test fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 7572622905054578751, guid: d0077e0dddfd87a45b32fe4c2777ad6a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7574408920204824245, guid: d0077e0dddfd87a45b32fe4c2777ad6a,
         type: 3}
@@ -3791,7 +3796,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 175.09, y: 66.85}
+  m_SizeDelta: {x: 185.78, y: 66.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153274485
 MonoBehaviour:
@@ -3975,8 +3980,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 23.89
-  m_fontSizeBase: 23.89
+  m_fontSize: 20.7
+  m_fontSizeBase: 20.7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4202,6 +4207,7 @@ GameObject:
   - component: {fileID: 1307474301}
   - component: {fileID: 1307474302}
   - component: {fileID: 1307474303}
+  - component: {fileID: 1307474304}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4228,6 +4234,7 @@ MonoBehaviour:
   combatManager: {fileID: 0}
   dataStore: {fileID: 0}
   playerInput: {fileID: 0}
+  scalingManager: {fileID: 0}
   leftBoundary: 0
   rightBoundary: 0
   topBoundary: 0
@@ -4278,7 +4285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af06fcf72cb8eb64bb895e05f8edd6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsBetweenCombat: 1
+  secondsBetweenCombat: 180
   warningTimeOffset: 10
   combatLevel: 1
   startCombatNow: 0
@@ -4314,6 +4321,19 @@ MonoBehaviour:
   - {fileID: 7494302567594256036, guid: d1f347ba784c67d47aee4f4a5864d2ee, type: 3}
   - {fileID: 7494302567594256036, guid: f17b0f1d901c5c34fa010546199e6918, type: 3}
   - {fileID: 7494302567594256036, guid: f17b0f1d901c5c34fa010546199e6918, type: 3}
+--- !u!114 &1307474304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307474298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782f313ffeb524640b93aa4b70c6114b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exponentialScalar: 1.18
 --- !u!1 &1337179874
 GameObject:
   m_ObjectHideFlags: 0
@@ -5417,7 +5437,7 @@ GameObject:
   - component: {fileID: 1693138813}
   - component: {fileID: 1693138812}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Combat level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5439,7 +5459,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 55.345, y: 0}
+  m_AnchoredPosition: {x: 57.5, y: 0}
   m_SizeDelta: {x: 110.69, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1693138812
@@ -5759,7 +5779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219b5cec08010f24f952311e3eb3ad6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMoney: 100000
+  startMoney: 9000
   startFeederPrice: 1000
   feederPriceIncreaseRate: 500
   spawnedFishDownwardForce: -5
@@ -5767,8 +5787,7 @@ MonoBehaviour:
   spawnLaserFoodPrice: 100
   currentSpawnFoodPrice: 3
   startingFoodCount: 1
-  foodCountPrice: 10
-  foodCountPriceIncreaseRate: 10
+  foodMaxPrice: 10
   foodHPGain: 10
   fishButton: {fileID: 580019807}
   foodLevelButton: {fileID: 196322873}
@@ -5776,10 +5795,10 @@ MonoBehaviour:
   feederButton: {fileID: 105716428}
   shop: {fileID: 722749016}
   moneyDisplay: {fileID: 220691539}
-  moneyRateDisplay: {fileID: 381232956}
+  passiveIncomeDisplay: {fileID: 381232956}
   foodsDisplay: {fileID: 1264499136}
   fishPriceText: {fileID: 29535959}
-  foodCountPriceText: {fileID: 4447155140910974759}
+  foodMaxPriceText: {fileID: 4447155140910974759}
   foodPriceText: {fileID: 80492762}
   foodLevelText: {fileID: 488794436}
   foodHPText: {fileID: 525283569}
@@ -6163,7 +6182,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1979202974}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -9.3}
+  m_LocalPosition: {x: 0, y: 0, z: -9.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1693138811}
@@ -6172,8 +6191,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 346.22, y: -40.9}
-  m_SizeDelta: {x: -0.23, y: -78.44}
+  m_AnchoredPosition: {x: 345.72, y: -41.809998}
+  m_SizeDelta: {x: 0.77, y: -76.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1979202977
 MonoBehaviour:
@@ -6773,8 +6792,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.6, y: -23.3}
-  m_SizeDelta: {x: 93.14, y: 18.58}
+  m_AnchoredPosition: {x: 143.44, y: -23.3}
+  m_SizeDelta: {x: 96.39, y: 18.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4447155140910974759
 GameObject:
@@ -6788,7 +6807,7 @@ GameObject:
   - component: {fileID: 1108217889474484201}
   - component: {fileID: 7903093215564550693}
   m_Layer: 5
-  m_Name: foodCountPrice
+  m_Name: foodMaxPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7090,8 +7109,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 13.1
-  m_fontSizeBase: 13.1
+  m_fontSize: 11.93
+  m_fontSizeBase: 11.93
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
