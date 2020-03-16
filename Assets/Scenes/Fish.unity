@@ -1844,7 +1844,7 @@ PrefabInstance:
     - target: {fileID: 7574408920204824245, guid: d0077e0dddfd87a45b32fe4c2777ad6a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.528458
+      value: 8.68
       objectReference: {fileID: 0}
     - target: {fileID: 7574408920204824245, guid: d0077e0dddfd87a45b32fe4c2777ad6a,
         type: 3}
@@ -1854,7 +1854,7 @@ PrefabInstance:
     - target: {fileID: 7574408920204824245, guid: d0077e0dddfd87a45b32fe4c2777ad6a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.937483
+      value: 11.92
       objectReference: {fileID: 0}
     - target: {fileID: 7574408920204824245, guid: d0077e0dddfd87a45b32fe4c2777ad6a,
         type: 3}
@@ -5330,7 +5330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af06fcf72cb8eb64bb895e05f8edd6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsBetweenCombat: 180
+  secondsBetweenCombat: 1
   warningTimeOffset: 10
   combatLevel: 1
   startCombatNow: 0
@@ -5353,19 +5353,14 @@ MonoBehaviour:
   feeder: {fileID: 7005875839833853184, guid: c7f5dcf1b51cf6143851e5989e17e352, type: 3}
   laserFood: {fileID: 1063811129062192401, guid: 93cfbc1e78913db44aa0f10909255437,
     type: 3}
+  hitmarkerEffect: {fileID: 1104356152687995890, guid: f45e9f479c157ed419682a97efa7addc,
+    type: 3}
   friendlyFish: []
   evilFish:
   - {fileID: 7268090258474223499, guid: 2b558afdf88908f4e9a87582cd2e1ebe, type: 3}
   - {fileID: 7268090258474223499, guid: b915284551d91a24ba1e890520c4976a, type: 3}
   - {fileID: 7268090258474223499, guid: 7ff93980778cfe84b8d7a74e3a32592b, type: 3}
-  drops:
-  - {fileID: 4354784350529367102, guid: 2caf770915f9fe24397d106ba236c035, type: 3}
-  - {fileID: 4354784350529367102, guid: 71d9e5d685fa26747852c578a1dc279b, type: 3}
-  - {fileID: 4354784350529367102, guid: 5bd3d193cede0d14983bb2548392d434, type: 3}
-  - {fileID: 7494302567594256036, guid: 13bb18331a69e564f811386415b8d39b, type: 3}
-  - {fileID: 7494302567594256036, guid: d1f347ba784c67d47aee4f4a5864d2ee, type: 3}
-  - {fileID: 7494302567594256036, guid: f17b0f1d901c5c34fa010546199e6918, type: 3}
-  - {fileID: 7494302567594256036, guid: f17b0f1d901c5c34fa010546199e6918, type: 3}
+  treasures: []
 --- !u!114 &1307474304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5540,7 +5535,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-335778
+  m_Name: pb_Mesh243698
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5822,7 +5817,7 @@ PrefabInstance:
     - target: {fileID: 7268090258474223499, guid: 7ff93980778cfe84b8d7a74e3a32592b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7268090258474223495, guid: 7ff93980778cfe84b8d7a74e3a32592b,
         type: 3}
@@ -6717,7 +6712,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-335802
+  m_Name: pb_Mesh243720
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

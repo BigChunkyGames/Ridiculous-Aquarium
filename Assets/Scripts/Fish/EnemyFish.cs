@@ -118,7 +118,7 @@ public class EnemyFish : Fish
     public void EnemyDie() {
         gm.combatManager.EnemyWasDestroyed();
         //Drop dropable here or it won't work
-        GameObject drop = gm.dataStore.drops[dropLevel];
+        GameObject drop = gm.dataStore.treasures[dropLevel];
         Vector3 ds = dropSpot.transform.position;
         Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
         GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);

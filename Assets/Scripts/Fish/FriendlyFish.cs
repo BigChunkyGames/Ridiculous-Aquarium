@@ -83,8 +83,12 @@ public class FriendlyFish : Fish
     void OnDestroy()
     {
         if(laser!=null)Destroy(laser.gameObject);
-        gm.shop.FriendlyFishCount--;
         gm.shop.PassiveIncome -= this.passiveIncomePerMinute;
+    }
+
+    public void FriendlyFishDie()
+    {
+        gm.shop.FriendlyFishCount--;
     }
 
     void FixedUpdate()
@@ -131,24 +135,23 @@ public class FriendlyFish : Fish
         seekingFood = false;
     }
 
-    public void DropDropable(){
+    public void DropTreasure(){
         //growth   // 0 1 2 3 4 5 6 7 8 9...
         //drops    //   0 1 2 3 4 5
         // count = 6
 
         if(growthLevel > 0){
             // check that growth level-1 under size of list
-            if(growthLevel-1 < gm.dataStore.drops.Count)
+            if(growthLevel-1 < gm.dataStore.treasures.Count)
             {
-                if(gm.dataStore.drops[growthLevel-1] != null)
+                if(gm.dataStore.treasures[growthLevel-1] != null)
                 {
-                    Drop(gm.dataStore.drops[growthLevel-1]);
+                    Drop(gm.dataStore.treasures[growthLevel-1]);
                     Debug.Log("Dropping #" + (growthLevel-1));
-
                 }  
                 return;
             }
-            Drop(gm.dataStore.drops[gm.dataStore.drops.Count-1]);
+            Drop(gm.dataStore.treasures[gm.dataStore.treasures.Count-1]);
         }
     }
 

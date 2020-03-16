@@ -40,7 +40,7 @@ public class PlayerInput : MonoBehaviour
             // if the ray hits
             if (Physics.Raycast (ray, out hit)) {
                 if (hit.transform.tag == "Dropable" ){
-                    PickupDropable(hit.transform.gameObject);
+                    PickupTreasure(hit.transform.gameObject);
                     return;
                 }
                 // shoot enemy
@@ -48,6 +48,8 @@ public class PlayerInput : MonoBehaviour
                 {
                     hit.transform.gameObject.GetComponent<EnemyFish>().TakeDamage(gm.playerInput.attackDamage);
                     gm.audioManager.PlaySound("Shoot Fish");
+                    Vector3 hitPoint = ray.origin + ray.direction * hit.distance;
+                    Instantiate(gm.dataStore.hitmarkerEffect, hitPoint, Quaternion.identity);
                 }
                 // poke fish
                 else if(hit.transform.tag == "Fish")
@@ -63,11 +65,11 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    void PickupDropable(GameObject drop)
+    void PickupTreasure(GameObject treasure)
     {
-        Debug.Log("Picked up a " + drop);
-        gm.shop.Money += drop.GetComponent<Dropable>().worth;
+        Debug.Log("Picked up a " + treasure);
+        gm.shop.Money += gm.scalingManager.ScaleTreasureWorth(treasure.GetComponent<Treasure>().level);
         gm.audioManager.PlaySound("Coin");
-        Destroy(drop);
+        Destroy(treasure);
     }
 }

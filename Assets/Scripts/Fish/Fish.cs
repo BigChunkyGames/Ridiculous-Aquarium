@@ -34,7 +34,7 @@ public class Fish : MonoBehaviour
             hungry = value;
             if(hungry == false)
             {
-                rend.material.SetColor("_Color", Color.white);
+                rend.material.SetColor("_Color", startColor);
                 CancelInvoke("BecomeHungry");
                 CancelInvoke("Starve");
                 Invoke("BecomeHungry", hungerTimer);  
@@ -55,6 +55,7 @@ public class Fish : MonoBehaviour
     public Color hungryColor;
     public Color deadColor;
     private Color gone = new Color(0f, 0f, 0f, 0f);
+    private Color startColor;
      
     
     // the thing to rotate
@@ -127,6 +128,7 @@ public class Fish : MonoBehaviour
         currentHealth = maxHealth;
         originalRotation = modelContainer.transform.rotation;
         flippedRotation = originalRotation * Quaternion.Euler(180f*flipAxis.x,180f*flipAxis.y,180f*flipAxis.z);
+        startColor = rend.material.color;
           
         Invoke("BecomeHungry", hungerTimer);  
     }
@@ -270,6 +272,10 @@ public class Fish : MonoBehaviour
         if(GetComponent<EnemyFish>())
         {
             GetComponent<EnemyFish>().EnemyDie();
+        }
+        if(GetComponent<FriendlyFish>())
+        {
+            GetComponent<FriendlyFish>().FriendlyFishDie();
         }
     }
 

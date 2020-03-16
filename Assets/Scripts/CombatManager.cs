@@ -23,49 +23,43 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
-
         PlanNextCombat();
         if(startCombatNow)
         {
             StartCombat();
         }
-        
     }
 
     private void StartCombat()
     {
-        // build list of baddies
+        inCombat = true;
         List<GameObject> evilFishToSpawn = new List<GameObject>();
-        // make a big fish for each 5 levels
-        if(combatLevel % 5 == 0)
+        int points = combatLevel;
+        // build list of baddies based off point system with highest prioritized
+        // but round robin 
+        while(points > 0)
         {
-            for (int i = 0; i < (combatLevel)/5; i++)
+            if(points >= 5 )
             {
+                points-=5;
                 evilFishToSpawn.Add(gm.dataStore.evilFish[2]);
             }
-        }
-        // make a med fish for each 3 level
-        if(combatLevel % 3 == 0)
-        {
-            for (int i = 0; i < (combatLevel)/3; i++)
+            if(points >= 3)
             {
+                points-=3;
                 evilFishToSpawn.Add(gm.dataStore.evilFish[1]);
             }
+            if(points >= 1)
+            {
+                points-=1;
+                evilFishToSpawn.Add(gm.dataStore.evilFish[0]);
+            }
         }
-
-        // make a little fish for each level
-        for (int i = 0; i < combatLevel; i++)
-        {
-            evilFishToSpawn.Add(gm.dataStore.evilFish[0]);
-        }
-        
-        inCombat = true;
-
         // spawn up to combat level enemies
-        for (int i = 0; i < combatLevel; i++)
+        foreach (GameObject evilfish in evilFishToSpawn)
         {
             enemiesInCurrentCombat++;
-            gm.shop.DropSomethingInTheTank(evilFishToSpawn[i],false,true);
+            gm.shop.DropSomethingInTheTank(evilfish,false,true);
         }
         gm.audioManager.CombatTime();
         combatLevel++;
@@ -82,6 +76,7 @@ public class CombatManager : MonoBehaviour
 
     private void PlanNextCombat()
     {
+        Debug.Log("Next combat in " + secondsBetweenCombat.ToString());
         Invoke("ShowWarning", secondsBetweenCombat - warningTimeOffset);
         Invoke("StartCombat", secondsBetweenCombat);
         gm.shop.combatLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " + this.combatLevel);

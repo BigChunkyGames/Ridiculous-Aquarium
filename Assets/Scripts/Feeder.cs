@@ -23,7 +23,6 @@ public class Feeder : MonoBehaviour
     }
 
     public void DropFood(){
-        Debug.Log("tried to drop food. droprate = " + dropRate.ToString());
         GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
         if (foods.Length >= (gm.shop.FoodMax - 1) ){
             return;

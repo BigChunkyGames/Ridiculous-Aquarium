@@ -17,8 +17,7 @@ public class ScalingManager : MonoBehaviour
     // set price of new fish based on fish in tank. 
     public int ScaleFishPrice(int friendlyFishCount)
     {
-        return 100*friendlyFishCount;
-        //(int)(100*(Mathf.Pow(2, friendlyFishCount)));
+        return (int)(100*(Mathf.Pow(exponentialScalar, friendlyFishCount)));
     }
 // FOOD
     public int ScaleFoodMaxPrice(int currentFoodMax)
@@ -44,6 +43,10 @@ public class ScalingManager : MonoBehaviour
     {
         return feederLevel * 50;
     }
-
+// MISC
+    public float ScaleTreasureWorth(int treasureLevel)
+    {
+        return 15 * Mathf.Pow(2, treasureLevel);
+    }
     
 }

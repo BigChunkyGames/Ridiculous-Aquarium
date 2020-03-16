@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1595612361890894247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0037180001, y: 0.0037180001, z: 0.0037180001}
+  m_LocalScale: {x: 0.0028, y: 0.0028, z: 0.0028}
   m_Children:
   - {fileID: 5648016205021735229}
   - {fileID: 7182435197715854018}
@@ -167,7 +167,7 @@ MonoBehaviour:
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 2
-  additionalFoodsNeededToGrow: 2
+  additionalFoodsNeededToGrow: 3
   growthLevel: 0
   maxHealth: 100
   currentHealth: 0
@@ -182,9 +182,8 @@ MonoBehaviour:
   dropSpot: {fileID: 0}
   dropLifetime: 10
   dropRate: 8.89
-  passiveIncomePerMinute: 15
   fishType: 0
-  damageDealtPerFrame: 0.2
+  damageDealtPerFrame: 0.1
 --- !u!1001 &752159852322826072
 PrefabInstance:
   m_ObjectHideFlags: 0
