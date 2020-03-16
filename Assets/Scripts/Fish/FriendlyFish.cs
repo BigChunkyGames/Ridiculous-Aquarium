@@ -11,6 +11,13 @@ public class FriendlyFish : Fish
     public float dropRate = 7f;
     [Range(.1f,10)]
     private int passiveIncomePerMinute = 15; 
+    public int PassiveIncomePerMinute{
+        set{
+            gm.shop.PassiveIncome -= this.passiveIncomePerMinute;
+            this.passiveIncomePerMinute = value;
+            gm.shop.PassiveIncome += this.passiveIncomePerMinute;
+        }
+    }
 
     [Header("Specialization")]
     public FishTypeEnum fishType;
@@ -35,6 +42,7 @@ public class FriendlyFish : Fish
     private LineRenderer laser;
     private GameObject targetEnemy; // enemy
     private Transform eyes;
+    private int lasersEaten = 0;
 
     void AttackTarget()
     {
@@ -74,7 +82,7 @@ public class FriendlyFish : Fish
     void Start()
     {
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
-        InvokeRepeating("DropDropable", 1f, dropRate );   // drop dropable
+        InvokeRepeating("DropTreasure", 1f, dropRate );   // drop dropable
         gm.shop.FriendlyFishCount++;
         gm.shop.PassiveIncome += this.passiveIncomePerMinute;
         this.FishType = this.fishType; // trigger setter
@@ -184,7 +192,10 @@ public class FriendlyFish : Fish
         // change type
         if(food.GetComponent<Food>().foodType == FoodTypeEnum.laser)
         {
+            lasersEaten++;
+            this.PassiveIncomePerMinute = gm.scalingManager.ScaleFishPassiveIncome(growthLevel, true);
             this.FishType = FishTypeEnum.laser;
+            damageDealtPerFrame = gm.scalingManager.ScaleLaserFishDPF(lasersEaten);
         }
     }
 
@@ -193,9 +204,7 @@ public class FriendlyFish : Fish
         growthLevel++;
 
         // change passive income
-        gm.shop.PassiveIncome -= this.passiveIncomePerMinute;
-        this.passiveIncomePerMinute = gm.scalingManager.ScaleFishPassiveIncome(growthLevel);
-        gm.shop.PassiveIncome += this.passiveIncomePerMinute;
+        this.PassiveIncomePerMinute = gm.scalingManager.ScaleFishPassiveIncome(growthLevel);
 
         float size = transform.localScale.x * growthScaleMultiplier;
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size

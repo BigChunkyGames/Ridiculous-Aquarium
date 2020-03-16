@@ -8,7 +8,7 @@ public class PlayerInput : MonoBehaviour
     private RaycastHit hit;
     private Ray ray;
     private bool clicking;
-    public float attackDamage = 5;
+    public float attackDamage = 3;
 
     public bool turboFeedMode = false; // unused
 

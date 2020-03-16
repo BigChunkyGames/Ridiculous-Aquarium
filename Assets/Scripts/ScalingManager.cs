@@ -10,9 +10,15 @@ public class ScalingManager : MonoBehaviour
     }
 // FISH
     // the amount of passive income a fish gives
-    public int ScaleFishPassiveIncome(int level)
+    public int ScaleFishPassiveIncome(int level, bool laserFish=false)
     {
-        return level * 15;
+        int income = level * 15;
+        if(laserFish) income/=3;
+        return income;
+    }
+    public float ScaleLaserFishDPF(int lasersEaten)
+    {
+        return .1f + (lasersEaten-1) * 0.025f;
     }
     // set price of new fish based on fish in tank. 
     public int ScaleFishPrice(int friendlyFishCount)
@@ -37,7 +43,7 @@ public class ScalingManager : MonoBehaviour
     // seconds between drops
     public float ScaleFeederDropRate(int feederLevel)
     {
-        return 60f/((float)feederLevel);
+        return 60f/((float)feederLevel * 2);
     }
     public int ScaleFeederSpeedUpgradePrice(int feederLevel)
     {
