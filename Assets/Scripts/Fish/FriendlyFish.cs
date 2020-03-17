@@ -185,7 +185,6 @@ public class FriendlyFish : Fish
             Grow();
         }
         Destroy(food);
-        Hungry = false;
         targetFood = null;
         gm.audioManager.PlaySound("Fish Ate");
         

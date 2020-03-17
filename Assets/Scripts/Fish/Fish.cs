@@ -38,6 +38,7 @@ public class Fish : MonoBehaviour
                 CancelInvoke("BecomeHungry");
                 CancelInvoke("Starve");
                 Invoke("BecomeHungry", hungerTimer);  
+                starving=false;
             }
             // if becoming hungry
             else
@@ -81,6 +82,7 @@ public class Fish : MonoBehaviour
     [HideInInspector] public Transform dropSpot;
 
     protected GameObject targetFood = null;
+    protected bool starving=false;
 
     // runtime
     protected GameManager gm;
@@ -286,6 +288,7 @@ public class Fish : MonoBehaviour
 
     // called by invokes
     public void BecomeHungry(){
+
         Hungry = true;
         InvokeRepeating("Starve", hungerTimer, .1f);
     }
@@ -294,6 +297,7 @@ public class Fish : MonoBehaviour
     {
         if(!hungry) CancelInvoke("Starve");
         else{
+            starving=true;
             this.TakeDamage(0.5f);
         }
     }

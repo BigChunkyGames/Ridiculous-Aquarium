@@ -26,10 +26,13 @@ public class Shop : MonoBehaviour
 
     [Header("Unlocker Buttons")]
     public GameObject unlockFeederButton;
-    public GameObject unlockLaserFoodButton;
     public int unlockFeederPrice = 1000;
+    public GameObject unlockLaserFoodButton;
     public int unlockLaserFoodPrice = 200;
     private bool laserFoodUnlocked = false;
+    public GameObject winButton;
+    public int winPrice = 60000;
+
 
     [Header("TMP and Gameobjects")]
     public GameObject shop;
