@@ -243,7 +243,7 @@ public class Fish : MonoBehaviour
         Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
         GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
         Destroy(dropped, dropLifetime);
-    }
+}
     
     public void TakeDamage(float damage)
     {

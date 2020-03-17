@@ -178,8 +178,13 @@ public class FriendlyFish : Fish
 
     private void Eat(GameObject food)
     {
+        Hungry=false;
         currentHealth += food.GetComponent<Food>().healthGain;
-        if(currentHealth > maxHealth) currentHealth = maxHealth;
+        healthBar.UpdateDisplay(currentHealth/maxHealth);
+        if(currentHealth >= maxHealth) 
+        {
+            currentHealth = maxHealth;
+        }
         timesEatenSinceLastGrowth++;
         if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
             Grow();
