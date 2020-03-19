@@ -39,7 +39,8 @@ public class PlayerInput : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction * 1000, Color.black);
             // if the ray hits
             if (Physics.Raycast (ray, out hit)) {
-                if (hit.transform.tag == "Dropable" ){
+                // pickup treasure
+                if (hit.transform.tag == "Treasure" ){
                     PickupTreasure(hit.transform.gameObject);
                     return;
                 }
@@ -58,7 +59,7 @@ public class PlayerInput : MonoBehaviour
                 }
                 else
                 {
-                    // if clicked on something else, try to place food
+                // place food
                     gm.shop.TryToBuyFood(hit);
                 }
             }

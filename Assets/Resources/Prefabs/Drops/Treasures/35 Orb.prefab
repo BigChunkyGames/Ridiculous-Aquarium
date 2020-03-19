@@ -18,8 +18,8 @@ GameObject:
   - component: {fileID: 7963615624146283878}
   - component: {fileID: 3185618945468898471}
   m_Layer: 0
-  m_Name: Orb
-  m_TagString: Dropable
+  m_Name: 35 Orb
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9daa472ee70354a976bc637c904541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worth: 666
+  level: -1
 --- !u!64 &7963615624146283878
 MeshCollider:
   m_ObjectHideFlags: 0

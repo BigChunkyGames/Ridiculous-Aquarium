@@ -9,6 +9,7 @@ public class Food : MonoBehaviour
     public float healthGain = 10f;
     // types: default (food), laser
     public FoodTypeEnum foodType = FoodTypeEnum.food;
+    
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));

@@ -111,8 +111,8 @@ GameObject:
   - component: {fileID: 7808920157946791108}
   - component: {fileID: 1633980866942294381}
   m_Layer: 9
-  m_Name: Gold Coin
-  m_TagString: Dropable
+  m_Name: 10 Gold Coin
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9daa472ee70354a976bc637c904541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worth: 35
+  level: -1
 --- !u!65 &7808920157946791108
 BoxCollider:
   m_ObjectHideFlags: 0

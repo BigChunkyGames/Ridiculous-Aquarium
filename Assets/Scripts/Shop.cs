@@ -53,7 +53,6 @@ public class Shop : MonoBehaviour
     public GameObject feederStats;
     public int feederSpeedUpgradePrice = 50;
     public GameObject feeder;
-    public GameObject feederPriceText;
     public GameObject feederUpgradeSpeedText;
     public GameObject feederRateText;
     public GameObject feederLevelText;
@@ -156,6 +155,9 @@ public class Shop : MonoBehaviour
             // prevent list index error
             if(foodToGet >= gm.dataStore.foods.Count) foodToGet = gm.dataStore.foods.Count-1;
             this.pelletToSpawn = gm.dataStore.foods[foodToGet];
+            this.foodDecoration = gm.dataStore.foods[foodToGet];
+            this.foodDecoration.GetComponent<Food>().enabled = false;
+            this.foodDecoration.transform.Find("Model").tag = "Untagged";
             // update food to spawn badly
             FoodToSpawnDropdownIndex = foodToSpawnDropdownIndex;
             ShowFoodPrice(false);
@@ -246,6 +248,7 @@ public class Shop : MonoBehaviour
             // TODO
         } else if(buttonPressed == unlockFoodButton){
             foodStats.SetActive(true);
+            Destroy(unlockFoodButton);
         }
 
     }
@@ -370,6 +373,7 @@ public class Shop : MonoBehaviour
     // triggered when the player clicks the background and spawns a food
     public void TryToBuyFood(RaycastHit hit)
     {
+        if(foodStats.activeSelf == false) return;
         foodsOnScreen = GameObject.FindGameObjectsWithTag("Food");
         FoodsOnScreenDisplay = foodsOnScreen.Length;
         if (foodsOnScreen.Length < gm.shop.FoodMax){ // if amount of foods on screen less than the amount allowed
