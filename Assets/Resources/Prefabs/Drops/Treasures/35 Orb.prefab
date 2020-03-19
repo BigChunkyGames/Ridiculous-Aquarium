@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: -1012281901679960442}
   - component: {fileID: -3912754988048613514}
   - component: {fileID: 2754031984510961648}
-  - component: {fileID: 7963615624146283878}
   - component: {fileID: 3185618945468898471}
+  - component: {fileID: 2517256337189976812}
   m_Layer: 0
   m_Name: 35 Orb
   m_TagString: Treasure
@@ -151,20 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: -1
---- !u!64 &7963615624146283878
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494302567594256036}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 3be870bd3141f9741b70abdfb4242cb6, type: 3}
 --- !u!108 &3185618945468898471
 Light:
   m_ObjectHideFlags: 0
@@ -226,3 +212,16 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!135 &2517256337189976812
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494302567594256036}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1126643
+  m_Center: {x: -0.00000047683716, y: 0, z: -0.00000017881398}

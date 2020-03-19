@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: -1012281901679960442}
   - component: {fileID: -8110111044253586319}
   - component: {fileID: 5565861473408165541}
-  - component: {fileID: -1046576456048118547}
   - component: {fileID: 8702964473018599386}
+  - component: {fileID: 4785137658978501418}
   m_Layer: 0
   m_Name: 25 Ruby
   m_TagString: Treasure
@@ -150,21 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9daa472ee70354a976bc637c904541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: -1
---- !u!64 &-1046576456048118547
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494302567594256036}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 8b4719f3fd5020040bdbb5595fda39aa, type: 3}
+  level: 6
 --- !u!108 &8702964473018599386
 Light:
   m_ObjectHideFlags: 0
@@ -226,3 +212,16 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!135 &4785137658978501418
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494302567594256036}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1547909
+  m_Center: {x: 0.00000017881393, y: -0.0000004321338, z: 0.11594781}

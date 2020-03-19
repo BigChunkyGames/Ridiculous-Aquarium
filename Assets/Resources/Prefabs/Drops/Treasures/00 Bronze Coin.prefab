@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4354784349965303799}
   - component: {fileID: 4354784350303398884}
   - component: {fileID: 4354784350303398887}
-  - component: {fileID: 4354784350303398886}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4354784350303398685}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0.00000011432, y: -0.00000018434, z: 0}
-  m_LocalScale: {x: 1, y: 0.02, z: 1}
+  m_LocalScale: {x: 1, y: 0.07, z: 1}
   m_Children: []
   m_Father: {fileID: 4354784350529367103}
   m_RootOrder: 0
@@ -80,22 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!111 &4354784350303398886
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4354784350303398685}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: ef3676d3009a19943b3409115ac021ea, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: ef3676d3009a19943b3409115ac021ea, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &4354784350529367102
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,8 +91,9 @@ GameObject:
   - component: {fileID: 1293149145921528096}
   - component: {fileID: 836884135320732301}
   - component: {fileID: 8548875616077987226}
-  - component: {fileID: 7808920157946791108}
   - component: {fileID: -2127665580390716644}
+  - component: {fileID: -3762778413032104022}
+  - component: {fileID: 2365807934241003899}
   m_Layer: 9
   m_Name: 00 Bronze Coin
   m_TagString: Treasure
@@ -173,20 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9daa472ee70354a976bc637c904541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: -1
---- !u!65 &7808920157946791108
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4354784350529367102}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.06436077}
-  m_Center: {x: 0, y: 0, z: -0.008608326}
+  level: 1
 --- !u!108 &-2127665580390716644
 Light:
   m_ObjectHideFlags: 0
@@ -248,3 +219,40 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!135 &-3762778413032104022
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4354784350529367102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2365807934241003899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4354784350529367102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff967b7ed48f2441bcf509edf6b889a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimated: 1
+  isRotating: 1
+  isFloating: 0
+  isScaling: 0
+  rotationAngle: {x: 0, y: 1, z: 0}
+  rotationSpeed: 50
+  floatSpeed: 0
+  floatRate: 0
+  startScale: {x: 0, y: 0, z: 0}
+  endScale: {x: 0, y: 0, z: 0}
+  scaleSpeed: 0
+  scaleRate: 0

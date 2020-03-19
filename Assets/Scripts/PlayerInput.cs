@@ -41,7 +41,7 @@ public class PlayerInput : MonoBehaviour
             if (Physics.Raycast (ray, out hit)) {
                 // pickup treasure
                 if (hit.transform.tag == "Treasure" ){
-                    PickupTreasure(hit.transform.gameObject);
+                    PickupTreasure(hit.transform);
                     return;
                 }
                 // shoot enemy
@@ -51,6 +51,7 @@ public class PlayerInput : MonoBehaviour
                     gm.audioManager.PlaySound("Shoot Fish");
                     Vector3 hitPoint = ray.origin + ray.direction * hit.distance;
                     Instantiate(gm.dataStore.hitmarkerEffect, hitPoint, Quaternion.identity);
+                    gm.shop.MakeNumberPoof("   " + gm.playerInput.attackDamage.ToString(), hit.transform.position, false);
                 }
                 // poke fish
                 else if(hit.transform.tag == "Fish")
@@ -66,11 +67,13 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    void PickupTreasure(GameObject treasure)
+    void PickupTreasure(Transform hit)
     {
-        Debug.Log("Picked up a " + treasure);
-        gm.shop.Money += gm.scalingManager.ScaleTreasureWorth(treasure.GetComponent<Treasure>().level);
+        int worth = gm.scalingManager.ScaleTreasureWorth(hit.gameObject.GetComponent<Treasure>().level);
+        gm.shop.Money += worth;
+        gm.shop.MakeNumberPoof("$" + worth.ToString(), hit.transform.position, true);
+        Debug.Log("Picked up a " + hit.gameObject.name + " worth " + worth);
         gm.audioManager.PlaySound("Coin");
-        Destroy(treasure);
+        Destroy(hit.gameObject);
     }
 }

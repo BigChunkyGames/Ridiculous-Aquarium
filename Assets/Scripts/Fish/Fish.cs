@@ -11,7 +11,7 @@ public class Fish : MonoBehaviour
     [Range(0,3)]
     public float speed;
     [Range(0,10)]
-    public float targetSeekSpeed = 5;
+    public float targetSeekSpeed = 7;
     public Vector3 flipAxis = new Vector3(0,0,1); // z by default
 
     [Header("Food Stats")]
@@ -91,6 +91,7 @@ public class Fish : MonoBehaviour
     protected Rigidbody rb;
     protected AudioSource audioSource;
     protected HealthBar healthBar;
+    public GameObject levelUpEffect;
 
     protected bool seekingFood = false; // prevents random swimming when true
     protected float jumpVelocity = 1;
@@ -99,7 +100,7 @@ public class Fish : MonoBehaviour
     private bool fadingAway = false;
     private bool turningAround = false;
     private float timeToFade = 10f;
-    private float uniqueness; // random between -1 and 1
+    protected float uniqueness; // random between -1 and 1
     private float gravity = 0.06f;
     [HideInInspector] public float dropLifetime = 40f;
 
@@ -236,6 +237,12 @@ public class Fish : MonoBehaviour
         if (activityFrequency<=0) activityFrequency = .1f;
         maxHealth+=u;
         gravity+= u;
+        hungerTimer += .5f * uniqueness;
+        targetSeekSpeed += uniqueness;
+        if(GetComponent<FriendlyFish>())
+        {
+            GetComponent<FriendlyFish>().FriendlyFishUniqueation();
+        }
     }
 
     protected void Drop(GameObject drop){
@@ -267,6 +274,7 @@ public class Fish : MonoBehaviour
         dead = true;
         model.GetComponent<Outline>().OutlineColor = deadColor;
         modelContainer.transform.eulerAngles += new Vector3(180f,0f,0f);
+        model.GetComponent<Collider>().enabled = false;
         fadingAway = true;
         Invoke("GetDestroyed", timeToFade ); 
         transform.Find("HealthCanvas").gameObject.SetActive(false);

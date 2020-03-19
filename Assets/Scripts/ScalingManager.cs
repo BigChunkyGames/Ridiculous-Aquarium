@@ -23,7 +23,8 @@ public class ScalingManager : MonoBehaviour
     // set price of new fish based on fish in tank. 
     public int ScaleFishPrice(int friendlyFishCount)
     {
-        return (int)(100*(Mathf.Pow(exponentialScalar, friendlyFishCount)));
+        return 50 * friendlyFishCount + 5 * (int)Mathf.Pow(2, friendlyFishCount);
+        // https://www.wolframalpha.com/input/?i=50+*+x+%2B+5*2%5E%28x-1%29+where+x+%3D+5
     }
 // FOOD
     public int ScaleFoodMaxPrice(int currentFoodMax)
@@ -50,9 +51,10 @@ public class ScalingManager : MonoBehaviour
         return feederLevel * 50;
     }
 // MISC
-    public float ScaleTreasureWorth(int treasureLevel)
+    public int ScaleTreasureWorth(int treasureLevel)
     {
-        return 15 * Mathf.Pow(2, treasureLevel);
+        return 15 * treasureLevel + 5 * (int)Mathf.Pow(2, treasureLevel -1);
+        // https://www.wolframalpha.com/input/?i=15+*+x+%2B+5*2%5E%28x-1%29+where+x+%3D+4
     }
     
 }

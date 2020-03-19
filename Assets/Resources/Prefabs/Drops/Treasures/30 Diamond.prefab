@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: -1012281901679960442}
   - component: {fileID: 1262148250166167641}
   - component: {fileID: -8452871255284562195}
-  - component: {fileID: -575617591429716929}
   - component: {fileID: -7165134834775448952}
+  - component: {fileID: 8512804093836097453}
   m_Layer: 0
   m_Name: 30 Diamond
   m_TagString: Treasure
@@ -150,21 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9daa472ee70354a976bc637c904541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: -1
---- !u!64 &-575617591429716929
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494302567594256036}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6217dd83a11a7df46b82193c138a8ce2, type: 3}
+  level: 7
 --- !u!108 &-7165134834775448952
 Light:
   m_ObjectHideFlags: 0
@@ -226,3 +212,16 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!135 &8512804093836097453
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494302567594256036}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.2426512
+  m_Center: {x: -0.0000032782555, y: -0.0000026822097, z: -0.7140475}

@@ -6,9 +6,9 @@ public class FriendlyFish : Fish
 {
     [Header("Friendly Fish Stats")]
     
-    [Range(.1f,10)]
+    [Range(.1f,20)]
     [Tooltip("seconds between drops")]
-    public float dropRate = 7f;
+    public float treasureDropRate = 14f;
     [Range(.1f,10)]
     private int passiveIncomePerMinute = 15; 
     public int PassiveIncomePerMinute{
@@ -82,7 +82,7 @@ public class FriendlyFish : Fish
     void Start()
     {
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
-        InvokeRepeating("DropTreasure", 1f, dropRate );   // drop dropable
+        InvokeRepeating("DropTreasure", 1f, treasureDropRate );   // drop dropable
         gm.shop.FriendlyFishCount++;
         gm.shop.PassiveIncome += this.passiveIncomePerMinute;
         this.FishType = this.fishType; // trigger setter
@@ -214,6 +214,9 @@ public class FriendlyFish : Fish
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
         audioSource.pitch = 1.5f - .1f * growthLevel;
         audioSource.PlayOneShot(audioSource.clip);
+        GameObject effect = Instantiate(levelUpEffect, this.transform.position, Quaternion.identity);
+        Destroy(effect, 3);
+
     }
 
     // assigns the closest food as the target food
@@ -242,6 +245,11 @@ public class FriendlyFish : Fish
             }
         }
         targetFood = closest;
+    }
+
+    public void FriendlyFishUniqueation(){
+        treasureDropRate += 2 * uniqueness;
+        damageDealtPerFrame += uniqueness * .01f;
     }
 
 }

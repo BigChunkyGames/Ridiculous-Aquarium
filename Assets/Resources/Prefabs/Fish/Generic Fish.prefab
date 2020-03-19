@@ -180,8 +180,10 @@ MonoBehaviour:
   modelContainer: {fileID: 7182435197715854021}
   model: {fileID: 7756222369943868900}
   dropSpot: {fileID: 0}
+  levelUpEffect: {fileID: 8718834879131785521, guid: 67e97f194720bf441a1f9ec9ad6efab5,
+    type: 3}
   dropLifetime: 10
-  dropRate: 8.89
+  treasureDropRate: 14
   fishType: 0
   damageDealtPerFrame: 0.1
 --- !u!1001 &752159852322826072

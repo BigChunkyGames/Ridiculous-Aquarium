@@ -32,7 +32,7 @@ public class Shop : MonoBehaviour
     public GameObject winButton;
     public int winPrice = 60000;
     public GameObject unlockFoodButton;
-    public int unlockFoodPrice = 100;
+    public int unlockFoodPrice = 40;
 
     [Header("TMP and Gameobjects")]
     public GameObject shop;
@@ -60,6 +60,7 @@ public class Shop : MonoBehaviour
     public GameObject foodDecoration;
     public GameObject laserFoodDecoration;
     public GameObject combatLevelText;
+    public GameObject numberPoofEffect;
 
     private GameManager gm;
     private Object[] fishModels;
@@ -68,7 +69,7 @@ public class Shop : MonoBehaviour
     [HideInInspector]public GameObject foodToSpawn; // what gets spawned when you click
     [HideInInspector]public GameObject pelletToSpawn; // the visual level of the pellet
 
-    private int fishPrice = 100;
+    private int fishPrice = -1;
     private int FishPrice
     {
         get{return this.fishPrice;}
@@ -211,6 +212,13 @@ public class Shop : MonoBehaviour
     void Start(){
         fishModels = Resources.LoadAll("Prefabs/Fish/Models", typeof(GameObject));
 
+        SetButtonPriceText(buyFishButton, gm.scalingManager.ScaleFishPrice(friendlyFishCount));
+        SetButtonPriceText(unlockFeederButton, unlockFeederPrice);
+        SetButtonPriceText(unlockLaserFoodButton, unlockLaserFoodPrice);
+        SetButtonPriceText(winButton, winPrice);
+        SetButtonPriceText(unlockFoodButton, unlockFoodPrice);
+        foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
+
         // hide unlocker buttons
         buyFishButton.SetActive(true);
         unlockFeederButton.SetActive(false);
@@ -220,14 +228,6 @@ public class Shop : MonoBehaviour
         feederStats.SetActive(false);
         foodStats.SetActive(false);
 
-        SetButtonPriceText(buyFishButton, gm.scalingManager.ScaleFishPrice(friendlyFishCount));
-        SetButtonPriceText(unlockFeederButton, unlockFeederPrice);
-        SetButtonPriceText(unlockLaserFoodButton, unlockLaserFoodPrice);
-        SetButtonPriceText(winButton, winPrice);
-        SetButtonPriceText(unlockFoodButton, unlockFoodPrice);
-
-        foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
-
         foodToSpawn = gm.dataStore.foods[0];
         pelletToSpawn = gm.dataStore.foods[0];
         Money = startMoney;
@@ -235,11 +235,12 @@ public class Shop : MonoBehaviour
         FoodMax = 1;
         FoodsOnScreenDisplay = 0;
         foodLevelPrice = 50; // like ok this is needed i guess
+        FishPrice = gm.scalingManager.ScaleFishPrice(friendlyFishCount);
     }
 
     void Update()
     {
-        Money += passiveIncome * Time.deltaTime/ (60f );
+        Money += passiveIncome * Time.deltaTime / (60f );
     }
 
     public void UnlockerButton(){
@@ -267,6 +268,7 @@ public class Shop : MonoBehaviour
     {
         if (AttemptPurchase(unlockFoodPrice)){
             foodStats.SetActive(true);
+            if(unlockLaserFoodButton) unlockLaserFoodButton.SetActive(true);
             Destroy(unlockFoodButton);
         }
     }
@@ -276,7 +278,6 @@ public class Shop : MonoBehaviour
         if (AttemptPurchase(FishPrice)){
             DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Fish/Generic Fish", typeof(GameObject)), true,true);
             foodButton.SetActive(true);
-            if(unlockLaserFoodButton) unlockLaserFoodButton.SetActive(true);
             if(unlockFoodButton) unlockFoodButton.SetActive(true);
         }
     }
@@ -415,6 +416,21 @@ public class Shop : MonoBehaviour
     public void SetText(GameObject tmpObject, string s)
     {
         tmpObject.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+    }
+
+    // if its not money its damage
+    public void MakeNumberPoof(string value, Vector3 position, bool money)
+    {
+        GameObject poof = this.numberPoofEffect;
+        TMPro.TextMeshProUGUI txt = poof.transform.Find("Number").GetComponent<TMPro.TextMeshProUGUI>();
+        txt.SetText(value);
+        if(money){
+            txt.color = Color.green;
+        } else {
+            txt.color = Color.red;
+        }
+        poof = Instantiate(poof, position, Quaternion.identity);
+        Destroy(poof, 3f);
     }
 
     

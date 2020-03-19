@@ -118,7 +118,7 @@ public class EnemyFish : Fish
     
     public void EnemyDie() {
         gm.combatManager.EnemyWasDestroyed();
-        //Drop dropable here or it won't work
+        //Drop treasure here or it won't work
         if(!starving)
         {
             GameObject drop = gm.dataStore.treasures[dropLevel];

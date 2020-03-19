@@ -13,10 +13,12 @@ public class DataStore : MonoBehaviour
 
     void Start()
     {
+        // assign treasures their level
         Object[] treasureObjects = Resources.LoadAll("Prefabs/Drops/Treasures", typeof(GameObject));
         for (int i = 0; i < treasureObjects.Length-1; i++)
         {
             treasures.Add((GameObject)treasureObjects[i]);
+            treasures[i].GetComponent<Treasure>().level = i+1;
         }
 
     }
