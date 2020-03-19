@@ -16,7 +16,8 @@ public class Food : MonoBehaviour
     }
 
     private void OnDestroy() {
-        gm.shop.FoodsOnScreenDisplay--;
+        if(gm != null) gm.shop.FoodsOnScreenDisplay--;
+
     }
 
 }

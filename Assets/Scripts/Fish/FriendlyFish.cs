@@ -155,7 +155,7 @@ public class FriendlyFish : Fish
                 if(gm.dataStore.treasures[growthLevel-1] != null)
                 {
                     Drop(gm.dataStore.treasures[growthLevel-1]);
-                    Debug.Log("Dropping #" + (growthLevel-1));
+                    //Debug.Log("Dropping #" + (growthLevel-1));
                 }  
                 return;
             }

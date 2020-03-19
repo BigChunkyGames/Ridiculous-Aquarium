@@ -31,6 +31,8 @@ public class Shop : MonoBehaviour
     private bool laserFoodUnlocked = false;
     public GameObject winButton;
     public int winPrice = 60000;
+    public GameObject unlockFoodButton;
+    public int unlockFoodPrice = 100;
 
     [Header("TMP and Gameobjects")]
     public GameObject shop;
@@ -38,16 +40,20 @@ public class Shop : MonoBehaviour
     public GameObject passiveIncomeDisplay;
     public GameObject foodsDisplay;
     public GameObject fishPriceText;
+    
+    [Header("Food Stats")]
+    public GameObject foodStats;
     public GameObject foodMaxPriceText; // where it says how much to get more food
     public GameObject foodPriceText; // where it says how much buying a food costs
     public GameObject foodLevelText; 
     public GameObject foodHPText; 
     public GameObject foodDropdown;
-    [Header("Feeder")]
+
+    [Header("Feeder Stats")]
+    public GameObject feederStats;
     public int feederSpeedUpgradePrice = 50;
     public GameObject feeder;
     public GameObject feederPriceText;
-    public GameObject feederArea;
     public GameObject feederUpgradeSpeedText;
     public GameObject feederRateText;
     public GameObject feederLevelText;
@@ -202,12 +208,14 @@ public class Shop : MonoBehaviour
         unlockFeederButton.SetActive(false);
         unlockLaserFoodButton.SetActive(false);
         winButton.SetActive(false);
-        feederArea.SetActive(false);
+        feederStats.SetActive(false);
+        foodStats.SetActive(false);
 
         SetButtonPriceText(buyFishButton, gm.scalingManager.ScaleFishPrice(friendlyFishCount));
         SetButtonPriceText(unlockFeederButton, unlockFeederPrice);
         SetButtonPriceText(unlockLaserFoodButton, unlockLaserFoodPrice);
         SetButtonPriceText(winButton, winPrice);
+        SetButtonPriceText(unlockFoodButton, unlockFoodPrice);
 
         foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
 
@@ -236,7 +244,10 @@ public class Shop : MonoBehaviour
             UnlockFeeder();
         } else if(buttonPressed == winButton){
             // TODO
+        } else if(buttonPressed == unlockFoodButton){
+            foodStats.SetActive(true);
         }
+
     }
 
     private void SetButtonPriceText(GameObject button, int price){
@@ -317,14 +328,14 @@ public class Shop : MonoBehaviour
         Feeder f = feeder.GetComponent<Feeder>();
         f.DropRate = gm.scalingManager.ScaleFeederDropRate(f.level);
         feederLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " +f.level.ToString());
-        feederUpgradeSpeedText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Upgrade " +feederSpeedUpgradePrice.ToString() + "$");
+        feederUpgradeSpeedText.GetComponent<TMPro.TextMeshProUGUI>().SetText(feederSpeedUpgradePrice.ToString() + "$");
         SetText(feederRateText, ((60f/f.dropRate)).ToString("F2") + " food/min");
     }
     public void UnlockFeeder(){
         if(AttemptPurchase(unlockFeederPrice))
         {
             gm.audioManager.PlaySound("Buy Upgrade");
-            this.feederArea.gameObject.SetActive(true);
+            this.feederStats.gameObject.SetActive(true);
             Destroy(this.unlockFeederButton);
             UpdateFeederDisplay();
         }
