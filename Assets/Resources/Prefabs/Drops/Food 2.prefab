@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nourishment: 1
-  healthGain: 18
+  healthGain: 36
   foodType: 0
 --- !u!1001 &4360100216433735323
 PrefabInstance:
@@ -72,6 +72,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 7232486600006289672, guid: b1399fc11d941c841aae534d9131f59b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7232486600006289677, guid: b1399fc11d941c841aae534d9131f59b,
         type: 3}

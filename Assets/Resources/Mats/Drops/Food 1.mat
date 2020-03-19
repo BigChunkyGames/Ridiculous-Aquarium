@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Food 1
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHABLEND_ON _EMISSION _NORMALMAP
-  m_LightmapFlags: 1
+  m_ShaderKeywords: _ALPHABLEND_ON _NORMALMAP
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -62,9 +62,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _GlossMapScale: 0.206
-    - _Glossiness: 0.079
+    - _Glossiness: 0.042
     - _GlossyReflections: 1
-    - _Metallic: 0.012
+    - _Metallic: 0.187
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -74,5 +74,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.3018868, g: 0.11653636, b: 0, a: 1}
+    - _Color: {r: 0.4339623, g: 0.08454569, b: 0, a: 1}
     - _EmissionColor: {r: 0.13207549, g: 0.055824813, b: 0, a: 1}

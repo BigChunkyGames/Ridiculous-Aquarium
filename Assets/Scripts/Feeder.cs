@@ -12,14 +12,14 @@ public class Feeder : MonoBehaviour
         set{
             dropRate = value;
             CancelInvoke();
-            InvokeRepeating("DropFood", 0f, dropRate );
+            InvokeRepeating("DropFood", dropRate, dropRate );
         }
     }
     
 
     void Start(){
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
-        InvokeRepeating("DropFood", 0f, dropRate );
+        InvokeRepeating("DropFood", dropRate, dropRate );
     }
 
     public void DropFood(){

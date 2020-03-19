@@ -169,7 +169,7 @@ public class FriendlyFish : Fish
         }
         if((col.gameObject.tag == "Food") && Hungry){
             // eating
-            Eat(col.gameObject);
+            Eat(col.transform.parent.gameObject);
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
             Destroy(this); // destory if hit bottom and dead

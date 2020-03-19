@@ -155,9 +155,15 @@ public class Shop : MonoBehaviour
             // prevent list index error
             if(foodToGet >= gm.dataStore.foods.Count) foodToGet = gm.dataStore.foods.Count-1;
             this.pelletToSpawn = gm.dataStore.foods[foodToGet];
-            this.foodDecoration = gm.dataStore.foods[foodToGet];
+            Vector3 foodDecorationLocation = this.foodDecoration.transform.position;
+            Destroy(this.foodDecoration);
+            this.foodDecoration = Instantiate(gm.dataStore.foods[foodToGet], foodDecorationLocation, Quaternion.identity);
             this.foodDecoration.GetComponent<Food>().enabled = false;
             this.foodDecoration.transform.Find("Model").tag = "Untagged";
+            this.foodDecoration.transform.Find("Model").GetComponent<Rigidbody>().useGravity = false;
+            ConstantForce spin = this.foodDecoration.AddComponent<ConstantForce>();
+            spin.relativeTorque = new Vector3(1,1,1);
+            this.foodDecoration.GetComponent<Rigidbody>().useGravity = false;
             // update food to spawn badly
             FoodToSpawnDropdownIndex = foodToSpawnDropdownIndex;
             ShowFoodPrice(false);
@@ -209,6 +215,7 @@ public class Shop : MonoBehaviour
         buyFishButton.SetActive(true);
         unlockFeederButton.SetActive(false);
         unlockLaserFoodButton.SetActive(false);
+        unlockFoodButton.SetActive(false);
         winButton.SetActive(false);
         feederStats.SetActive(false);
         foodStats.SetActive(false);
@@ -247,8 +254,7 @@ public class Shop : MonoBehaviour
         } else if(buttonPressed == winButton){
             // TODO
         } else if(buttonPressed == unlockFoodButton){
-            foodStats.SetActive(true);
-            Destroy(unlockFoodButton);
+            UnlockFood();
         }
 
     }
@@ -257,13 +263,21 @@ public class Shop : MonoBehaviour
         button.transform.Find("Price").GetComponent<TMPro.TextMeshProUGUI>().SetText("$"+price.ToString());
     }
 
+    public void UnlockFood()
+    {
+        if (AttemptPurchase(unlockFoodPrice)){
+            foodStats.SetActive(true);
+            Destroy(unlockFoodButton);
+        }
+    }
+
     public void BuyRandomFish()
     {
         if (AttemptPurchase(FishPrice)){
             DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Fish/Generic Fish", typeof(GameObject)), true,true);
             foodButton.SetActive(true);
-            if(unlockFeederButton) unlockFeederButton.SetActive(true);
             if(unlockLaserFoodButton) unlockLaserFoodButton.SetActive(true);
+            if(unlockFoodButton) unlockFoodButton.SetActive(true);
         }
     }
 
@@ -347,6 +361,7 @@ public class Shop : MonoBehaviour
     public void UnlockLaserFood(){
         if(AttemptPurchase(unlockLaserFoodPrice))
         {
+            if(unlockFeederButton) unlockFeederButton.SetActive(true);
             gm.audioManager.PlaySound("Buy Upgrade");
             this.laserFoodUnlocked = true;
             Destroy(this.unlockLaserFoodButton);
