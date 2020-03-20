@@ -5,8 +5,8 @@ public enum FoodTypeEnum {food,laser}
 public class Food : MonoBehaviour
 {
     private GameManager gm;
-    public float nourishment = 1f; // unused
-    public float healthGain = 10f;
+    public int nourishment = 1; // un
+    public int healthGain = 10;
     // types: default (food), laser
     public FoodTypeEnum foodType = FoodTypeEnum.food;
     

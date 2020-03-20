@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;  
+using UnityEngine.SceneManagement;
 
 // handles all the UI
 
@@ -38,8 +39,8 @@ public class Shop : MonoBehaviour
     public GameObject shop;
     public GameObject moneyDisplay;
     public GameObject passiveIncomeDisplay;
-    public GameObject foodsDisplay;
-    public GameObject fishPriceText;
+    public GameObject playButton;
+    public GameObject muteButtonText;
     
     [Header("Food Stats")]
     public GameObject foodStats;
@@ -48,6 +49,7 @@ public class Shop : MonoBehaviour
     public GameObject foodLevelText; 
     public GameObject foodHPText; 
     public GameObject foodDropdown;
+    public GameObject foodsDisplay;
 
     [Header("Feeder Stats")]
     public GameObject feederStats;
@@ -61,6 +63,9 @@ public class Shop : MonoBehaviour
     public GameObject laserFoodDecoration;
     public GameObject combatLevelText;
     public GameObject numberPoofEffect;
+
+    public GameObject endGameStatsText;
+    public GameObject winMenu;
 
     private GameManager gm;
     private Object[] fishModels;
@@ -253,7 +258,7 @@ public class Shop : MonoBehaviour
         } else if(buttonPressed == unlockFeederButton){
             UnlockFeeder();
         } else if(buttonPressed == winButton){
-            // TODO
+            ShowWinMenu();
         } else if(buttonPressed == unlockFoodButton){
             UnlockFood();
         }
@@ -354,6 +359,7 @@ public class Shop : MonoBehaviour
         {
             gm.audioManager.PlaySound("Buy Upgrade");
             this.feederStats.gameObject.SetActive(true);
+            winButton.SetActive(true);
             Destroy(this.unlockFeederButton);
             UpdateFeederDisplay();
         }
@@ -398,6 +404,7 @@ public class Shop : MonoBehaviour
                 Vector3 spawnLocation = new Vector3(hit.point.x, hit.point.y + 2.1f, gm.fishLayerZ);
                 PlayerSpawnFood(spawnLocation);
                 gm.audioManager.PlaySound("Spawn Food");
+                gm.foodsMade++;
             }
         }
         else{// if amount of foods on screen more than or =to the amount allowed
@@ -431,6 +438,51 @@ public class Shop : MonoBehaviour
         }
         poof = Instantiate(poof, position, Quaternion.identity);
         Destroy(poof, 3f);
+    }
+
+    private void ShowWinMenu(){
+        winButton.SetActive(false);
+        winMenu.SetActive(true);
+        string s = $@"You clicked {gm.timesClicked} times!
+You got {gm.treasuresGot} treasures!
+You slaughtered {gm.foesDefeated} foes!
+You made {gm.foodsMade} foods!
+
+
+Thats so many!";
+        endGameStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+    }
+
+    public void ContinueButton()
+    {
+        winMenu.SetActive(false);
+    }
+
+    public void AgainButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PauseButton()
+    {
+        if(Time.timeScale == 1){
+            Time.timeScale = 0;
+            playButton.GetComponent<TMPro.TextMeshProUGUI>().SetText("►");
+        } else {
+            Time.timeScale = 1;
+            playButton.GetComponent<TMPro.TextMeshProUGUI>().SetText("l l");
+        }
+    }
+
+    public void MuteButton()
+    {
+        if( AudioListener.pause == false){
+            AudioListener.pause = true;
+            muteButtonText.GetComponent<TMPro.TextMeshProUGUI>().color = Color.red;
+        } else {
+            AudioListener.pause = false;
+            muteButtonText.GetComponent<TMPro.TextMeshProUGUI>().color = Color.white;
+        }
     }
 
     

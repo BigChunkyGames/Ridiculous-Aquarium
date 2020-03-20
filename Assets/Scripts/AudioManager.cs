@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource audioSourceLoops;
     private AudioClip startLoop;
 
+
     void Start()
     {
         audioSourceFX = transform.Find("FX").GetComponent<AudioSource>();
@@ -17,16 +18,18 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void PlaySound(string name)
+    public void PlaySound(string name, float customPitch=1)
     {
         AudioClip ac;
         audioSourceFX.volume = 1;
         audioSourceFX.pitch = 1;
         bool uniquePitch = true;
 
-        if (name == "Coin")
+        if (name == "Get Coin")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/coin get");
+            audioSourceFX.pitch = customPitch;
+            uniquePitch = false;
         }
         else if (name == "Shoot Fish")
         {

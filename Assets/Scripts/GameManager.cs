@@ -38,5 +38,11 @@ public class GameManager : MonoBehaviour
         playerInput = this.GetComponent<PlayerInput>();
         scalingManager = this.GetComponent<ScalingManager>();
     }
+
+    [Header("Game Stats")]
+    public int timesClicked;
+    public int treasuresGot;
+    public int foesDefeated;
+    public int foodsMade;
     
 }

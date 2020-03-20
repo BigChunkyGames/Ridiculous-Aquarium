@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1063811129062192401
+--- !u!1 &3579318738094271669
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,14 +8,73 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1063811129062192404}
-  - component: {fileID: 1063811129062192405}
-  - component: {fileID: 1063811129062192402}
-  - component: {fileID: 1063811129062192403}
-  - component: {fileID: 5840924208118429834}
-  - component: {fileID: 6066176089743950740}
-  - component: {fileID: -3421684530660472351}
-  - component: {fileID: 6161123838914272173}
+  - component: {fileID: 308436315502457194}
+  - component: {fileID: 1080440114287119457}
+  - component: {fileID: 4386992998522246232}
+  m_Layer: 0
+  m_Name: Food 4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &308436315502457194
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3579318738094271669}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3681865575317214602}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1080440114287119457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3579318738094271669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a237630533e0a4ea2dbe4a41ccc815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondsUntilDestructionAfterContact: 1
+--- !u!114 &4386992998522246232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3579318738094271669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9bf9a2919a26e41af5b0cb34a30212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nourishment: 1
+  healthGain: 10
+  foodType: 1
+--- !u!1 &3681865575317214607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3681865575317214602}
+  - component: {fileID: 3681865575317214603}
+  - component: {fileID: 3681865575317214604}
+  - component: {fileID: 3681865575317214605}
+  - component: {fileID: 7842128355770931220}
+  - component: {fileID: 7519677478239173427}
   m_Layer: 9
   m_Name: Laser Food
   m_TagString: Food
@@ -23,35 +82,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1063811129062192404
+--- !u!4 &3681865575317214602
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
+  m_GameObject: {fileID: 3681865575317214607}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.41003, y: 14.879, z: 9.91}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.61886, y: 0.043540955, z: 0.61886}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 308436315502457194}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!33 &1063811129062192405
+--- !u!33 &3681865575317214603
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
+  m_GameObject: {fileID: 3681865575317214607}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1063811129062192402
+--- !u!23 &3681865575317214604
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
+  m_GameObject: {fileID: 3681865575317214607}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -84,13 +143,13 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &1063811129062192403
+--- !u!64 &3681865575317214605
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
+  m_GameObject: {fileID: 3681865575317214607}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -98,13 +157,13 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &5840924208118429834
+--- !u!54 &7842128355770931220
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
+  m_GameObject: {fileID: 3681865575317214607}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 7
@@ -114,40 +173,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!114 &6066176089743950740
+--- !u!114 &7519677478239173427
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a237630533e0a4ea2dbe4a41ccc815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-3421684530660472351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c9bf9a2919a26e41af5b0cb34a30212, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nourishment: 1
-  healthGain: 10
-  foodType: 1
---- !u!114 &6161123838914272173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063811129062192401}
+  m_GameObject: {fileID: 3681865575317214607}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}

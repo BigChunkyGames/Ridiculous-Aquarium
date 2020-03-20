@@ -26,13 +26,18 @@ public class PlayerInput : MonoBehaviour
             // allow clicking with lrm
             if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
             {
-                clicking = true;
+                clicking = true; // true while a mouse button is down
             } else { clicking = false;}
             
         }
         if (clicking) {// left mouse button
+            gm.timesClicked++;
             if (EventSystem.current.IsPointerOverGameObject()){
                 Debug.Log("Prevented click through ui");
+                return;
+            }
+            if(Time.timeScale == 0){
+                // no clicking while paused!
                 return;
             }
             ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -73,7 +78,8 @@ public class PlayerInput : MonoBehaviour
         gm.shop.Money += worth;
         gm.shop.MakeNumberPoof("$" + worth.ToString(), hit.transform.position, true);
         Debug.Log("Picked up a " + hit.gameObject.name + " worth " + worth);
-        gm.audioManager.PlaySound("Coin");
+        gm.audioManager.PlaySound("Get Coin", 1.6f+hit.gameObject.GetComponent<Treasure>().level * .1f);
         Destroy(hit.gameObject);
+        gm.timesClicked++;
     }
 }

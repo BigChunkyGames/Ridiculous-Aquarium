@@ -185,7 +185,7 @@ public class FriendlyFish : Fish
         {
             currentHealth = maxHealth;
         }
-        timesEatenSinceLastGrowth++;
+        timesEatenSinceLastGrowth+= food.GetComponent<Food>().nourishment;
         if (timesEatenSinceLastGrowth >= growthLevel * additionalFoodsNeededToGrow + foodsNeededToGrow){
             Grow();
         }
@@ -212,7 +212,7 @@ public class FriendlyFish : Fish
 
         float size = transform.localScale.x * growthScaleMultiplier;
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
-        audioSource.pitch = 1.5f - .1f * growthLevel;
+        audioSource.pitch = 2.0f - .15f * growthLevel;
         audioSource.PlayOneShot(audioSource.clip);
         GameObject effect = Instantiate(levelUpEffect, this.transform.position, Quaternion.identity);
         Destroy(effect, 3);
@@ -231,11 +231,6 @@ public class FriendlyFish : Fish
         Vector3 position = transform.position;
         foreach (GameObject go in foods)
         {
-            if(fishType == FishTypeEnum.laser && go.GetComponent<Food>().foodType == FoodTypeEnum.laser)
-            {
-                // laser fish dont want more laser food
-                continue;
-            }
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
             if (curDistance < distance)
