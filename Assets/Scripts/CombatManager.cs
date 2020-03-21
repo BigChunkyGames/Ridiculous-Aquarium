@@ -88,7 +88,6 @@ public class CombatManager : MonoBehaviour
         enemiesInCurrentCombat--;
         if(enemiesInCurrentCombat == 0)
         {
-            gm.foesDefeated++;
             Destroy(warningLight);
             PlanNextCombat();
             gm.audioManager.CombatOver();

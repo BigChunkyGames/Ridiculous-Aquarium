@@ -15,7 +15,7 @@ public class DataStore : MonoBehaviour
     {
         // assign treasures their level
         Object[] treasureObjects = Resources.LoadAll("Prefabs/Drops/Treasures", typeof(GameObject));
-        for (int i = 0; i < treasureObjects.Length-1; i++)
+        for (int i = 0; i < treasureObjects.Length; i++)
         {
             treasures.Add((GameObject)treasureObjects[i]);
             treasures[i].GetComponent<Treasure>().level = i+1;

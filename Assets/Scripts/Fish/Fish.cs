@@ -37,7 +37,7 @@ public class Fish : MonoBehaviour
                 rend.material.SetColor("_Color", startColor);
                 CancelInvoke("BecomeHungry");
                 CancelInvoke("Starve");
-                Invoke("BecomeHungry", hungerTimer);  
+                if(getsHungry) Invoke("BecomeHungry", hungerTimer);  
                 starving=false;
             }
             // if becoming hungry
@@ -57,7 +57,7 @@ public class Fish : MonoBehaviour
     public Color deadColor;
     private Color gone = new Color(0f, 0f, 0f, 0f);
     private Color startColor;
-     
+    public bool getsHungry = true;     
     
     // the thing to rotate
     public GameObject modelContainer;
@@ -102,7 +102,6 @@ public class Fish : MonoBehaviour
     private float timeToFade = 10f;
     protected float uniqueness; // random between -1 and 1
     private float gravity = 0.06f;
-    [HideInInspector] public float dropLifetime = 40f;
 
     // make sure model is set to look to the right at start
     private Quaternion originalRotation; 
@@ -133,7 +132,7 @@ public class Fish : MonoBehaviour
         flippedRotation = originalRotation * Quaternion.Euler(180f*flipAxis.x,180f*flipAxis.y,180f*flipAxis.z);
         startColor = rend.material.color;
           
-        Invoke("BecomeHungry", hungerTimer);  
+        if(getsHungry) Invoke("BecomeHungry", hungerTimer);  
     }
 
     // call this in each child's fixed update
@@ -249,9 +248,10 @@ public class Fish : MonoBehaviour
         Vector3 ds = dropSpot.transform.position;
         Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
         GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
-        Destroy(dropped, dropLifetime);
+        Destroy(dropped, 40f);
 }
     
+    // can be negative to heal
     public void TakeDamage(float damage)
     {
         if(dead) return;
@@ -272,16 +272,21 @@ public class Fish : MonoBehaviour
         if(immortal) return;
         CancelInvoke();
         dead = true;
-        model.GetComponent<Outline>().OutlineColor = deadColor;
+        if(model.GetComponent<Outline>()) model.GetComponent<Outline>().OutlineColor = deadColor;
         modelContainer.transform.eulerAngles += new Vector3(180f,0f,0f);
         model.GetComponent<Collider>().enabled = false;
         fadingAway = true;
         Invoke("GetDestroyed", timeToFade ); 
         transform.Find("HealthCanvas").gameObject.SetActive(false);
-        gm.audioManager.PlaySound("Fish Death");
+        gm.fishDiedStat++;
+        GameObject deathEffect = Instantiate((GameObject)Resources.Load("Prefabs/FX/Death Effect"), this.transform.position, Quaternion.identity);
+        deathEffect.transform.parent = this.transform;
         if(GetComponent<EnemyFish>())
         {
             GetComponent<EnemyFish>().EnemyDie();
+        }
+        else {
+            gm.audioManager.PlaySound("Fish Death");
         }
         if(GetComponent<FriendlyFish>())
         {

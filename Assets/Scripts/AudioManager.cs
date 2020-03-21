@@ -6,14 +6,16 @@ public class AudioManager : MonoBehaviour
 {
     public AudioMixer mainMixer;
     private AudioSource audioSourceFX;
-    private AudioSource audioSourceLoops;
+    public AudioSource audioSourceLoops;
     private AudioClip startLoop;
+    private AudioSource audioSourcePauseMenu;
 
 
     void Start()
     {
         audioSourceFX = transform.Find("FX").GetComponent<AudioSource>();
         audioSourceLoops = transform.Find("Loops").GetComponent<AudioSource>();
+        audioSourcePauseMenu = transform.Find("Pause Menu").GetComponent<AudioSource>();
         startLoop = audioSourceLoops.clip;
 
     }
@@ -34,7 +36,7 @@ public class AudioManager : MonoBehaviour
         else if (name == "Shoot Fish")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/hitmarker");
-            audioSourceFX.volume = .5f;
+            audioSourceFX.volume = .3f;
         }
         else if (name == "Spawn Food")
         {
@@ -43,10 +45,17 @@ public class AudioManager : MonoBehaviour
         else if (name == "Spawn Fish")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/splash");
+            audioSourceFX.volume = 1.5f;
+
         }
         else if (name == "Fish Ate")
         {
             ac = (AudioClip)Resources.Load("Audio/FX/chew");
+        }
+        else if (name == "Enemy Fish Chomp")
+        {
+            ac = GetRandomClip("Audio/FX/chomps");
+            audioSourceFX.volume = .2f;
         }
         else if (name == "Error")
         {
@@ -73,6 +82,11 @@ public class AudioManager : MonoBehaviour
         else if (name == "Fish Death")
         {
             ac = GetRandomClip("Audio/FX/fish death");
+        }
+        else if (name == "Enemy Fish Death")
+        {
+            ac = GetRandomClip("Audio/FX/fish death");
+            audioSourceFX.pitch = .7f;
         }
         else if (name == "Poke")
         {
@@ -101,17 +115,28 @@ public class AudioManager : MonoBehaviour
     {
         StopAllCoroutines();
         audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/fish combat");
-        audioSourceLoops.volume = 1;
+        audioSourceLoops.volume = .4f;
         audioSourceLoops.Play();
-        //PlaySound("Combat Start", false);
-
     }
 
     public void CombatOver()
     {
         audioSourceLoops.clip = startLoop;
+        audioSourceLoops.volume = .75f;
         FadeAudioLoops(5, true);
         PlaySound("Combat Over");
+    }
+
+    public void PauseMenu(bool paused)
+    {
+        if(paused)
+        {
+            audioSourceLoops.Pause();
+            audioSourcePauseMenu.Play();
+        } else {
+            audioSourceLoops.UnPause();
+            audioSourcePauseMenu.Pause();
+        }
     }
 
     /// <summary>

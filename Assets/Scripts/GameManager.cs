@@ -37,12 +37,14 @@ public class GameManager : MonoBehaviour
         dataStore = this.GetComponent<DataStore>();
         playerInput = this.GetComponent<PlayerInput>();
         scalingManager = this.GetComponent<ScalingManager>();
+
+        Time.timeScale = 1;
     }
 
     [Header("Game Stats")]
     public int timesClicked;
     public int treasuresGot;
-    public int foesDefeated;
+    public int fishDiedStat;
     public int foodsMade;
     
 }

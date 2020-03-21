@@ -28,7 +28,6 @@ public class PlayerInput : MonoBehaviour
             {
                 clicking = true; // true while a mouse button is down
             } else { clicking = false;}
-            
         }
         if (clicking) {// left mouse button
             gm.timesClicked++;
@@ -53,9 +52,10 @@ public class PlayerInput : MonoBehaviour
                 else if(hit.transform.tag == "Enemy")
                 {
                     hit.transform.gameObject.GetComponent<EnemyFish>().TakeDamage(gm.playerInput.attackDamage);
+                    Debug.Log("Did damage to enemy");
                     gm.audioManager.PlaySound("Shoot Fish");
                     Vector3 hitPoint = ray.origin + ray.direction * hit.distance;
-                    Instantiate(gm.dataStore.hitmarkerEffect, hitPoint, Quaternion.identity);
+                    Destroy(Instantiate(gm.dataStore.hitmarkerEffect, hitPoint, Quaternion.identity), 3);
                     gm.shop.MakeNumberPoof("   " + gm.playerInput.attackDamage.ToString(), hit.transform.position, false);
                 }
                 // poke fish
@@ -72,7 +72,7 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    void PickupTreasure(Transform hit)
+    public void PickupTreasure(Transform hit)
     {
         int worth = gm.scalingManager.ScaleTreasureWorth(hit.gameObject.GetComponent<Treasure>().level);
         gm.shop.Money += worth;

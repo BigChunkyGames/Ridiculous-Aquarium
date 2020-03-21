@@ -180,6 +180,7 @@ MonoBehaviour:
   modelContainer: {fileID: 7586362383922437085}
   model: {fileID: 7268090259475071495}
   dropSpot: {fileID: 0}
+  levelUpEffect: {fileID: 0}
   dropLifetime: 10
   attackRate: 2
   damage: 50
@@ -351,7 +352,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268090259341614960}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 

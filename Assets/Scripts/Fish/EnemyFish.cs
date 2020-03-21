@@ -7,7 +7,6 @@ public class EnemyFish : Fish
     public float attackRate; // seconds between attacks
     [Range(0,100)]
     public float damage;
-    public bool alwaysHungry = true; // UNUSED
     public int enemyLevel = 1;
     public int dropLevel;
 
@@ -78,6 +77,7 @@ public class EnemyFish : Fish
                 return;
             }
             fishBeingAttacked.TakeDamage(damage);
+            gm.audioManager.PlaySound("Enemy Fish Chomp");
         }
     }
 
@@ -118,6 +118,7 @@ public class EnemyFish : Fish
     
     public void EnemyDie() {
         gm.combatManager.EnemyWasDestroyed();
+        gm.audioManager.PlaySound("Enemy Fish Death");
         //Drop treasure here or it won't work
         // only drop when killed by player
         if(!starving)
@@ -126,7 +127,7 @@ public class EnemyFish : Fish
             Vector3 ds = dropSpot.transform.position;
             Vector3 closerLocation = new Vector3(ds.x, ds.y+2 , gm.dropLayerZ);
             GameObject dropped = Instantiate(drop, closerLocation, drop.transform.rotation);
-            Destroy(dropped, dropLifetime);
+            Destroy(dropped, 40f);
         }
     }
 }

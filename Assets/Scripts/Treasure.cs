@@ -4,5 +4,5 @@
 
 public class Treasure : MonoBehaviour
 {
-    [HideInInspector] public int level = -1;
+    [HideInInspector] public int level = 0;
 }

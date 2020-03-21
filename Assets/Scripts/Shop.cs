@@ -19,12 +19,15 @@ public class Shop : MonoBehaviour
     public int startingFoodCount = 1;
     public int foodMaxPrice = 10; // starting prices that change
     public int foodHPGain = 10;
+    public float laserFoodDamageGain = .025f;
     public int foodLevelPrice;
+    public int laserLevelPrice;
     public GameObject foodLevelButton;
     public GameObject foodButton;
 
     [Header("Unlocker Buttons")]
     public GameObject buyFishButton;
+    public GameObject buyTurtleButton;
     public GameObject unlockFeederButton;
     public int unlockFeederPrice = 1000;
     public GameObject unlockLaserFoodButton;
@@ -33,7 +36,7 @@ public class Shop : MonoBehaviour
     public GameObject winButton;
     public int winPrice = 60000;
     public GameObject unlockFoodButton;
-    public int unlockFoodPrice = 40;
+    public int unlockFoodPrice = 50;
 
     [Header("TMP and Gameobjects")]
     public GameObject shop;
@@ -42,12 +45,12 @@ public class Shop : MonoBehaviour
     public GameObject playButton;
     public GameObject muteButtonText;
     
-    [Header("Food Stats")]
+    [Header("Food Stats Area")]
     public GameObject foodStats;
     public GameObject foodMaxPriceText; // where it says how much to get more food
     public GameObject foodPriceText; // where it says how much buying a food costs
     public GameObject foodLevelText; 
-    public GameObject foodHPText; 
+    public GameObject foodStatText;  // health or dps
     public GameObject foodDropdown;
     public GameObject foodsDisplay;
 
@@ -58,14 +61,17 @@ public class Shop : MonoBehaviour
     public GameObject feederUpgradeSpeedText;
     public GameObject feederRateText;
     public GameObject feederLevelText;
+    public GameObject feederFoodDecoration;
     [Header("Misc")]
     public GameObject foodDecoration;
     public GameObject laserFoodDecoration;
     public GameObject combatLevelText;
     public GameObject numberPoofEffect;
-
     public GameObject endGameStatsText;
     public GameObject winMenu;
+    public GameObject pauseMenu;
+
+    public int turtlePrice;
 
     private GameManager gm;
     private Object[] fishModels;
@@ -97,6 +103,16 @@ public class Shop : MonoBehaviour
         }
     }
 
+    private int turtleCount;
+    public int TurtleCount{
+        get{return turtleCount;}
+        set{
+            turtleCount = value;
+            turtlePrice = gm.scalingManager.ScaleTurtlePrice(turtleCount);
+            SetButtonPriceText(buyTurtleButton, turtlePrice);
+        }
+    }
+
     // teh value of the food dropdown
     private int foodToSpawnDropdownIndex = 0;
     public int FoodToSpawnDropdownIndex
@@ -120,6 +136,7 @@ public class Shop : MonoBehaviour
                 currentSpawnFoodPrice = spawnLaserFoodPrice;
                 foodDecoration.SetActive(false);
                 laserFoodDecoration.SetActive(true);
+                // update food upgrade area
             }
         }
     }
@@ -161,15 +178,11 @@ public class Shop : MonoBehaviour
             // prevent list index error
             if(foodToGet >= gm.dataStore.foods.Count) foodToGet = gm.dataStore.foods.Count-1;
             this.pelletToSpawn = gm.dataStore.foods[foodToGet];
-            Vector3 foodDecorationLocation = this.foodDecoration.transform.position;
-            Destroy(this.foodDecoration);
-            this.foodDecoration = Instantiate(gm.dataStore.foods[foodToGet], foodDecorationLocation, Quaternion.identity);
-            this.foodDecoration.GetComponent<Food>().enabled = false;
-            this.foodDecoration.transform.Find("Model").tag = "Untagged";
-            this.foodDecoration.transform.Find("Model").GetComponent<Rigidbody>().useGravity = false;
-            ConstantForce spin = this.foodDecoration.AddComponent<ConstantForce>();
-            spin.relativeTorque = new Vector3(1,1,1);
-            this.foodDecoration.GetComponent<Rigidbody>().useGravity = false;
+            
+            GameObject newPelletModel = pelletToSpawn.transform.Find("Model").gameObject;
+            foodDecoration.GetComponent<MeshRenderer>().material= newPelletModel.GetComponent<MeshRenderer>().sharedMaterial;
+
+            feederFoodDecoration.GetComponent<MeshRenderer>().material= newPelletModel.GetComponent<MeshRenderer>().sharedMaterial;
             // update food to spawn badly
             FoodToSpawnDropdownIndex = foodToSpawnDropdownIndex;
             ShowFoodPrice(false);
@@ -181,10 +194,10 @@ public class Shop : MonoBehaviour
     {
         if(levelSide){
             foodLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " + foodLevel.ToString());
-            foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodHPGain.ToString() + "hp");
+            foodStatText.GetComponent<TMPro.TextMeshProUGUI>().SetText(foodHPGain.ToString() + "hp");
         } else {
             foodLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Upgrade ");
-            foodHPText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodLevelPrice.ToString());
+            foodStatText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodLevelPrice.ToString());
         }
 
     }
@@ -222,10 +235,13 @@ public class Shop : MonoBehaviour
         SetButtonPriceText(unlockLaserFoodButton, unlockLaserFoodPrice);
         SetButtonPriceText(winButton, winPrice);
         SetButtonPriceText(unlockFoodButton, unlockFoodPrice);
+        SetButtonPriceText(buyTurtleButton, turtlePrice);
+
         foodMaxPriceText.GetComponent<TMPro.TextMeshProUGUI>().SetText("$" + foodMaxPrice.ToString());
 
         // hide unlocker buttons
         buyFishButton.SetActive(true);
+        buyTurtleButton.SetActive(false);
         unlockFeederButton.SetActive(false);
         unlockLaserFoodButton.SetActive(false);
         unlockFoodButton.SetActive(false);
@@ -241,6 +257,7 @@ public class Shop : MonoBehaviour
         FoodsOnScreenDisplay = 0;
         foodLevelPrice = 50; // like ok this is needed i guess
         FishPrice = gm.scalingManager.ScaleFishPrice(friendlyFishCount);
+        TurtleCount = 0;
     }
 
     void Update()
@@ -248,21 +265,12 @@ public class Shop : MonoBehaviour
         Money += passiveIncome * Time.deltaTime / (60f );
     }
 
-    public void UnlockerButton(){
-        GameObject buttonPressed = EventSystem.current.currentSelectedGameObject;
-
-        if(buttonPressed == buyFishButton){
-            BuyRandomFish();
-        } else if(buttonPressed == unlockLaserFoodButton){
-            UnlockLaserFood();
-        } else if(buttonPressed == unlockFeederButton){
-            UnlockFeeder();
-        } else if(buttonPressed == winButton){
-            ShowWinMenu();
-        } else if(buttonPressed == unlockFoodButton){
-            UnlockFood();
+    public void BuyTurtle()
+    {
+        if (AttemptPurchase(turtlePrice)){
+            if(winButton) winButton.SetActive(true);
+            DropSomethingInTheTank((GameObject)Resources.Load("Prefabs/Fish/Turtle", typeof(GameObject)), false, true);
         }
-
     }
 
     private void SetButtonPriceText(GameObject button, int price){
@@ -311,7 +319,6 @@ public class Shop : MonoBehaviour
             newModelContainer.transform.localScale = new Vector3(1, 1,1);
             spawned.GetComponent<Fish>().ModelContainer = newModelContainer;
         }
-
         Rigidbody r = spawned.GetComponent<Rigidbody>();
         // give it downward force
         if(r) r.AddForce(Vector3.up * spawnedFishDownwardForce, ForceMode.VelocityChange);
@@ -359,7 +366,7 @@ public class Shop : MonoBehaviour
         {
             gm.audioManager.PlaySound("Buy Upgrade");
             this.feederStats.gameObject.SetActive(true);
-            winButton.SetActive(true);
+            buyTurtleButton.SetActive(true);
             Destroy(this.unlockFeederButton);
             UpdateFeederDisplay();
         }
@@ -440,17 +447,19 @@ public class Shop : MonoBehaviour
         Destroy(poof, 3f);
     }
 
-    private void ShowWinMenu(){
+    public void ShowWinMenu(){
         winButton.SetActive(false);
         winMenu.SetActive(true);
         string s = $@"You clicked {gm.timesClicked} times!
 You got {gm.treasuresGot} treasures!
-You slaughtered {gm.foesDefeated} foes!
+You are responsible for the death of {gm.fishDiedStat} fish!
 You made {gm.foodsMade} foods!
 
 
 Thats so many!";
         endGameStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+        gm.audioManager.audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/field");
+        gm.audioManager.audioSourceLoops.Play();
     }
 
     public void ContinueButton()
@@ -465,12 +474,17 @@ Thats so many!";
 
     public void PauseButton()
     {
+        // pausing
         if(Time.timeScale == 1){
+            gm.audioManager.PauseMenu(true);
             Time.timeScale = 0;
             playButton.GetComponent<TMPro.TextMeshProUGUI>().SetText("►");
+            pauseMenu.SetActive(true);
         } else {
+            gm.audioManager.PauseMenu(false);
             Time.timeScale = 1;
             playButton.GetComponent<TMPro.TextMeshProUGUI>().SetText("l l");
+            pauseMenu.SetActive(false);
         }
     }
 

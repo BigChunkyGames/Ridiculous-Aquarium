@@ -4,10 +4,6 @@ public class ScalingManager : MonoBehaviour
 {
     public float exponentialScalar = 1.18f;
 
-    void Start()
-    {
-        
-    }
 // FISH
     // the amount of passive income a fish gives
     public int ScaleFishPassiveIncome(int level, bool laserFish=false)
@@ -23,8 +19,10 @@ public class ScalingManager : MonoBehaviour
     // set price of new fish based on fish in tank. 
     public int ScaleFishPrice(int friendlyFishCount)
     {
-        return 50 * friendlyFishCount + 5 * (int)Mathf.Pow(2, friendlyFishCount);
-        // https://www.wolframalpha.com/input/?i=50+*+x+%2B+5*2%5E%28x-1%29+where+x+%3D+5
+        return 50 * friendlyFishCount;
+    }
+    public int ScaleTurtlePrice(int turtleCount){
+        return 500 * (turtleCount+1);
     }
 // FOOD
     public int ScaleFoodMaxPrice(int currentFoodMax)
@@ -38,8 +36,9 @@ public class ScalingManager : MonoBehaviour
     // price for next food level
     public int ScaleFoodLevelPrice(int currentFoodLevel)
     {
-        return 50*currentFoodLevel;
+        return 100*currentFoodLevel;
     }
+
 // FEEDER
     // seconds between drops
     public float ScaleFeederDropRate(int feederLevel)

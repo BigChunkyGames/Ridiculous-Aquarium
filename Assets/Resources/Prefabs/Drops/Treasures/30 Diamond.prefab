@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -8452871255284562195}
   - component: {fileID: -7165134834775448952}
   - component: {fileID: 8512804093836097453}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 30 Diamond
   m_TagString: Treasure
   m_Icon: {fileID: 0}

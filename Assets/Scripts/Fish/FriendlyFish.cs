@@ -207,11 +207,12 @@ public class FriendlyFish : Fish
         timesEatenSinceLastGrowth = 0;
         growthLevel++;
 
-        // change passive income
+        // change stats
         this.PassiveIncomePerMinute = gm.scalingManager.ScaleFishPassiveIncome(growthLevel);
-
         float size = transform.localScale.x * growthScaleMultiplier;
         transform.localScale = new Vector3(size, size, size); // grow based on rate * previous size
+        this.speed -= this.speed * .08f; // get slower
+        this.targetSeekSpeed -= this.targetSeekSpeed * .08f;
         audioSource.pitch = 2.0f - .15f * growthLevel;
         audioSource.PlayOneShot(audioSource.clip);
         GameObject effect = Instantiate(levelUpEffect, this.transform.position, Quaternion.identity);
