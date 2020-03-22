@@ -43,7 +43,7 @@ public class Fish : MonoBehaviour
             // if becoming hungry
             else
             {
-                rend.material.SetColor("_Color", hungryColor);
+                rend.material.SetColor("_Color", gm.dataStore.fishHungryColor);
                 InvokeRepeating("Starve", hungerTimer, 1f);
             }
         }
@@ -53,8 +53,6 @@ public class Fish : MonoBehaviour
 
     [Header("Fish Stats")]
     public bool unique = true;
-    public Color hungryColor;
-    public Color deadColor;
     private Color gone = new Color(0f, 0f, 0f, 0f);
     private Color startColor;
     public bool getsHungry = true;     
@@ -168,7 +166,7 @@ public class Fish : MonoBehaviour
         if(dead){
             if (fadingAway){
                 t += Time.deltaTime/timeToFade;
-                rend.material.color = Color.Lerp(deadColor, gone, t);
+                rend.material.color = Color.Lerp(gm.dataStore.fishDeadColor, gone, t);
             }
             return;
         }
@@ -272,7 +270,7 @@ public class Fish : MonoBehaviour
         if(immortal) return;
         CancelInvoke();
         dead = true;
-        if(model.GetComponent<Outline>()) model.GetComponent<Outline>().OutlineColor = deadColor;
+        if(model.GetComponent<Outline>()) model.GetComponent<Outline>().OutlineColor = gm.dataStore.fishDeadColor;
         modelContainer.transform.eulerAngles += new Vector3(180f,0f,0f);
         model.GetComponent<Collider>().enabled = false;
         fadingAway = true;
@@ -281,6 +279,7 @@ public class Fish : MonoBehaviour
         gm.fishDiedStat++;
         GameObject deathEffect = Instantiate((GameObject)Resources.Load("Prefabs/FX/Death Effect"), this.transform.position, Quaternion.identity);
         deathEffect.transform.parent = this.transform;
+        deathEffect.transform.localScale = new Vector3(1,1,1);
         if(GetComponent<EnemyFish>())
         {
             GetComponent<EnemyFish>().EnemyDie();

@@ -90,6 +90,8 @@ public class Turtle : Fish
                 transform.localScale *= 1.08f;
                 treasuresConsumedSinceLastGrowth = 0;
                 treasuresNeededToGrow += growRequirementIncrease;
+                targetSeekSpeed *= .95f;
+                Destroy(Instantiate(levelUpEffect, transform.position, Quaternion.identity),5);
             }
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){

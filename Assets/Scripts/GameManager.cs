@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         leftBoundary = -14;
         rightBoundary = 14;
         bottomBoundary = floor.transform.position.y;
-        topBoundary = 19f;
+        topBoundary = 18f;
 
         audioManager = GetComponentInChildren<AudioManager>();
         weaponEffects = GetComponentInChildren<WeaponEffects>();

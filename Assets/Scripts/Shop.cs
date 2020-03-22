@@ -255,7 +255,7 @@ public class Shop : MonoBehaviour
         PassiveIncome = 0;
         FoodMax = 1;
         FoodsOnScreenDisplay = 0;
-        foodLevelPrice = 50; // like ok this is needed i guess
+        foodLevelPrice = gm.scalingManager.ScaleFoodLevelPrice(foodLevel);
         FishPrice = gm.scalingManager.ScaleFishPrice(friendlyFishCount);
         TurtleCount = 0;
     }

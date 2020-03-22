@@ -85,7 +85,7 @@ public class FriendlyFish : Fish
     {
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
         InvokeRepeating("DropTreasure", 1f, treasureDropRate );   // drop dropable
-        InvokeRepeating("FindClosestFood", 1f, 1f);
+        InvokeRepeating("FindClosestFood", 1f, .1f);
         gm.shop.FriendlyFishCount++;
         gm.shop.PassiveIncome += this.passiveIncomePerMinute;
         this.FishType = this.fishType; // trigger setter
@@ -176,6 +176,16 @@ public class FriendlyFish : Fish
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
             Destroy(this.gameObject); // destory if hit bottom and dead
+        }
+        // if another fish is trying to get food, swim at right angle between them and food
+        if (col.gameObject.GetComponent<FriendlyFish>()){
+            FriendlyFish f = col.gameObject.GetComponent<FriendlyFish>();
+            // if you have a target and i dont, i get pushed out of the way
+            if (f.targetFood != null && !targetFood){
+                Vector3 vectorToFoodFromSeekingFish = f.transform.position - f.targetFood.transform.position;
+                Vector3 dirToSwim = Quaternion.Euler(0, 0,90) * vectorToFoodFromSeekingFish.normalized * .1f;
+                GetComponent<Rigidbody>().velocity += dirToSwim;
+            }
         }
     }
 

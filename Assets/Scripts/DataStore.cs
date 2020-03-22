@@ -10,6 +10,8 @@ public class DataStore : MonoBehaviour
     public List<GameObject> friendlyFish;
     public List<GameObject> evilFish;
     public List<GameObject> treasures;
+    public Color fishHungryColor;
+    public Color fishDeadColor;
 
     void Start()
     {

@@ -521,7 +521,7 @@ Transform:
   m_GameObject: {fileID: 1665445287277343852}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5680018, y: 0.5680018, z: 0.5680018}
   m_Children:
   - {fileID: 1665445288457828165}
   - {fileID: 1665445286395011536}
@@ -606,7 +606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityFrequency: 1
   speed: 1
-  targetSeekSpeed: 1.1
+  targetSeekSpeed: 1.025
   flipAxis: {x: 0, y: 1, z: 0}
   hungerTimer: 0
   growthScaleMultiplier: 1.1
@@ -620,13 +620,16 @@ MonoBehaviour:
   dead: 0
   immortal: 0
   unique: 1
-  hungryColor: {r: 0, g: 0, b: 0, a: 0}
-  deadColor: {r: 0, g: 0, b: 0, a: 0}
   getsHungry: 0
   modelContainer: {fileID: 1665445288212697955}
   model: {fileID: 0}
   dropSpot: {fileID: 0}
-  levelUpEffect: {fileID: 0}
+  levelUpEffect: {fileID: 8718834879131785521, guid: 67e97f194720bf441a1f9ec9ad6efab5,
+    type: 3}
+  treasuresNeededToGrow: 2
+  growRequirementIncrease: 3
+  treasuresConsumedSinceLastGrowth: 0
+  level: 0
 --- !u!54 &1665445287399416091
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1318,12 +1321,12 @@ PrefabInstance:
     - target: {fileID: 8739620822345346155, guid: 692f6670a78c1a34288f3f6e75574e88,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.006
+      value: -0.098
       objectReference: {fileID: 0}
     - target: {fileID: 8739620822345346155, guid: 692f6670a78c1a34288f3f6e75574e88,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.214
+      value: -0.081
       objectReference: {fileID: 0}
     - target: {fileID: 8739620822345346155, guid: 692f6670a78c1a34288f3f6e75574e88,
         type: 3}
@@ -1380,12 +1383,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 8739620821165409250, guid: 692f6670a78c1a34288f3f6e75574e88,
+    - target: {fileID: 8739620822203584776, guid: 692f6670a78c1a34288f3f6e75574e88,
         type: 3}
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 8739620822203584776, guid: 692f6670a78c1a34288f3f6e75574e88,
+    - target: {fileID: 8739620821165409250, guid: 692f6670a78c1a34288f3f6e75574e88,
         type: 3}
       propertyPath: m_Layer
       value: 8

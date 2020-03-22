@@ -22,7 +22,7 @@ public class ScalingManager : MonoBehaviour
         return 50 * friendlyFishCount;
     }
     public int ScaleTurtlePrice(int turtleCount){
-        return 500 * (turtleCount+1);
+        return 250 * (turtleCount+1);
     }
 // FOOD
     public int ScaleFoodMaxPrice(int currentFoodMax)
