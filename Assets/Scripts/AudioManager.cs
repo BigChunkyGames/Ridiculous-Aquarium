@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public AudioMixer mainMixer;
-    private AudioSource audioSourceFX;
     public AudioSource audioSourceLoops;
     private AudioClip startLoop;
     private AudioSource audioSourcePauseMenu;
+    private List<AudioSource> fxChannels = new List<AudioSource>();
+    private int channelToUse = 0;
 
 
     void Start()
     {
-        audioSourceFX = transform.Find("FX").GetComponent<AudioSource>();
+        GameObject fxGO = transform.Find("FX").gameObject;
+        for (int i = 0; i < 12; i++)
+        {
+            AudioSource newAS = fxGO.AddComponent<AudioSource>();
+            fxChannels.Add(newAS);
+        }
         audioSourceLoops = transform.Find("Loops").GetComponent<AudioSource>();
         audioSourcePauseMenu = transform.Find("Pause Menu").GetComponent<AudioSource>();
         startLoop = audioSourceLoops.clip;
@@ -22,7 +29,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(string name, float customPitch=1)
     {
+        channelToUse++;
+        if(channelToUse >= fxChannels.Count) channelToUse=0;
         AudioClip ac;
+        AudioSource audioSourceFX = fxChannels[channelToUse];
         audioSourceFX.volume = 1;
         audioSourceFX.pitch = 1;
         bool uniquePitch = true;
@@ -54,8 +64,8 @@ public class AudioManager : MonoBehaviour
         }
         else if (name == "Enemy Fish Chomp")
         {
-            ac = GetRandomClip("Audio/FX/chomps");
-            audioSourceFX.volume = .2f;
+            ac = (AudioClip)Resources.Load("Audio/FX/chomps/chomp 3");
+            audioSourceFX.volume = .4f;
         }
         else if (name == "Error")
         {
@@ -115,7 +125,7 @@ public class AudioManager : MonoBehaviour
     {
         StopAllCoroutines();
         audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/fish combat");
-        audioSourceLoops.volume = .4f;
+        audioSourceLoops.volume = .6f;
         audioSourceLoops.Play();
     }
 

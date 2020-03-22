@@ -65,6 +65,8 @@ public class FriendlyFish : Fish
         Vector3 position = transform.position;
         foreach (GameObject go in enemies)
         {
+            // don't include dead fish
+            if(go.GetComponent<Fish>().dead) continue;
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
             if (curDistance < distance)
@@ -83,6 +85,7 @@ public class FriendlyFish : Fish
     {
         InvokeRepeating("BeFishy", 0.0f, activityFrequency);
         InvokeRepeating("DropTreasure", 1f, treasureDropRate );   // drop dropable
+        InvokeRepeating("FindClosestFood", 1f, 1f);
         gm.shop.FriendlyFishCount++;
         gm.shop.PassiveIncome += this.passiveIncomePerMinute;
         this.FishType = this.fishType; // trigger setter
@@ -107,7 +110,7 @@ public class FriendlyFish : Fish
         if(this.fishType == FishTypeEnum.laser)
             {
                 // if there is a target and fish isnt hungry and isnt dead and target is alive
-            if(targetEnemy != null && !Hungry && !dead && !targetEnemy.GetComponent<Fish>().dead) 
+            if(targetEnemy != null && !Hungry && !dead) 
             {
                 AttackTarget();
             }
@@ -125,7 +128,7 @@ public class FriendlyFish : Fish
         // seek food
         if(Hungry){ 
             if(targetFood == null){
-                FindClosestFood();
+                return;
             }   
             else { // if there is target food
                 seekingFood = true;
@@ -163,7 +166,7 @@ public class FriendlyFish : Fish
         }
     }
 
-    void OnCollisionEnter(Collision col){
+    void OnCollisionStay(Collision col){
         if (dead){
             return;
         }
@@ -172,7 +175,7 @@ public class FriendlyFish : Fish
             Eat(col.transform.parent.gameObject);
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
-            Destroy(this); // destory if hit bottom and dead
+            Destroy(this.gameObject); // destory if hit bottom and dead
         }
     }
 

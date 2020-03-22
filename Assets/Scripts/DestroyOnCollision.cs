@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DestroyOnCollision : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class DestroyOnCollision : MonoBehaviour
     {
         gm = (GameManager)FindObjectOfType(typeof(GameManager));
     }
-    void OnCollisionEnter(Collision col){
+    void OnCollisionStay(Collision col){
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary")){
             Destroy(gameObject, secondsUntilDestructionAfterContact); // destory if dropable hits ground or boundary
         }

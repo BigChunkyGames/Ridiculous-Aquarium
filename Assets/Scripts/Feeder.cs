@@ -24,7 +24,9 @@ public class Feeder : MonoBehaviour
 
     public void DropFood(){
         GameObject[] foods = GameObject.FindGameObjectsWithTag("Food");
-        if (foods.Length >= (gm.shop.FoodMax - 1) ){
+        if (foods.Length >= (gm.shop.FoodMax) ){
+            // dont drop when not enough food
+            gm.shop.foodsDisplay.GetComponent<Animation>().Play();
             return;
         }
         if(gm.shop.AttemptPurchase(gm.shop.spawnPelletFoodPrice))

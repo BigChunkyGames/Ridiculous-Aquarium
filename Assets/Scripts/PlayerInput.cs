@@ -80,6 +80,6 @@ public class PlayerInput : MonoBehaviour
         Debug.Log("Picked up a " + hit.gameObject.name + " worth " + worth);
         gm.audioManager.PlaySound("Get Coin", 1.6f+hit.gameObject.GetComponent<Treasure>().level * .1f);
         Destroy(hit.gameObject);
-        gm.timesClicked++;
+        gm.treasuresGot++;
     }
 }

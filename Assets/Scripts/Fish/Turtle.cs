@@ -5,6 +5,10 @@ public class Turtle : Fish
     [Header("Turtle Stats")]
     
     private GameObject targetTreasure;
+    public int treasuresNeededToGrow = 2;
+    public int growRequirementIncrease = 3;
+    public int treasuresConsumedSinceLastGrowth =0;
+    public int level;
 
     void Start()
     {
@@ -80,6 +84,13 @@ public class Turtle : Fish
         if((col.gameObject.tag == "Treasure")){
             // eating
             gm.playerInput.PickupTreasure(col.transform);
+            treasuresConsumedSinceLastGrowth++;
+            if(treasuresConsumedSinceLastGrowth >= treasuresNeededToGrow){
+                // grow
+                transform.localScale *= 1.08f;
+                treasuresConsumedSinceLastGrowth = 0;
+                treasuresNeededToGrow += growRequirementIncrease;
+            }
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){
             Destroy(this); // destory if hit bottom and dead

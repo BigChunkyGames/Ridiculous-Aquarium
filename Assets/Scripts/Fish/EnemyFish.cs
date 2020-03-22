@@ -28,7 +28,7 @@ public class EnemyFish : Fish
             return;
         }
         // if doesnt have a target or target is dead, find another fish
-        if(targetFish == null || targetFish.GetComponent<Fish>().dead){
+        if(targetFish == null){
             FindClosestFish();
         }
         else{ // go towards target
@@ -74,6 +74,8 @@ public class EnemyFish : Fish
             {
                 // eat friendly fish
                 Hungry = false;
+                fishBeingAttacked = null;
+                targetFish = null;
                 return;
             }
             fishBeingAttacked.TakeDamage(damage);
