@@ -92,6 +92,8 @@ public class Turtle : Fish
                 treasuresNeededToGrow += growRequirementIncrease;
                 targetSeekSpeed *= .95f;
                 Destroy(Instantiate(levelUpEffect, transform.position, Quaternion.identity),5);
+                maxHealth += 10;
+                currentHealth += 10;
             }
         }
         if (col.gameObject.layer == LayerMask.NameToLayer("Boundary") && dead){

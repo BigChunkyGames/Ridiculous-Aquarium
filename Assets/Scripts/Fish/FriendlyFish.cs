@@ -227,6 +227,8 @@ public class FriendlyFish : Fish
         this.speed -= this.speed * .08f; // get slower
         this.targetSeekSpeed -= this.targetSeekSpeed * .08f;
         audioSource.pitch = 2.0f - .15f * growthLevel;
+        maxHealth += 10;
+        currentHealth += 10;
         audioSource.PlayOneShot(audioSource.clip);
         GameObject effect = Instantiate(levelUpEffect, this.transform.position, Quaternion.identity);
         Destroy(effect, 3);

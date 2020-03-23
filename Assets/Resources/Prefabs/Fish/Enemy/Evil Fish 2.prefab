@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2659158600953305003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4291451696102244364}
+  m_Layer: 8
+  m_Name: Model Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4291451696102244364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2659158600953305003}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7268090259475071490}
+  m_Father: {fileID: 7268090258474223495}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7268090258474223499
 GameObject:
   m_ObjectHideFlags: 0
@@ -27,11 +58,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268090258474223499}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49423957, y: 7.4577518, z: 11.468453}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1993512313723497168}
   - {fileID: 7268090259341614963}
+  - {fileID: 4291451696102244364}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,32 +192,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityFrequency: 0.2
   speed: 1.16
-  targetSeekSpeed: 5
+  targetSeekSpeed: 4
   flipAxis: {x: 0, y: 1, z: 0}
-  hungerTimer: 12
+  hungerTimer: 15
   growthScaleMultiplier: 1.1
   timesEatenSinceLastGrowth: 0
   foodsNeededToGrow: 4
   additionalFoodsNeededToGrow: 2
   growthLevel: 0
-  maxHealth: 100
+  maxHealth: 125
   currentHealth: 0
   hungry: 0
   dead: 0
   immortal: 0
   unique: 1
-  hungryColor: {r: 0, g: 0.5754717, b: 0.013711259, a: 1}
-  deadColor: {r: 0, g: 0, b: 0, a: 1}
-  modelContainer: {fileID: 7586362383922437085}
+  getsHungry: 1
+  modelContainer: {fileID: 2659158600953305003}
   model: {fileID: 7268090259475071495}
   dropSpot: {fileID: 0}
   levelUpEffect: {fileID: 0}
-  dropLifetime: 10
   attackRate: 1
   damage: 20
-  alwaysHungry: 1
-  enemyLevel: 1
-  dropLevel: 4
+  enemyLevel: 2
+  dropLevel: 3
 --- !u!1 &7268090258894904516
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,11 +322,11 @@ RectTransform:
   m_Children:
   - {fileID: 7268090259621220926}
   m_Father: {fileID: 7268090258474223495}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.08, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.663}
   m_SizeDelta: {x: 0.2873, y: 1}
   m_Pivot: {x: 0, y: 0}
 --- !u!223 &7268090259341614959
@@ -403,14 +431,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268090259475071495}
-  m_LocalRotation: {x: -0, y: 0.69080675, z: -0, w: -0.7230395}
-  m_LocalPosition: {x: 0.5870001, y: -0.4749999, z: 0.026000023}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7268090260331959203}
-  m_Father: {fileID: 1993512313723497168}
+  m_Father: {fileID: 4291451696102244364}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 272.612, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &7268090259475071491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,7 +503,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268090259475071495}
-  m_Mesh: {fileID: -2432090755550338912, guid: 44d7064502ab2f74f93d7b2c42bf24cc, type: 3}
+  m_Mesh: {fileID: -3978267777931353482, guid: 6c9da2916b2949e4dbd0dc044f9a172e, type: 3}
 --- !u!64 &7268090259475071494
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -489,7 +517,7 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 44d7064502ab2f74f93d7b2c42bf24cc, type: 3}
+  m_Mesh: {fileID: -3978267777931353482, guid: 6c9da2916b2949e4dbd0dc044f9a172e, type: 3}
 --- !u!1 &7268090259621220927
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,8 +551,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.3903}
+  m_SizeDelta: {x: 1, y: 0.2194}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7268090260002434997
 GameObject:
@@ -622,41 +650,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268090260331959200}
-  m_LocalRotation: {x: 0, y: -0.69080675, z: -0, w: -0.7230395}
-  m_LocalPosition: {x: -0.052723818, y: 0.4749999, z: 0.5852054}
+  m_LocalRotation: {x: 0.7810812, y: 0.07437399, z: -0.049017884, w: -0.6180437}
+  m_LocalPosition: {x: -0.002580029, y: 0.029012658, z: 0.091829464}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7268090259475071490}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7586362383922437085
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1993512313723497168}
-  m_Layer: 0
-  m_Name: Model Container
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1993512313723497168
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7586362383922437085}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.004000008, y: -0.096000195, z: 0.0069999695}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7268090259475071490}
-  m_Father: {fileID: 7268090258474223495}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

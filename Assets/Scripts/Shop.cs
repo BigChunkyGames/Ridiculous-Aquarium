@@ -359,7 +359,7 @@ public class Shop : MonoBehaviour
         f.DropRate = gm.scalingManager.ScaleFeederDropRate(f.level);
         feederLevelText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Level " +f.level.ToString());
         feederUpgradeSpeedText.GetComponent<TMPro.TextMeshProUGUI>().SetText(feederSpeedUpgradePrice.ToString() + "$");
-        SetText(feederRateText, ((60f/f.dropRate)).ToString("F2") + " food/min");
+        SetTMPText(feederRateText, ((60f/f.dropRate)).ToString("F2") + " food/min");
     }
     public void UnlockFeeder(){
         if(AttemptPurchase(unlockFeederPrice))
@@ -427,23 +427,23 @@ public class Shop : MonoBehaviour
         return Instantiate (foodToSpawn, position, foodToSpawn.transform.rotation);
     }
 
-    public void SetText(GameObject tmpObject, string s)
+    public void SetTMPText(GameObject tmpObject, string s)
     {
         tmpObject.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
     }
 
     // if its not money its damage
-    public void MakeNumberPoof(string value, Vector3 position, bool money)
+    public void MakeNumberPoof(string numberValue, Vector3 position, bool money)
     {
         GameObject poof = this.numberPoofEffect;
-        TMPro.TextMeshProUGUI txt = poof.transform.Find("Number").GetComponent<TMPro.TextMeshProUGUI>();
-        txt.SetText(value);
-        if(money){
-            txt.color = Color.green;
-        } else {
-            txt.color = Color.red;
-        }
         poof = Instantiate(poof, position, Quaternion.identity);
+        var tmp = poof.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if(money){
+            tmp.color = Color.green;
+        } else {
+            tmp.color = Color.red;
+        }
+        tmp.SetText(numberValue);
         Destroy(poof, 3f);
     }
 

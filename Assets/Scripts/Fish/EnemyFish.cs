@@ -13,11 +13,12 @@ public class EnemyFish : Fish
 
     private GameObject targetFish = null;
     private bool attacking = false;
-    private Fish fishBeingAttacked =  null;
+    private Fish fishBeingAttacked =  null; // this is actively taking damage
 
     private void Start() {
         InvokeRepeating("TryToAttack", 1f, attackRate );  
         InvokeRepeating("BeFishyEnemy", 0.0f, activityFrequency);
+        InvokeRepeating("FindClosestFish", 0.0f, .5f);
     }
 
     void FixedUpdate(){
@@ -28,10 +29,8 @@ public class EnemyFish : Fish
             return;
         }
         // if doesnt have a target or target is dead, find another fish
-        if(targetFish == null){
-            FindClosestFish();
-        }
-        else{ // go towards target
+        if(targetFish != null){
+         // go towards target
             transform.position = Vector3.MoveTowards(transform.position, targetFish.transform.position, targetSeekSpeed * Time.deltaTime);
             if (targetFish.transform.position.x > transform.position.x){
                 // if food is to the right
@@ -96,6 +95,9 @@ public class EnemyFish : Fish
     void OnCollisionExit(Collision col)
     {
         attacking = false;
+        if(fishBeingAttacked.dead){
+            Hungry = false;
+        }
         fishBeingAttacked = null;
     }
 

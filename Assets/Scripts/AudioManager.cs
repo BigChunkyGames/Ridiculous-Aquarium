@@ -64,8 +64,8 @@ public class AudioManager : MonoBehaviour
         }
         else if (name == "Enemy Fish Chomp")
         {
-            ac = (AudioClip)Resources.Load("Audio/FX/chomps/chomp 3");
-            audioSourceFX.volume = .4f;
+            ac = (AudioClip)Resources.Load("Audio/FX/chew 2");
+            audioSourceFX.volume = 1f;
         }
         else if (name == "Error")
         {
