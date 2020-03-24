@@ -448,18 +448,20 @@ public class Shop : MonoBehaviour
     }
 
     public void ShowWinMenu(){
-        winButton.SetActive(false);
-        winMenu.SetActive(true);
-        string s = $@"You clicked {gm.timesClicked} times!
+        if(AttemptPurchase(winPrice)){
+            winButton.SetActive(false);
+            winMenu.SetActive(true);
+            string s = $@"You clicked {gm.timesClicked} times!
 You got {gm.treasuresGot} treasures!
 You are responsible for the death of {gm.fishDiedStat} fish!
 You made {gm.foodsMade} foods!
 
 
 Thats so many!";
-        endGameStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
-        gm.audioManager.audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/field");
-        gm.audioManager.audioSourceLoops.Play();
+            endGameStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+            gm.audioManager.audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/field");
+            gm.audioManager.audioSourceLoops.Play();
+        }
     }
 
     public void ContinueButton()
@@ -490,12 +492,12 @@ Thats so many!";
 
     public void MuteButton()
     {
-        if( AudioListener.pause == false){
-            AudioListener.pause = true;
-            muteButtonText.GetComponent<TMPro.TextMeshProUGUI>().color = Color.red;
-        } else {
-            AudioListener.pause = false;
+        if( AudioListener.volume == 0){
+            AudioListener.volume = 1;
             muteButtonText.GetComponent<TMPro.TextMeshProUGUI>().color = Color.white;
+        } else {
+            AudioListener.volume = 0;
+            muteButtonText.GetComponent<TMPro.TextMeshProUGUI>().color = Color.red;
         }
     }
 
