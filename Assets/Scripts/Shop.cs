@@ -67,9 +67,11 @@ public class Shop : MonoBehaviour
     public GameObject laserFoodDecoration;
     public GameObject combatLevelText;
     public GameObject numberPoofEffect;
-    public GameObject endGameStatsText;
+    public GameObject endGameWinStatsText;
+    public GameObject endGameLoseStatsText;
     public GameObject winMenu;
     public GameObject pauseMenu;
+    public GameObject loseMenu;
 
     public int turtlePrice;
 
@@ -95,6 +97,9 @@ public class Shop : MonoBehaviour
     {
         set{
             friendlyFishCount = value;
+            if(value == 0){
+                ShowLoseMenu();
+            }
             Debug.Log("Fish in tank: " + friendlyFishCount);
             FishPrice = gm.scalingManager.ScaleFishPrice(friendlyFishCount);
             }
@@ -458,10 +463,28 @@ You made {gm.foodsMade} foods!
 
 
 Thats so many!";
-            endGameStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+            endGameWinStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
             gm.audioManager.audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/field");
             gm.audioManager.audioSourceLoops.Play();
         }
+    }
+
+    public void ShowLoseMenu(){
+        loseMenu.SetActive(true);
+        string s = $@"Your fish loved you up unill the bitter end.
+
+But at least you
+clicked {gm.timesClicked} times!
+got {gm.treasuresGot} treasures!
+were responsible for the death of {gm.fishDiedStat} fish!
+made {gm.foodsMade} foods!
+
+
+Give it another try!";
+        endGameLoseStatsText.GetComponent<TMPro.TextMeshProUGUI>().SetText(s);
+        gm.audioManager.audioSourceLoops.clip = (AudioClip)Resources.Load("Audio/Music/death");
+        gm.audioManager.audioSourceLoops.Play();
+        Time.timeScale = 0;
     }
 
     public void ContinueButton()
