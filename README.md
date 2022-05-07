@@ -1,7 +1,7 @@
 # Ridiculous-Fish
 Now published!
 
-https://bigchunkygames.itch.io/ridiculous-fish
+Play it right now in your browser! https://bigchunkygames.itch.io/ridiculous-fish
 
 About me:
 
