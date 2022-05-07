@@ -1,7 +1,7 @@
-# Ridiculous-Aquarium
+# Ridiculous-Fish
 Now published!
 
-https://bigchunkygames.itch.io/ridiculous-
+https://bigchunkygames.itch.io/ridiculous-fish
 
 About me:
 
